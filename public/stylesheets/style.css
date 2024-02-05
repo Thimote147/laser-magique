@@ -1,0 +1,208 @@
+#body {
+    background-color: #19191e;
+    color: #fff;
+    margin-top: 80px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-family: sans-serif;
+}
+
+ul {
+    gap: 0 50px;
+}
+
+.nav-item a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-item a.actual {
+    color: #69b357;
+}
+
+.nav-item a:hover {
+    color: #d1d1d2;
+}
+
+.transparent {
+    background-color: rgba(25, 25, 30, .9);
+}
+
+#cyber, #laser, #vr {
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    align-self: flex-end;
+    border-radius: 10px;
+    min-height: 100%;
+    margin: 2%;
+    padding: 20% 2% 2% 2%;
+    vertical-align: bottom;
+}
+
+#cyber {
+    background-image: url('../images/cyber.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#laser {
+    background-image: url('../images/laser.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#vr {
+    background-image: url('../images/vr.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    width: 60%;
+    margin: 8px 20% 0 20%;
+    border-bottom: 2px solid #69b357;
+}
+
+h5 {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+}
+
+.description::after {
+    content: "";
+    display: block;
+    width: 50%;
+    margin: 8px 0;
+    border-bottom: 2px solid #69b357;
+}
+
+.description {
+    color: #69b357;
+}
+
+.text-green {
+    color: #69b357;
+}
+
+.end-description::after {
+    content: "";
+    display: block;
+    width: 60%;
+    margin: 8px 20% 30px 20%;
+    border-bottom: 2px solid #69b357;
+}
+
+#gun-text {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 50px;
+}
+
+section.col-sm-6 {
+    padding: 30px 20px;
+    text-align: justify;
+}
+
+.wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+}
+
+#about-lg {
+    background-image: url('../images/about-lg.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.about-item {
+    display: inline-block;
+    border-right: 1px solid rgba(255, 255, 255, .25);
+    border-bottom:1px solid rgba(255, 255, 255, .25)
+}
+
+.about-item:nth-child(3), .about-item:nth-child(6) {
+    border-right:none
+}
+
+.about-item:nth-child(4), .about-item:nth-child(5), .about-item:nth-child(6) {
+    border-bottom:none
+}
+
+@media (max-width: 767.98px) {
+    #about .about-item {
+        border-right: none;
+        border-bottom:1px solid rgba(255, 255, 255, .25) !important
+    }
+}
+
+#about-vr {
+    background-image: url('../images/about-vr.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+#about-cyber {
+    background-image: url('../images/about-cyber.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+#formules {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+}
+
+.card {
+    margin: 5px 10px;
+}
+
+th, td {
+    padding: 5px 35px;
+}
+
+.card .title {
+    background-color: #fff;
+}
+
+.price-green {
+    color: #fff;
+    background-color: #69b357;
+}
+
+.price-red {
+    color: #fff;
+    background-color: #9e001c;
+}
+
+.age, .time, .res, .pers, .info, .sup, .activities, .drink, .inv, .btn {
+    color: #fff;
+    background-color: rgba(48, 48, 53);
+}
+
+.card .btn {
+    border-radius: 10px;
+    border-color: #fff;
+    border-width: 1px;
+    text-transform: uppercase;
+}
