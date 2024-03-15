@@ -2,9 +2,27 @@ const express = require('express');
 const createError = require('http-errors');
 const path = require('path');
 const logger = require('morgan');
+const hbs = require('hbs');
+const session = require('express-session');
+
+/**
+ * eq checks if value are equal
+ */
+hbs.registerHelper('eq', function (a, b) {
+  if (a === b) {
+    return true;
+  }
+  else {
+    return false;
+  }
+});
 
 // TODO Require your controllers here
 const indexRouter = require("./routes/index.js");
+const homeRouter = require("./routes/accueil.js")
+const cybergamesRouter = require("./routes/cyber_games.js");
+const gestionRouter = require("./routes/gestion.js");
+const loginRouter = require("./routes/login.js");
 
 const app = express();
 const port = 3000;
@@ -17,9 +35,15 @@ app.use(logger('dev')); // Log each request
 app.use(express.urlencoded({ extended: false })); // Decode form values
 app.use(express.static(path.join(__dirname, 'public'))); // Get static files from public folder
 
+app.use(session({ secret: "Your secret key", resave: false, saveUninitialized: false }));
+app.use(function (req, res, next) { res.locals.session = req.session; next(); });
 
 // TODO Call your controllers here
 app.use("/", indexRouter);
+app.use("/accueil", homeRouter);
+app.use("/partie-cyber-games", cybergamesRouter);
+app.use("/gestion", gestionRouter);
+app.use("/login", loginRouter);
 
 
 // Create error on page not found

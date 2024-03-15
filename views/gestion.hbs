@@ -1,0 +1,82 @@
+<main>
+    <section id="gestionPage" class="container-fluid bg-dark text-white">
+        <h1 class="title">Gestion du Laser Magique</h1>
+        <table id="res">
+            <title>Réservations</title>
+            <thead>
+                <th>Heure</th>
+                <th>Prénom</th>
+                <th>Nombre de personnes</th>
+                <th>Activités</th>
+                <th>Acompte</th>
+                <th>Paiement</th>
+                <th>Payé par</th>
+            </thead>
+            <tbody>
+                {{#each reservations}}
+                <tr>
+                    <td>{{date}}</td>
+                    <td>{{firstname}}</td>
+                    <td>{{persons}}</td>
+                    <td>{{activities}}</td>
+                    <td>{{deposit}}</td>
+                    <td>{{payment}}</td>
+                    <td>{{payment_by}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div id="tables" class="d-sm-flex">
+            <table id="weapons">
+                <thead>
+                    <th>Liste des Armes</th>
+                    <th>Problème</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    {{#each weapons}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{problem}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <table id="headsets">
+                <thead>
+                    <th>Liste des Casques</th>
+                    <th>Problème du casque</th>
+                    <th>Problème des manettes</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    {{#each headsets}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{headset_problem}}</td>
+                        <td>{{joycons_problem}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <table id="trikes">
+                <thead>
+                    <th>Liste des Trikes</th>
+                    <th>Problème</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    {{#each trikes}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{problem}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
