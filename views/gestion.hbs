@@ -1,6 +1,8 @@
 <main>
     <section id="gestionPage" class="container-fluid bg-dark text-white">
         <h1 class="title">Gestion du Laser Magique</h1>
+        <h5>Bonjour {{session.member.firstname}} !</h5>
+        {{#if (eq session.member.is_admin 0)}}
         <table id="res">
             <title>Réservations</title>
             <thead>
@@ -26,6 +28,18 @@
                 {{/each}}
             </tbody>
         </table>
+        {{else}}
+        <div class="form-control">
+            <table>
+                <thead>
+                    <th>Jour</th>
+                </thead>
+                <tbody>
+                    <td>test</td>
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
         <div id="tables" class="d-sm-flex">
             <table id="weapons">
                 <thead>

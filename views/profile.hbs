@@ -1,0 +1,77 @@
+<main>
+    <section class="container-fluid bg-dark">
+        <h1 class="title">Profil</h1>
+        <form id="infos" class="form-control" action="/profile/manage" method="post">
+            {{#if (eq session.modify true)}}
+            <div>
+                <label for="firstname">Prénom : </label>
+                <input type="text" name="firstname" value="{{session.member.firstname}}" readonly>
+            </div>
+            <div>
+                <label for="lastname">Nom de Famille : </label>
+                <input type="text" name="lastname" value="{{session.member.lastname}}" readonly>
+            </div>
+            <div>
+                <label for="email">Email : </label>
+                <input type="email" name="email" value="{{session.member.email}}">
+            </div>
+            <div>
+                <label for="phone_number">Numéro de téléphone : </label>
+                <input type="tel" name="phone_number" value="{{session.member.phone_number}}">
+            </div>
+            <div>
+                <label for="password">Mot de passe : </label>
+                <input type="password" name="password" value="{{session.member.password}}">
+            </div>
+
+            <button type="submit" name="manage_button" value="save">Enregistrer</button>
+            {{else}}
+            <div>
+                <label for="firstname">Prénom : </label>
+                <input type="text" name="firstname" value="{{session.member.firstname}}" readonly>
+            </div>
+            <div>
+                <label for="lastname">Nom de Famille : </label>
+                <input type="text" name="lastname" value="{{session.member.lastname}}" readonly>
+            </div>
+            <div>
+                <label for="email">Email : </label>
+                <input type="email" name="email" value="{{session.member.email}}" readonly>
+            </div>
+            <div>
+                <label for="phone_number">Numéro de téléphone : </label>
+                <input type="tel" name="phone_number" value="{{session.member.phone_number}}" readonly>
+            </div>
+            <div>
+                <label for="password">Mot de passe : </label>
+                <input type="password" name="password" value="{{session.member.password}}" disabled>
+            </div>
+
+            <button type="submit" name="manage_button" value="modify">Modifier</button>
+
+            {{/if}}
+            <button type="submit" name="manage_button" value="disconnect">Se déconnecter</button>
+        </form>
+        {{#if (eq session.member.is_admin 1)}}
+            <h1 class="title">Member du Laser Magique</h1>
+            <table class="form-control">
+                <thead>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Numéro de téléphone</th>
+                </thead>
+                <tbody>
+                    {{#each members}}
+                    <tr>
+                        <td>{{firstname}}</td>
+                        <td>{{lastname}}</td>
+                        <td>{{email}}</td>
+                        <td>{{phone_number}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/if}}
+    </section>
+</main>

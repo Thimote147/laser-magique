@@ -4846,7 +4846,7 @@ pre code {
 .form-control {
     display: block;
     width: 100%;
-    height: calc(2.25rem + 2px);
+    /* height: calc(2.25rem + 2px); */
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -18213,11 +18213,14 @@ form#login {
     text-align: center;
 }
 
-#gestionPage {
-    padding: 75px 0 0 0;
+main {
+    margin: 50px 0 0 0;
 }
 
-#res, #weapons, #headsets, #trikes {
+#res,
+#weapons,
+#headsets,
+#trikes {
     border-collapse: collapse;
     max-width: 30%;
 }
@@ -18245,4 +18248,14 @@ form#login {
 
 #tables {
     gap: 5%;
+}
+
+#infos {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+#infos input {
+    padding: 0;
 }

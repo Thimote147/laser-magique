@@ -32,13 +32,11 @@ router.get('/', (req, res) => {
         const reservations = Gestion.reservations();
         const forToday = [];
         reservations.forEach((reservation) => {
-            console.log(today(reservation.date));
             if (today(reservation.date) === true) {
                 reservation.date = formatDate(reservation.date);
                 forToday.push(reservation);
             };
         });
-        console.log(Gestion.reservations())
         res.render("gestion.hbs", { weapons: Gestion.weapons(), headsets: Gestion.headsets(), trikes: Gestion.trikes(), reservations: forToday });
     } else {
         res.render("login.hbs");
