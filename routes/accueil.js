@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/reservation', (req, res) => {
-    Gestion.addReservation(req.body);
+    Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, req.body.date, req.body.activities, req.body.resComment);
     res.redirect('/accueil');
 });
 

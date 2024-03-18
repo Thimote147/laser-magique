@@ -18259,3 +18259,13 @@ main {
 #infos input {
     padding: 0;
 }
+
+h5 a {
+    text-decoration: none;
+    color: #fff;
+}
+
+h5 a:hover {
+    text-decoration: underline;
+    color: #69b357;
+}

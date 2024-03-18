@@ -43,4 +43,19 @@ router.get('/', (req, res) => {
     }
 });
 
+router.post('/update_infos', (req, res) => {
+    if (req.body.reservation === "cancel") {
+        
+    } else {
+        req.session.id_res = req.body.reservation;
+        res.redirect("/reservation");
+    }
+});
+
+router.post('/add_reservation', (req, res) => {
+    const date = new Date().getTime();
+    Gestion.addReservation(req.body.firstname, "", "", "", req.body.persons, date, req.body.activities, "");
+    res.redirect('/gestion');
+});
+
 module.exports = router;

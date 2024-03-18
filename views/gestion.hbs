@@ -1,45 +1,94 @@
 <main>
     <section id="gestionPage" class="container-fluid bg-dark text-white">
         <h1 class="title">Gestion du Laser Magique</h1>
-        <h5>Bonjour {{session.member.firstname}} !</h5>
-        {{#if (eq session.member.is_admin 0)}}
-        <table id="res">
-            <title>Réservations</title>
-            <thead>
-                <th>Heure</th>
-                <th>Prénom</th>
-                <th>Nombre de personnes</th>
-                <th>Activités</th>
-                <th>Acompte</th>
-                <th>Paiement</th>
-                <th>Payé par</th>
-            </thead>
-            <tbody>
-                {{#each reservations}}
-                <tr>
-                    <td>{{date}}</td>
-                    <td>{{firstname}}</td>
-                    <td>{{persons}}</td>
-                    <td>{{activities}}</td>
-                    <td>{{deposit}}</td>
-                    <td>{{payment}}</td>
-                    <td>{{payment_by}}</td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        {{else}}
-        <div class="form-control">
-            <table>
+        <h5>Bonjour <a href="/profile">{{session.member.firstname}}</a> !</h5>
+        <div class="d-sm-flex mb-5">
+            {{#if (eq session.member.is_admin 0)}}
+            <table id="res">
+                <title>Réservations</title>
                 <thead>
-                    <th>Jour</th>
+                    <th>Heure</th>
+                    <th>Prénom</th>
+                    <th>Nombre de personnes</th>
+                    <th>Activités</th>
+                    <th>Acompte</th>
+                    <th>Montant Bcc</th>
+                    <th>Montant Cash</th>
+                    <th>Payé par</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody>
-                    <td>test</td>
+                    {{#each reservations}}
+                    <tr>
+                        <td>{{date}}</td>
+                        <td>{{firstname}}</td>
+                        <td>{{persons}}</td>
+                        <td>{{activities}}</td>
+                        <td>{{deposit}}</td>
+                        <td>{{payment_bcc}}</td>
+                        <td>{{payment_cash}}</td>
+                        <td>{{payment_by}}</td>
+                        <td>
+                            <form action="/gestion/update_infos" method="post">
+                                <button type="submit" name="reservation" value="{{id}}">Modifier</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
                 </tbody>
             </table>
+
+            <form class="form-control" action="/gestion/add_reservation" method="post">
+                <h5>Ajouter une réservation</h5>
+
+                <div>
+                    <label for="firstname">Prénom : </label>
+                    <input type="text" name="firstname" value="{{reservation.firstname}}">
+                </div>
+                <div>
+                    <label for="persons">Nombre de personnes : </label>
+                    <input type="number" name="persons" value="{{reservation.persons}}" min="2">
+                </div>
+                <div>
+                    <label for="activities">Activités : </label>
+                    <select name="activities">
+                    <optgroup label="Nos Jeux">
+                        <option value="Laser Game" selected>Laser Game</option>
+                        <option value="Réalité Virtuelle">Réalité Virtuelle</option>
+                        <option value="Cyber Games">Cyber Games</option>
+                    </optgroup>
+                    <optgroup label="Nos Packs">
+                        <option value="Anniversaire Laser Game">Anniversaire Laser Game</option>
+                        <option value="Anniversaire Trio Pack">Anniversaire Trio Pack</option>
+                        <option value="Famille Trio Pack">Famille Trio Pack</option>
+                    </optgroup>
+                    <optgroup label="Nos Combinaisons">
+                        <option value="Laser Game + Réalité Virtuelle">Laser Game + Réalité Virtuelle</option>
+                        <option value="Laser Game + Cyber Games">Laser Game + Cyber Games</option>
+                        <option value="Réalité Virtuelle + Cyber Games">Réalité Virtuelle + Cyber Games</option>
+                        <option value="Laser Game + Réalité Virtuelle + Cyber Games">Laser Game + Réalité Virtuelle +
+                            Cyber
+                            Games</option>
+                    </optgroup>
+                </select>
+                </div>
+
+                <button type="submit">Ajouter</button>
+            </form>
+            </form>
+            {{else}}
+            <div class="form-control">
+                <table>
+                    <thead>
+                        <th>Jour</th>
+                    </thead>
+                    <tbody>
+                        <td>test</td>
+                    </tbody>
+                </table>
+            </div>
+            {{/if}}
         </div>
-        {{/if}}
         <div id="tables" class="d-sm-flex">
             <table id="weapons">
                 <thead>

@@ -7,8 +7,7 @@
     "test": "eslint --rulesdir ./test ."
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.11",
-    "@fullcalendar/daygrid": "^6.1.11",
+    "bcrypt": "^5.1.1",
     "better-sqlite3": "^9.4.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -18,7 +17,8 @@
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "eslint": "^8.21.0",

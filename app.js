@@ -23,7 +23,8 @@ const homeRouter = require("./routes/accueil.js")
 const cybergamesRouter = require("./routes/cyber_games.js");
 const gestionRouter = require("./routes/gestion.js");
 const loginRouter = require("./routes/login.js");
-const profileRouter = require("./routes/profile.js")
+const profileRouter = require("./routes/profile.js");
+const reservationRouter = require("./routes/reservation.js");
 
 const app = express();
 const port = 3000;
@@ -46,6 +47,7 @@ app.use("/partie-cyber-games", cybergamesRouter);
 app.use("/gestion", gestionRouter);
 app.use("/login", loginRouter);
 app.use("/profile", profileRouter);
+app.use("/reservation", reservationRouter);
 
 
 // Create error on page not found

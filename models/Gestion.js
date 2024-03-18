@@ -30,18 +30,29 @@ module.exports.member = (firstname) => {
     return stmt.get(firstname);
 };
 
-module.exports.addReservation = (infos) => {
-    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments) values (?,?,?,?,?,?,?,?)");
-    const info = stmt.run(infos.firstname, infos.lastname, infos.email, infos.phone_number, infos.persons, infos.date, infos.activities, infos.resComment);
+module.exports.addReservation = (firstname, lastname, email, phone_number, persons, date, activities, resComment) => {
+    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, is_canceled) values (?,?,?,?,?,?,?,?, ?)");
+    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, 0);
 };
 
-module.exports.update_member = (member) => {
+module.exports.updateMember = (firstname, email, phone_number, password) => {
     const stmt = db.prepare("UPDATE members SET email = ?, phone_number = ?, password = ? WHERE firstname = ?");
-    const info = stmt.run(member.email, member.phone_number, member.password, member.firstname);
+    const info = stmt.run(email, phone_number, password, firstname);
 };
 
-module.exports.all_members = () => {
+module.exports.allMembers = () => {
     const stmt = db.prepare("SELECT firstname, lastname, email, phone_number FROM members");
 
     return stmt.all();
+};
+
+module.exports.findById = (id_res) => {
+    const stmt = db.prepare("SELECT * FROM reservations WHERE id = ?");
+    
+    return stmt.get(id_res);
+};
+
+module.exports.updateReservation = (reservation) => {
+    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, deposit = ?, payment_bcc = ?, payment_cash =?, payment_by = ? WHERE id = ?");
+    const info = stmt.run(reservation.persons, reservation.activities, reservation.deposit, reservation.payment_bcc, reservation.payment_cash, reservation.payment_by, reservation.id);
 };

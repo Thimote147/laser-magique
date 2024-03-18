@@ -1,0 +1,62 @@
+<main>
+    <section class="container-fluid bg-dark">
+        <h1 class="title">Modifier la réservation</h1>
+        <div class="d-sm-flex">
+            <form id="infos" class="form-control" action="/reservation/update_infos" method="post">
+                <div>
+                    <label for="firstname">Prénom : </label>
+                    <input type="text" name="firstname" value="{{reservation.firstname}}" readonly>
+                </div>
+                <div>
+                    <label for="persons">Nombre de personnes : </label>
+                    <input type="number" name="persons" value="{{reservation.persons}}" min="2">
+                </div>
+                <div>
+                    <label for="activities">Activités : </label>
+                    <select name="activities">
+                    <optgroup label="Nos Jeux">
+                        <option value="Laser Game" selected>Laser Game</option>
+                        <option value="Réalité Virtuelle">Réalité Virtuelle</option>
+                        <option value="Cyber Games">Cyber Games</option>
+                    </optgroup>
+                    <optgroup label="Nos Packs">
+                        <option value="Anniversaire Laser Game">Anniversaire Laser Game</option>
+                        <option value="Anniversaire Trio Pack">Anniversaire Trio Pack</option>
+                        <option value="Famille Trio Pack">Famille Trio Pack</option>
+                    </optgroup>
+                    <optgroup label="Nos Combinaisons">
+                        <option value="Laser Game + Réalité Virtuelle">Laser Game + Réalité Virtuelle</option>
+                        <option value="Laser Game + Cyber Games">Laser Game + Cyber Games</option>
+                        <option value="Réalité Virtuelle + Cyber Games">Réalité Virtuelle + Cyber Games</option>
+                        <option value="Laser Game + Réalité Virtuelle + Cyber Games">Laser Game + Réalité Virtuelle +
+                            Cyber
+                            Games</option>
+                    </optgroup>
+                </select>
+                </div>
+                <div>
+                    <label for="deposit">Accompte : </label>
+                    <input type="number" name="deposit" value="{{reservation.deposit}}">
+                </div>
+                <div>
+                    <label for="payment_bcc">Payé par Bcc : </label>
+                    <input type="number" name="payment_bcc" value="{{reservation.payment_bcc}}" min="0">
+                </div>
+                <div>
+                    <label for="payment_cash">Payé par Cash : </label>
+                    <input type="number" name="payment_cash" value="{{reservation.payment_cash}}" min="0">
+                </div>
+                <div>
+                    <label for="payment_by">Payé en : </label>
+                    <select type="text" name="payment_by">
+                        <option value="bcc">Bcc</option>
+                        <option value="cash">Cash</option>
+                        <option value="bcc/cash">Bcc &amp; Cash</option>
+                    </select>
+                </div>
+
+                <button type="submit" name="id" value="{{reservation.id}}">Enregistrer</button>
+            </form>
+        </div>
+    </section>
+</main>
