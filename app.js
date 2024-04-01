@@ -25,6 +25,9 @@ const gestionRouter = require("./routes/gestion.js");
 const loginRouter = require("./routes/login.js");
 const profileRouter = require("./routes/profile.js");
 const reservationRouter = require("./routes/reservation.js");
+const weaponsRouter = require("./routes/weapons.js");
+const headsetsRouter = require("./routes/headsets.js");
+const trikesRouter = require("./routes/trikes.js");
 
 const app = express();
 const port = 3000;
@@ -48,10 +51,14 @@ app.use("/gestion", gestionRouter);
 app.use("/login", loginRouter);
 app.use("/profile", profileRouter);
 app.use("/reservation", reservationRouter);
-
+app.use("/weapons", weaponsRouter);
+app.use("/headsets", headsetsRouter);
+app.use("/trikes", trikesRouter);
 
 // Create error on page not found
-app.use((req, res, next) => next(createError(404)));
+app.use(function (req, res, next) {
+  res.status(404).sendFile(__dirname + '/views/404.html');
+});
 
 // Show error hbs page
 app.use((error, req, res) => {

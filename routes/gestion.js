@@ -20,9 +20,9 @@ function today(milliseconds) {
 function formatDate(milliseconds) {
     const date = new Date(milliseconds);
     if (date.getMinutes() < 10) {
-        return `${date.getHours() - 1}:0${date.getMinutes()}`;
+        return `${date.getHours()}:0${date.getMinutes()}`;
     } else {
-        return `${date.getHours() - 1}:${date.getMinutes()}`;
+        return `${date.getHours()}:${date.getMinutes()}`;
     }
 }
 
@@ -44,17 +44,22 @@ router.get('/', (req, res) => {
 });
 
 router.post('/update_infos', (req, res) => {
-    if (req.body.reservation === "cancel") {
-        
-    } else {
-        req.session.id_res = req.body.reservation;
-        res.redirect("/reservation");
-    }
+    req.session.id_res = req.body.reservation;
+    res.redirect("/reservation");
+});
+
+router.post('/cancel', (req, res) => {
+    Gestion.cancel(req.body.reservation);
+    res.redirect("/gestion");
+});
+
+router.post('/delete', (req, res) => {
+    Gestion.delete(req.body.reservation);
+    res.redirect("/gestion");
 });
 
 router.post('/add_reservation', (req, res) => {
-    const date = new Date().getTime();
-    Gestion.addReservation(req.body.firstname, "", "", "", req.body.persons, date, req.body.activities, "");
+    Gestion.addReservation(req.body.firstname, "", "", "", req.body.persons, req.body.date, req.body.activities, req.body.resComment, 0);
     res.redirect('/gestion');
 });
 

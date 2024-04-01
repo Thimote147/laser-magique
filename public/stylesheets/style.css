@@ -72,21 +72,21 @@ body {
 }
 
 #cyber {
-    background-image: url('../images/cyber.jpg');
+    background-image: url('../images/background/cyber.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 #laser {
-    background-image: url('../images/laser.jpg');
+    background-image: url('../images/background/laser.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 #vr {
-    background-image: url('../images/vr.jpg');
+    background-image: url('../images/background/vr.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -17395,178 +17395,181 @@ section:after {
     }
 }
 
-#about {
-    background-image: url("../images/illu/about-bg.jpg");
+#about-lg {
+    background-image: url("../images/background/about-lg.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background-attachment: fixed
 }
 
-#about .about-item {
+#about-lg .about-item {
     border-right: 1px solid rgba(255, 255, 255, .25);
     border-bottom: 1px solid rgba(255, 255, 255, .25)
 }
 
-#about .about-item:nth-child(3),
-#about .about-item:nth-child(6) {
+#about-lg .about-item:nth-child(3),
+#about-lg .about-item:nth-child(6) {
     border-right: none
 }
 
-#about .about-item:nth-child(4),
-#about .about-item:nth-child(5),
-#about .about-item:nth-child(6) {
+#about-lg .about-item:nth-child(4),
+#about-lg .about-item:nth-child(5),
+#about-lg .about-item:nth-child(6) {
     border-bottom: none
 }
 
 @media(max-width: 767.98px) {
-    #about .about-item {
+    #about-lg .about-item {
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, .25) !important
     }
 }
 
-#about .about-item .card {
+#about-lg .about-item .card {
     border: none;
     background-color: transparent;
     height: 100%;
     padding: 2rem
 }
 
-#about .about-item .card .card-body {
+#about-lg .about-item .card .card-body {
     text-align: center
 }
 
-#about .about-item .card .card-body .card-title {
+#about-lg .about-item .card .card-body .card-title {
     font-family: "MyFontBold", sans-serif;
-    font-size: 1.5rem
+    font-size: 1.5rem;
+    color: #fff;
 }
 
-#about .about-item .card .card-body .card-title i {
+#about-lg .about-item .card .card-body .card-title i {
     display: block;
     font-size: 3rem;
     margin-bottom: 2rem;
     color: #69b357
 }
 
-#about .about-item .card .card-body .card-text {
+#about-lg .about-item .card .card-body .card-text {
     font-size: .8rem;
     color: #fff
 }
 
-#aboutvr {
-    background-image: url("../images/illu/aboutvr-bg.jpg");
+#about-vr {
+    background-image: url("../images/background/about-vr.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background-attachment: fixed
 }
 
-#aboutvr .about-item {
+#about-vr .about-item {
     border-right: 1px solid rgba(255, 255, 255, .25);
     border-bottom: 1px solid rgba(255, 255, 255, .25)
 }
 
-#aboutvr .about-item:nth-child(3),
-#aboutvr .about-item:nth-child(6) {
+#about-vr .about-item:nth-child(3),
+#about-vr .about-item:nth-child(6) {
     border-right: none
 }
 
-#aboutvr .about-item:nth-child(4),
-#aboutvr .about-item:nth-child(5),
-#aboutvr .about-item:nth-child(6) {
+#about-vr .about-item:nth-child(4),
+#about-vr .about-item:nth-child(5),
+#about-vr .about-item:nth-child(6) {
     border-bottom: none
 }
 
 @media(max-width: 767.98px) {
-    #aboutvr .about-item {
+    #about-vr .about-item {
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, .25) !important
     }
 }
 
-#aboutvr .about-item .card {
+#about-vr .about-item .card {
     border: none;
     background-color: transparent;
     height: 100%;
     padding: 2rem
 }
 
-#aboutvr .about-item .card .card-body {
+#about-vr .about-item .card .card-body {
     text-align: center
 }
 
-#aboutvr .about-item .card .card-body .card-title {
+#about-vr .about-item .card .card-body .card-title {
     font-family: "MyFontBold", sans-serif;
-    font-size: 1.5rem
+    font-size: 1.5rem;
+    color: #fff;
 }
 
-#aboutvr .about-item .card .card-body .card-title i {
+#about-vr .about-item .card .card-body .card-title i {
     display: block;
     font-size: 3rem;
     margin-bottom: 2rem;
     color: #69b357
 }
 
-#aboutvr .about-item .card .card-body .card-text {
+#about-vr .about-item .card .card-body .card-text {
     font-size: .8rem;
     color: #fff
 }
 
-#aboutcyber {
-    background-image: url("../images/illu/aboutcyber-bg.jpg");
+#about-cyber {
+    background-image: url("../images/background/about-cyber.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background-attachment: fixed
 }
 
-#aboutcyber .about-item {
+#about-cyber .about-item {
     border-right: 1px solid rgba(255, 255, 255, .25)
 }
 
-#aboutcyber .about-item:nth-child(3),
-#aboutcyber .about-item:nth-child(6) {
+#about-cyber .about-item:nth-child(3),
+#about-cyber .about-item:nth-child(6) {
     border-right: none
 }
 
-#aboutcyber .about-item:nth-child(4),
-#aboutcyber .about-item:nth-child(5),
-#aboutcyber .about-item:nth-child(6) {
+#about-cyber .about-item:nth-child(4),
+#about-cyber .about-item:nth-child(5),
+#about-cyber .about-item:nth-child(6) {
     border-bottom: none
 }
 
 @media(max-width: 767.98px) {
-    #aboutcyber .about-item {
+    #about-cyber .about-item {
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, .25) !important
     }
 }
 
-#aboutcyber .about-item .card {
+#about-cyber .about-item .card {
     border: none;
     background-color: transparent;
     height: 100%;
     padding: 2rem
 }
 
-#aboutcyber .about-item .card .card-body {
+#about-cyber .about-item .card .card-body {
     text-align: center
 }
 
-#aboutcyber .about-item .card .card-body .card-title {
+#about-cyber .about-item .card .card-body .card-title {
     font-family: "MyFontBold", sans-serif;
-    font-size: 1.5rem
+    font-size: 1.5rem;
+    color: #fff;
 }
 
-#aboutcyber .about-item .card .card-body .card-title i {
+#about-cyber .about-item .card .card-body .card-title i {
     display: block;
     font-size: 3rem;
     margin-bottom: 2rem;
     color: #69b357
 }
 
-#aboutcyber .about-item .card .card-body .card-text {
+#about-cyber .about-item .card .card-body .card-text {
     font-size: .8rem;
     color: #fff
 }
@@ -17617,7 +17620,8 @@ section:after {
 #pricing .card .list-group .list-group-item {
     background: none;
     border-color: rgba(255, 255, 255, .1);
-    text-align: center
+    text-align: center;
+    color: #fff;
 }
 
 #pricing .card .list-group .list-group-item:first-child {
@@ -17633,7 +17637,7 @@ section:after {
 }
 
 #b2b {
-    background-image: url("../images/illu/b2b-bg.jpg");
+    background-image: url("../images/background/b2b.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -17717,7 +17721,7 @@ section:after {
 }
 
 #booking {
-    background-image: url("../images/illu/booking-bg.png");
+    background-image: url("../images/background/booking.png");
     background-repeat: no-repeat;
     background-position: center bottom;
     padding-bottom: 325px
@@ -18268,4 +18272,16 @@ h5 a {
 h5 a:hover {
     text-decoration: underline;
     color: #69b357;
+}
+
+.line-throught {
+    text-decoration: line-through;
+}
+
+#activities.form-control:last-child {
+    margin-top: 0;
+}
+
+iframe {
+    height: 200px;
 }
