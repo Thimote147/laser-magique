@@ -2,7 +2,7 @@
     <section id="gestionPage" class="container-fluid bg-dark text-white">
         <h1 class="title">Gestion du Laser Magique</h1>
         <h5>Bonjour <a href="/profile">{{session.member.firstname}}</a> !</h5>
-        <div class="d-sm-flex mb-5">
+        <div class="d-flex flex-column mb-5">
             {{#if (eq session.member.is_admin 0)}}
             <table id="res" class="col-6">
                 <title>Réservations</title>
@@ -11,37 +11,211 @@
                     <th>Prénom</th>
                     <th>Nombre de personnes</th>
                     <th>Activités</th>
-                    <th>Acompte</th>
-                    <th>Montant Bcc</th>
-                    <th>Montant Cash</th>
-                    <th>Restant</th>
-                    <th>Totale</th>
                     <th>Payé par</th>
-                    <th>Observations</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
                     {{#each reservations}}
                     {{#if (eq is_canceled 1)}}
                     <tr class="line-throught">
-                    {{else}}
+                        {{else}}
                     <tr>
-                    {{/if}}
+                        {{/if}}
                         <td>{{date}}</td>
                         <td>{{firstname}}</td>
                         <td>{{persons}}</td>
                         <td>{{activities}}</td>
-                        <td>{{deposit}}</td>
-                        <td>{{payment_bcc}}</td>
-                        <td>{{payment_cash}}</td>
-                        <td>{{remaining}}</td>
-                        <td>{{total}}</td>
                         <td>{{payment_by}}</td>
-                        <td>{{observation}}</td>
                         <td>
-                            <form action="/gestion/update_infos" method="post">
-                                <button type="submit" name="reservation" value="{{id}}">Modifier</button>
-                            </form>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn text-white" data-bs-toggle="modal"
+                                data-bs-target="#modal{{id}}">Infos</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade bg-secondary" id="modal{{id}}" aria-labelledby="modalLabel{{id}}"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-dark">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="modalLabel{{id}}">
+                                                Informations de la réservation
+                                            </h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="d-flex flex-column" action="/gestion/update_infos"
+                                                method="post">
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="firstname">Prénom : </label>
+                                                    <input type="text" name="firstname" value="{{firstname}}" readonly>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="persons">Nombre de personnes : </label>
+                                                    <input type="number" name="persons" value="{{persons}}" min="2">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="activities">Activités : </label>
+                                                    <select name="activities">
+                                                        <optgroup label="Nos Jeux">
+                                                            {{#if (eq activities "Laser Game")}}
+                                                            <option value="Laser Game" selected>Laser Game</option>
+                                                            {{else}}
+                                                            <option value="Laser Game">Laser Game</option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Réalité Virtuelle")}}
+                                                            <option value="Réalité Virtuelle" selected>
+                                                                Réalité Virtuelle
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Réalité Virtuelle">Réalité Virtuelle</option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Cyber Games")}}
+                                                            <option value="Cyber Games" selected>Cyber Games</option>
+                                                            {{else}}
+                                                            <option value="Cyber Games">Cyber Games</option>
+                                                            {{/if}}
+                                                        </optgroup>
+                                                        <optgroup label="Nos Packs">
+                                                            {{#if (eq activities "Anniversaire Laser Game")}}
+                                                            <option value="Anniversaire Laser Game" selected>
+                                                                Anniversaire Laser Game
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Anniversaire Laser Game">
+                                                                Anniversaire Laser Game
+                                                            </option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Anniversaire Trio Pack")}}
+                                                            <option value="Anniversaire Trio Pack" selected>
+                                                                Anniversaire Trio Pack
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Anniversaire Trio Pack">
+                                                                Anniversaire Trio Pack
+                                                            </option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Famille Trio Pack")}}
+                                                            <option value="Famille Trio Pack" selected>
+                                                                Famille Trio Pack
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Famille Trio Pack">Famille Trio Pack</option>
+                                                            {{/if}}
+                                                        </optgroup>
+                                                        <optgroup label="Nos Combinaisons">
+                                                            {{#if (eq activities "Laser Game + Réalité Virtuelle")}}
+                                                            <option value="Laser Game + Réalité Virtuelle" selected>
+                                                                Laser Game + Réalité Virtuelle
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Laser Game + Réalité Virtuelle">
+                                                                Laser Game + Réalité Virtuelle
+                                                            </option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Laser Game + Cyber Games")}}
+                                                            <option value="Laser Game + Cyber Games" selected>
+                                                                Laser Game + Cyber Games
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Laser Game + Cyber Games">
+                                                                Laser Game + Cyber Games
+                                                            </option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Réalité Virtuelle + Cyber Games")}}
+                                                            <option value="Réalité Virtuelle + Cyber Games" selected>
+                                                                Réalité Virtuelle + Cyber Games
+                                                            </option>
+                                                            {{else}}
+                                                            <option value="Réalité Virtuelle + Cyber Games">
+                                                                Réalité Virtuelle + Cyber Games
+                                                            </option>
+                                                            {{/if}}
+                                                            {{#if (eq activities "Laser Game + Réalité Virtuelle + Cyber
+                                                            Games")}}
+                                                            <option value="Laser Game + Réalité Virtuelle + Cyber Games"
+                                                                selected>
+                                                                Laser Game + Réalité Virtuelle + Cyber Games
+                                                            </option>
+                                                            {{else}}
+                                                            <option
+                                                                value="Laser Game + Réalité Virtuelle + Cyber Games">
+                                                                Laser Game + Réalité Virtuelle + Cyber Games
+                                                            </option>
+                                                            {{/if}}
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="nbr_laser">Nombre de partie de Laser : </label>
+                                                    <input type="number" name="nbr_laser" value="{{nbr_laser}}">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="nbr_vr">Nombre de partie de VR : </label>
+                                                    <input type="number" name="nbr_vr" value="{{nbr_vr}}">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="nbr_ct">Nombre de partie de CT : </label>
+                                                    <input type="number" name="nbr_ct" value="{{nbr_ct}}">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="deposit">Accompte : </label>
+                                                    <input type="number" name="deposit" value="{{deposit}}">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="payment_bcc">Payé par Bcc : </label>
+                                                    <input type="number" name="payment_bcc" value="{{payment_bcc}}"
+                                                        min="0">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="payment_cash">Payé par Cash : </label>
+                                                    <input type="number" name="payment_cash" value="{{payment_cash}}"
+                                                        min="0">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="payment_by">Payé en : </label>
+                                                    <select type="text" name="payment_by">
+                                                        {{#if (eq payment_by "")}}
+                                                        <option value="" selected>/</option>
+                                                        {{else}}
+                                                        <option value="">/</option>
+                                                        {{/if}}
+                                                        {{#if (eq payment_by "bcc")}}
+                                                        <option value="bcc" selected>Bcc</option>
+                                                        {{else}}
+                                                        <option value="bcc">Bcc</option>
+                                                        {{/if}}
+                                                        {{#if (eq payment_by "cash")}}
+                                                        <option value="cash" selected>Cash</option>
+                                                        {{else}}
+                                                        <option value="cash">Cash</option>
+                                                        {{/if}}
+                                                        {{#if (eq payment_by "bcc/cash")}}
+                                                        <option value="bcc/cash" selected>Bcc &amp; Cash</option>
+                                                        {{else}}
+                                                        <option value="bcc/cash">Bcc &amp; Cash</option>
+                                                        {{/if}}
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="remaining">Restant : </label>
+                                                    <input type="number" name="remaining" value="{{remaining}}"
+                                                        readonly>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="total">Total : </label>
+                                                    <input type="number" name="total" value="{{total}}" readonly>
+                                                </div>
+
+                                                <button class="btn btn-primary" type="submit" name="id"
+                                                    value="{{id}}">Enregistrer</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <form action="/gestion/cancel" method="post">
                                 <button type="submit" name="reservation" value="{{id}}">Annuler</button>
                             </form>
@@ -66,7 +240,7 @@
             </div>
             {{/if}}
 
-            <form class="form-control col-4" action="/gestion/add_reservation" method="post">
+            <form class="form-control col-10 col-md-7 col-lg-5" action="/gestion/add_reservation" method="post">
                 <h5>Ajouter une réservation</h5>
 
                 <div>
