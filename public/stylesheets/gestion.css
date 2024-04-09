@@ -1,0 +1,15 @@
+#res {
+    border-collapse: collapse;
+}
+
+#res th,
+#res td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+#res th {
+    background-color: #4CAF50;
+    color: white;
+}

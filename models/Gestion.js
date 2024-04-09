@@ -52,9 +52,9 @@ module.exports.findById = (id_res) => {
     return stmt.get(id_res);
 };
 
-module.exports.updateReservation = (id, persons, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total) => {
-    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, nbr_laser = ?, nbr_vr = ?, nbr_ct = ?, deposit = ?, payment_bcc = ?, payment_cash = ?, payment_by = ?, remaining = ?, total = ? WHERE id = ?");
-    const info = stmt.run(persons, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total, id);
+module.exports.updateReservation = (id, persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation) => {
+    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, nbr_laser = ?, nbr_vr = ?, nbr_ct = ?, soft = ?, aquarius = ?, capri_sun = ?, chips = ?, pop_corn = ?, bonbon = ?, deposit = ?, payment_bcc = ?, payment_cash = ?, payment_by = ?, remaining = ?, total = ?, observation = ? WHERE id = ?");
+    const info = stmt.run(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation, id);
 };
 
 module.exports.cancel = (id) => {

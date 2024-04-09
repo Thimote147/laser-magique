@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Gestion = require("../models/Gestion.js");
+const jsPDF = require("jspdf");
 
 function today(milliseconds) {
     const date = new Date(milliseconds);
@@ -59,6 +60,8 @@ router.post('/add_reservation', (req, res) => {
 });
 
 router.post('/update_infos', (req, res) => {
+    console.log(req.body);
+
     let price;
     if (req.body.activities === "Laser Game") { price = 8 }
     if (req.body.activities === "Réalité Virtuelle") { price = 10 }
@@ -71,10 +74,12 @@ router.post('/update_infos', (req, res) => {
     if (req.body.activities === "Réalité Virtuelle + Cyber Games") { price = 30 }
     if (req.body.activities === "Laser Game + Réalité Virtuelle + Cyber Games") { price = 38 }
 
-    const remaining = (price * req.body.persons) - req.body.deposit - req.body.payment_bcc - req.body.payment_cash;
-    const total = (price * req.body.persons);
+    const food = (req.body.soft * 2.5) + (req.body.aquarius * 3.5) + (req.body.capri_sun * 2) + (req.body.chips * 2) + (req.body.pop_corn * 3.5) + (req.body.bonbon * 3);
 
-    Gestion.updateReservation(req.body.id, req.body.persons, req.body.activities, req.body.nbr_laser, req.body.nbr_vr, req.body.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, remaining, total);
+    const remaining = (price * req.body.persons) - req.body.deposit - req.body.payment_bcc - req.body.payment_cash + food;
+    const total = (price * req.body.persons) + food;
+
+    Gestion.updateReservation(req.body.id, req.body.persons, req.body.activities, req.body.nbr_laser, req.body.nbr_vr, req.body.nbr_ct, req.body.soft, req.body.aquarius, req.body.capri_sun, req.body.chips, req.body.pop_corn, req.body.bonbon, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, remaining, total, req.body.observation);
     res.redirect('/gestion');
 });
 

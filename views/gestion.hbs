@@ -2,11 +2,11 @@
     <section id="gestionPage" class="container-fluid bg-dark text-white">
         <h1 class="title">Gestion du Laser Magique</h1>
         <h5>Bonjour <a href="/profile">{{session.member.firstname}}</a> !</h5>
-        <div class="d-flex flex-column mb-5">
+        <div class="d-flex flex-column col-12 mb-5">
             {{#if (eq session.member.is_admin 0)}}
-            <table id="res" class="col-6">
+            <table id="res">
                 <title>Réservations</title>
-                <thead>
+                <thead class="bg-green">
                     <th>Heure</th>
                     <th>Prénom</th>
                     <th>Nombre de personnes</th>
@@ -144,6 +144,9 @@
                                                         </optgroup>
                                                     </select>
                                                 </div>
+                                                <dir>
+                                                    <hr class="m-0">
+                                                </dir>
                                                 <div class="d-flex justify-content-between">
                                                     <label for="nbr_laser">Nombre de partie de Laser : </label>
                                                     <input type="number" name="nbr_laser" value="{{nbr_laser}}">
@@ -156,6 +159,39 @@
                                                     <label for="nbr_ct">Nombre de partie de CT : </label>
                                                     <input type="number" name="nbr_ct" value="{{nbr_ct}}">
                                                 </div>
+                                                <dir>
+                                                    <hr class="m-0">
+                                                </dir>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="soft">Nombre de Soft : </label>
+                                                    <input type="number" name="soft" value="{{soft}}" min="0">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="aquarius">Nombre d'Aquarius : </label>
+                                                    <input type="number" name="aquarius" value="{{aquarius}}" min="0">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="capri_sun">Nombre de Capri Sun : </label>
+                                                    <input type="number" name="capri_sun" value="{{capri_sun}}" min="0">
+                                                </div>
+                                                <dir>
+                                                    <hr class="m-0">
+                                                </dir>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="chips">Nombre de Chips : </label>
+                                                    <input type="number" name="chips" value="{{chips}}" min="0">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="pop_corn">Nombre de Pop Corn : </label>
+                                                    <input type="number" name="pop_corn" value="{{pop_corn}}" min="0">
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="bonbon">Nombre de Bonbons : </label>
+                                                    <input type="number" name="bonbon" value="{{bonbon}}" min="0">
+                                                </div>
+                                                <dir>
+                                                    <hr class="m-0">
+                                                </dir>
                                                 <div class="d-flex justify-content-between">
                                                     <label for="deposit">Accompte : </label>
                                                     <input type="number" name="deposit" value="{{deposit}}">
@@ -193,8 +229,16 @@
                                                         {{else}}
                                                         <option value="bcc/cash">Bcc &amp; Cash</option>
                                                         {{/if}}
+                                                        {{#if (eq payment_by "Social Deal")}}
+                                                        <option value="Social Deal" selected>Social Deal</option>
+                                                        {{else}}
+                                                        <option value="Social Deal">Social Deal</option>
+                                                        {{/if}}
                                                     </select>
                                                 </div>
+                                                <dir>
+                                                    <hr class="m-0">
+                                                </dir>
                                                 <div class="d-flex justify-content-between">
                                                     <label for="remaining">Restant : </label>
                                                     <input type="number" name="remaining" value="{{remaining}}"
@@ -203,6 +247,11 @@
                                                 <div class="d-flex justify-content-between">
                                                     <label for="total">Total : </label>
                                                     <input type="number" name="total" value="{{total}}" readonly>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="observation">Observations : </label>
+                                                    <textarea name="observation" cols="30" rows="10"
+                                                        placeholder="Aucune remarque à notifier ?">{{observation}}</textarea>
                                                 </div>
 
                                                 <button class="btn btn-primary" type="submit" name="id"
@@ -239,7 +288,7 @@
                 </table>
             </div>
             {{/if}}
-
+            <div>&nbsp;</div>
             <form class="form-control col-10 col-md-7 col-lg-5" action="/gestion/add_reservation" method="post">
                 <h5>Ajouter une réservation</h5>
 
