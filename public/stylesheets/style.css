@@ -18120,7 +18120,6 @@ main {
     margin: 50px 0 0 0;
 }
 
-#res,
 #weapons,
 #headsets,
 #trikes {
@@ -18128,8 +18127,6 @@ main {
     max-width: 30%;
 }
 
-#res th,
-#res td,
 #weapons th,
 #weapons td,
 #headsets th,
@@ -18141,7 +18138,6 @@ main {
     text-align: left;
 }
 
-#res th,
 #weapons th,
 #headsets th,
 #trikes th {
