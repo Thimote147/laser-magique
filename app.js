@@ -19,7 +19,7 @@ hbs.registerHelper('eq', function (a, b) {
 
 // TODO Require your controllers here
 const indexRouter = require("./routes/index.js");
-const homeRouter = require("./routes/accueil.js")
+const homeRouter = require("./routes/home.js")
 const cybergamesRouter = require("./routes/cyber_games.js");
 const gestionRouter = require("./routes/gestion.js");
 const loginRouter = require("./routes/login.js");

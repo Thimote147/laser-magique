@@ -1,3 +1,3 @@
-const db = require("better-sqlite3")("./models/gestion.db", { verbose: console.log });
+const db = require("better-sqlite3")("data/gestion.db", { verbose: console.log });
 
 module.exports = db;

@@ -3,7 +3,7 @@ const router = express.Router();
 const Gestion = require("../models/Gestion.js");
 
 router.get('/', (req, res) => {
-    res.render("accueil.hbs", { photos1_5: Gestion.photos(1, 5), photos6_10: Gestion.photos(6, 10) });
+    res.render("home.hbs", { photos1_5: Gestion.photos(1, 5), photos6_10: Gestion.photos(6, 10) });
 });
 
 router.post('/reservation', (req, res) => {

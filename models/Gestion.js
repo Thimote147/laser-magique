@@ -71,7 +71,5 @@ module.exports.photos = (start, end) => {
     const stmt = db.prepare("SELECT directory FROM photos WHERE id >= ? AND id <= ?");
     const info = stmt.run(start, end);
 
-    console.log(info);
-
     return info;
 };
