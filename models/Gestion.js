@@ -2,7 +2,7 @@ const db = require("./db_conf.js");
 
 module.exports.login = (firstname) => {
     const stmt = db.prepare("SELECT password FROM members WHERE firstname = ?");
-    return stmt.get(firstname).password;
+    return stmt.get(firstname);
 };
 
 module.exports.weapons = () => {
@@ -52,9 +52,9 @@ module.exports.findById = (id_res) => {
     return stmt.get(id_res);
 };
 
-module.exports.updateReservation = (reservation) => {
-    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, deposit = ?, payment_bcc = ?, payment_cash =?, payment_by = ? WHERE id = ?");
-    const info = stmt.run(reservation.persons, reservation.activities, reservation.deposit, reservation.payment_bcc, reservation.payment_cash, reservation.payment_by, reservation.id);
+module.exports.updateReservation = (id, persons, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total) => {
+    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, nbr_laser = ?, nbr_vr = ?, nbr_ct = ?, deposit = ?, payment_bcc = ?, payment_cash = ?, payment_by = ?, remaining = ?, total = ? WHERE id = ?");
+    const info = stmt.run(persons, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total, id);
 };
 
 module.exports.cancel = (id) => {
