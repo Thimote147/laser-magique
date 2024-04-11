@@ -18149,16 +18149,6 @@ main {
     gap: 5%;
 }
 
-#infos {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-}
-
-#infos input {
-    padding: 0;
-}
-
 h5 a {
     text-decoration: none;
     color: #fff;

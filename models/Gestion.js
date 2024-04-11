@@ -1,3 +1,4 @@
+const e = require("express");
 const db = require("./db_conf.js");
 
 module.exports.login = (firstname) => {
@@ -99,3 +100,50 @@ module.exports.updateStatistiques = (fdc_fermeture, total_bcc, total_cash, total
     const stmt = db.prepare("UPDATE statistiques SET fdc_fermeture = ?, total_bcc = ?, total_cash = ?, total_boissons = ?, total_snack = ?, enveloppe = ?");
     const info = stmt.run(fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe);
 };
+
+module.exports.getHours = (id_member) => {
+    const stmt = db.prepare("SELECT * from hours_member WHERE id_member = ? ORDER by day, beginning_hour");
+    const info = stmt.all(id_member);
+
+    return info;
+};
+
+module.exports.addHours = (id_member, day, beginning_hour, ending_hour) => {
+    const stmt = db.prepare("INSERT INTO hours_member (id_member, day, beginning_hour, ending_hour, hours, money) VALUES (?,?,?,?,?,?)");
+    const info = stmt.run(id_member, day, beginning_hour, ending_hour, 0, 0);
+};
+
+module.exports.updateHours = (id, beginning_hour, ending_hour) => {
+    const difference = substractionHours(beginning_hour, ending_hour);
+
+    const stmt = db.prepare("UPDATE hours_member SET ending_hour = ?, hours = ?, money = ? WHERE id = ?");
+    const info = stmt.run(ending_hour, difference, ((difference.split("h")[0] * 10) + ((difference.split("h")[1] * 10 )/ 60)), id);
+};
+
+module.exports.deleteHours = (id) => {
+    const stmt = db.prepare("DELETE FROM hours_member WHERE id = ?");
+    const info = stmt.run(id);
+};
+
+function substractionHours(beginning_hour, ending_hour) {
+
+    function timeToMilliseconds(time) {
+        let parts = time.split(':');
+        let hours = parseInt(parts[0], 10);
+        let minutes = parseInt(parts[1], 10);
+        return (hours * 60 + minutes) * 60 * 1000;
+    }
+
+    let milliseconds1 = timeToMilliseconds(beginning_hour);
+    let milliseconds2 = timeToMilliseconds(ending_hour);
+
+    let milliseconds = milliseconds2 - milliseconds1;
+
+    var hours = Math.floor(milliseconds / (1000 * 60 * 60));
+    var minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+
+    var formattedHours = hours;
+    var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+    return formattedHours + "h" + formattedMinutes;
+}

@@ -135,7 +135,7 @@ router.post('/update_infos', (req, res) => {
 
 router.post("/statistiques", (req, res) => {
     let fdc_fermeture = parseFloat(req.body.fdc_ouverture - req.body.enveloppe);
-    console.log(fdc_fermeture);
+
     let total_bcc = 0;
     let total_cash = 0;
     let total_boissons = 0;
