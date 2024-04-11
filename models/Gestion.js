@@ -30,9 +30,9 @@ module.exports.member = (firstname) => {
     return stmt.get(firstname);
 };
 
-module.exports.addReservation = (firstname, lastname, email, phone_number, persons, date, activities, resComment, amount) => {
-    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, 0, 0, 0, amount, amount, 0);
+module.exports.addReservation = (firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, amount) => {
+    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, 0, 0, 0, 0, 0, 0, 0, 0, 0, amount, amount, 0);
 };
 
 module.exports.updateMember = (firstname, email, phone_number, password) => {
@@ -72,4 +72,30 @@ module.exports.photos = (start, end) => {
     const info = stmt.run(start, end);
 
     return info;
+};
+
+module.exports.createStatistiques = (fdc_ouverture) => {
+    const stmt = db.prepare("INSERT INTO statistiques (date, fdc_ouverture, fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe) VALUES (?,?,?,?,?,?,?,?)");
+    const info = stmt.run(new Date().toISOString().slice(0, 10), fdc_ouverture, fdc_ouverture, 0, 0, 0, 0, 0);
+};
+
+module.exports.getLastStatistiques = () => {
+    const stmt = db.prepare("SELECT * FROM statistiques WHERE id = (SELECT MAX(id) FROM statistiques)");
+    const info = stmt.get();
+
+    if (!info) return { date: null, fdc_fermeture: 0 };
+
+    return info;
+};
+
+module.exports.getStatistiques = (id) => {
+    const stmt = db.prepare("SELECT * FROM statistiques WHERE id = ?");
+    const info = stmt.get(id);
+
+    return info;
+};
+
+module.exports.updateStatistiques = (fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe) => {
+    const stmt = db.prepare("UPDATE statistiques SET fdc_fermeture = ?, total_bcc = ?, total_cash = ?, total_boissons = ?, total_snack = ?, enveloppe = ?");
+    const info = stmt.run(fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe);
 };

@@ -6,3 +6,5 @@
 /.vscode/
 # exclude webstorm config
 /.idea/
+#database data
+#/data/
