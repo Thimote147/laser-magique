@@ -199,12 +199,12 @@
                                                 <div class="d-flex justify-content-between">
                                                     <label for="payment_bcc">Payé par Bcc : </label>
                                                     <input type="number" name="payment_bcc" value="{{payment_bcc}}"
-                                                        min="0">
+                                                        min="0" step="0.5">
                                                 </div>
                                                 <div class="d-flex justify-content-between">
                                                     <label for="payment_cash">Payé par Cash : </label>
                                                     <input type="number" name="payment_cash" value="{{payment_cash}}"
-                                                        min="0">
+                                                        min="0" step="0.5">
                                                 </div>
                                                 <div class="d-flex justify-content-between">
                                                     <label for="payment_by">Payé en : </label>
@@ -289,46 +289,85 @@
             </div>
             {{/if}}
             <div>&nbsp;</div>
-            <form class="form-control col-10 col-md-7 col-lg-5" action="/gestion/add_reservation" method="post">
-                <h5>Ajouter une réservation</h5>
+            <div class="d-flex flex-column flex-md-row">
+                <form class="form-control col-10 col-md-7 col-lg-5" action="/gestion/add_reservation" method="post">
+                    <h5>Ajouter une réservation</h5>
 
-                <div>
-                    <label for="firstname">Prénom : </label>
-                    <input type="text" name="firstname" value="{{reservation.firstname}}">
-                </div>
-                <div>
-                    <label for="persons">Nombre de personnes : </label>
-                    <input type="number" name="persons" value="{{reservation.persons}}" min="2">
-                </div>
-                <div>
-                    <label for="date">Date :</label>
-                    <input type="datetime-local" name="date">
-                </div>
-                <div>
-                    <label for="activities">Activités : </label>
-                    <select name="activities">
-                        <optgroup label="Nos Jeux">
-                            <option value="Laser Game" selected>Laser Game</option>
-                            <option value="Réalité Virtuelle">Réalité Virtuelle</option>
-                            <option value="Cyber Games">Cyber Games</option>
-                        </optgroup>
-                        <optgroup label="Nos Packs">
-                            <option value="Anniversaire Laser Game">Anniversaire Laser Game</option>
-                            <option value="Anniversaire Trio Pack">Anniversaire Trio Pack</option>
-                            <option value="Famille Trio Pack">Famille Trio Pack</option>
-                        </optgroup>
-                        <optgroup label="Nos Combinaisons">
-                            <option value="Laser Game + Réalité Virtuelle">Laser Game + Réalité Virtuelle</option>
-                            <option value="Laser Game + Cyber Games">Laser Game + Cyber Games</option>
-                            <option value="Réalité Virtuelle + Cyber Games">Réalité Virtuelle + Cyber Games</option>
-                            <option value="Laser Game + Réalité Virtuelle + Cyber Games">Laser Game + Réalité Virtuelle
-                                + Cyber Games</option>
-                        </optgroup>
-                    </select>
-                </div>
+                    <div>
+                        <label for="firstname">Prénom : </label>
+                        <input type="text" name="firstname" value="{{reservation.firstname}}">
+                    </div>
+                    <div>
+                        <label for="persons">Nombre de personnes : </label>
+                        <input type="number" name="persons" value="{{reservation.persons}}" min="2">
+                    </div>
+                    <div>
+                        <label for="date">Date :</label>
+                        <input type="datetime-local" name="date">
+                    </div>
+                    <div>
+                        <label for="activities">Activités : </label>
+                        <select name="activities">
+                            <optgroup label="Nos Jeux">
+                                <option value="Laser Game" selected>Laser Game</option>
+                                <option value="Réalité Virtuelle">Réalité Virtuelle</option>
+                                <option value="Cyber Games">Cyber Games</option>
+                            </optgroup>
+                            <optgroup label="Nos Packs">
+                                <option value="Anniversaire Laser Game">Anniversaire Laser Game</option>
+                                <option value="Anniversaire Trio Pack">Anniversaire Trio Pack</option>
+                                <option value="Famille Trio Pack">Famille Trio Pack</option>
+                            </optgroup>
+                            <optgroup label="Nos Combinaisons">
+                                <option value="Laser Game + Réalité Virtuelle">Laser Game + Réalité Virtuelle</option>
+                                <option value="Laser Game + Cyber Games">Laser Game + Cyber Games</option>
+                                <option value="Réalité Virtuelle + Cyber Games">Réalité Virtuelle + Cyber Games</option>
+                                <option value="Laser Game + Réalité Virtuelle + Cyber Games">
+                                    Laser Game + Réalité Virtuelle + Cyber Games
+                                </option>
+                            </optgroup>
+                        </select>
+                    </div>
 
-                <button type="submit">Ajouter</button>
-            </form>
+                    <button type="submit">Ajouter</button>
+                </form>
+                <div class="col-1">&nbsp;</div>
+                <div>
+                    <h3>Statistiques de la journée :</h3>
+                    <form action="/gestion/statistiques" method="post">
+                        <div>
+                            <label for="fdc_ouverture">Fonds de caisse ouverture : </label>
+                            <input type="number" name="fdc_ouverture" value="{{statistiques.fdc_ouverture}}" step="0.05" readonly>
+                        </div>
+                        <div>
+                            <label for="fdc_fermeture">Fonds de caisse ouverture : </label>
+                            <input type="number" name="fdc_fermeture" value="{{statistiques.fdc_fermeture}}" step="0.05" readonly>
+                        </div>
+                        <div>
+                            <label for="total_bcc">Total Bancontact : </label>
+                            <input type="number" name="total_bcc" value="{{statistiques.total_bcc}}" readonly>
+                        </div>
+                        <div>
+                            <label for="total_cash">Total Cash : </label>
+                            <input type="number" name="total_cash" value="{{statistiques.total_cash}}" readonly>
+                        </div>
+                        <div>
+                            <label for="total_boissons">Total Boissons : </label>
+                            <input type="number" name="total_boissons" value="{{statistiques.total_boissons}}" readonly>
+                        </div>
+                        <div>
+                            <label for="total_snack">Total Snack : </label>
+                            <input type="number" name="total_snack" value="{{statistiques.total_snack}}" readonly>
+                        </div>
+                        <div>
+                            <label for="enveloppe">Enveloppe : </label>
+                            <input type="number" name="enveloppe" value="{{statistiques.enveloppe}}" min="0">
+                        </div>
+
+                        <button class="btn btn-primary" type="submit">Actualiser</button>
+                    </form>
+                </div>
+            </div>
         </div>
         <div id="tables" class="d-sm-flex">
             <table id="weapons">
