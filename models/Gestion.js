@@ -1,5 +1,6 @@
 const e = require("express");
 const db = require("./db_conf.js");
+const bcrypt = require("bcrypt");
 
 module.exports.login = (firstname) => {
     const stmt = db.prepare("SELECT password FROM members WHERE firstname = ?");
@@ -42,7 +43,7 @@ module.exports.updateMember = (firstname, email, phone_number, password) => {
 };
 
 module.exports.allMembers = () => {
-    const stmt = db.prepare("SELECT firstname, lastname, email, phone_number FROM members");
+    const stmt = db.prepare("SELECT id, firstname, lastname, email, phone_number FROM members");
 
     return stmt.all();
 };
@@ -110,14 +111,12 @@ module.exports.getHours = (id_member) => {
 
 module.exports.addHours = (id_member, day, beginning_hour, ending_hour) => {
     const stmt = db.prepare("INSERT INTO hours_member (id_member, day, beginning_hour, ending_hour, hours, money) VALUES (?,?,?,?,?,?)");
-    const info = stmt.run(id_member, day, beginning_hour, ending_hour, 0, 0);
+    const info = stmt.run(id_member, day, beginning_hour, ending_hour, "0h00", 0.00);
 };
 
-module.exports.updateHours = (id, beginning_hour, ending_hour) => {
-    const difference = substractionHours(beginning_hour, ending_hour);
-
+module.exports.updateHours = (id, ending_hour, salary) => {
     const stmt = db.prepare("UPDATE hours_member SET ending_hour = ?, hours = ?, money = ? WHERE id = ?");
-    const info = stmt.run(ending_hour, difference, ((difference.split("h")[0] * 10) + ((difference.split("h")[1] * 10 )/ 60)), id);
+    const info = stmt.run(ending_hour, difference, salary, id);
 };
 
 module.exports.deleteHours = (id) => {
@@ -125,25 +124,12 @@ module.exports.deleteHours = (id) => {
     const info = stmt.run(id);
 };
 
-function substractionHours(beginning_hour, ending_hour) {
+module.exports.deleteMember = (id) => {
+    const stmt = db.prepare("DELETE FROM members WHERE id = ?");
+    const info = stmt.run(id);
+};
 
-    function timeToMilliseconds(time) {
-        let parts = time.split(':');
-        let hours = parseInt(parts[0], 10);
-        let minutes = parseInt(parts[1], 10);
-        return (hours * 60 + minutes) * 60 * 1000;
-    }
-
-    let milliseconds1 = timeToMilliseconds(beginning_hour);
-    let milliseconds2 = timeToMilliseconds(ending_hour);
-
-    let milliseconds = milliseconds2 - milliseconds1;
-
-    var hours = Math.floor(milliseconds / (1000 * 60 * 60));
-    var minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
-
-    var formattedHours = hours;
-    var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-
-    return formattedHours + "h" + formattedMinutes;
-}
+module.exports.addMember = (firstname, lastname) => {
+    const stmt = db.prepare("INSERT INTO members (firstname, lastname, email, phone_number, is_admin, password) VALUES (?,?,?,?,?,?)");
+    const info = stmt.run(firstname, lastname, "", "", 0, bcrypt.hashSync(firstname.charAt(0).toLowerCase(), 10));
+};

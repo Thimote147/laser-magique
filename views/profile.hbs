@@ -58,6 +58,24 @@
             </div>
             <div class="col-1"></div>
             <div>
+                {{#if session.member.is_admin}}
+                <table class="form-control">
+                    <thead>
+                        <th>Employés</th>
+                        <th>Nombre d'heures</th>
+                        <th>Salaire du mois</th>
+                    </thead>
+                    <tbody>
+                        {{#each hours_members}}
+                        <tr>
+                            <td>{{member_id}}</td>
+                            <td>{{hours}}</td>
+                            <td>{{salary}}€</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{else}}
                 <table class="form-control">
                     <thead>
                         <th>Jour</th>
@@ -100,12 +118,14 @@
 
                         <button type="submit" hidden></button>
                     </form>
-                    <p>Salaire du mois : <!-- TODO --></p>
+                    <p>Nombre d'heures sur le mois : {{totalHours}}</p>
+                    <p>Salaire du mois : {{totalMoney}}€</p>
                 </div>
+                {{/if}}
             </div>
         </div>
     </section>
-    {{#if (eq session.member.is_admin 1)}}
+    {{#if session.member.is_admin}}
     <section>
         <h3 class="title">Member du Laser Magique</h3>
         <table class="form-control">
@@ -114,6 +134,7 @@
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Numéro de téléphone</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 {{#each members}}
@@ -122,8 +143,23 @@
                     <td>{{lastname}}</td>
                     <td>{{email}}</td>
                     <td>{{phone_number}}</td>
+                    <td>
+                        <form action="/profile/delete_member" method="post">
+                            <button type="submit" name="id" value="{{id}}">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
                 {{/each}}
+                <form action="/profile/add_member" method="post">
+                <tr>
+                    <td><input type="text" name="firstname"></td>
+                    <td><input type="text" name="lastname"></td>
+                    <td></td>
+                    <td></td>
+
+                    <td><button type="submit">Ajouter</button></td>
+                </tr>
+                </form>
             </tbody>
         </table>
     </section>
