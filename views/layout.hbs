@@ -22,6 +22,7 @@
 </head>
 
 <body>
+        {{#if (eq session.connected undefined)}}
     <header>
         <nav class="navbar navbar-expand-xl transparent fixed-top">
             <div class="container-fluid">
@@ -78,6 +79,7 @@
             </div>
         </nav>
     </header>
+    {{/if}}
     {{{body}}}
     {{#if (eq session.connected undefined)}}
     <footer id="footer">

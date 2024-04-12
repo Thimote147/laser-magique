@@ -1,6 +1,6 @@
-<main>
-    <section id="gestionPage" class="container-fluid bg-dark text-white">
-        <h1 class="title">Gestion du Laser Magique</h1>
+<main class="my-0">
+    <section class="container-fluid bg-dark text-white py-0">
+        <h1 class="title my-5">Gestion du Laser Magique</h1>
         <h5>Bonjour <a href="/profile">{{session.member.firstname}}</a> !</h5>
         <div class="d-flex flex-column col-12 mb-5">
             {{#if session.member.is_admin}}
@@ -48,7 +48,7 @@
                                 data-bs-target="#modal{{id}}">Infos</button>
 
                             <!-- Modal -->
-                            <div class="modal fade bg-secondary" id="modal{{id}}" aria-labelledby="modalLabel{{id}}"
+                            <div class="modal fade bg-modal-blur" id="modal{{id}}" aria-labelledby="modalLabel{{id}}"
                                 aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content bg-dark">
