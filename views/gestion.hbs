@@ -3,7 +3,23 @@
         <h1 class="title">Gestion du Laser Magique</h1>
         <h5>Bonjour <a href="/profile">{{session.member.firstname}}</a> !</h5>
         <div class="d-flex flex-column col-12 mb-5">
-            {{#if (eq session.member.is_admin 0)}}
+            {{#if session.member.is_admin}}
+            <div>
+                <h6>Filtrer les réservations :</h6>
+                <form action="/gestion/filter" method="get">
+                    <div>
+                        <label for="firstname">Rechercher un prénom : </label>
+                        <input type="text" name="firstname">
+                    </div>
+                    <div>
+                        <label for="date">Rechercher une date : </label>
+                        <input type="date" name="date">
+                    </div>
+
+                    <button type="submit">Rechercher</button>
+                </form>
+            </div>
+            {{/if}}
             <table id="res">
                 <title>Réservations</title>
                 <thead class="bg-green">
@@ -16,7 +32,7 @@
                 </thead>
                 <tbody>
                     {{#each reservations}}
-                    {{#if (eq is_canceled 1)}}
+                    {{#if is_canceled}}
                     <tr class="line-throught">
                         {{else}}
                     <tr>
@@ -276,18 +292,6 @@
                     {{/each}}
                 </tbody>
             </table>
-            {{else}}
-            <div class="form-control">
-                <table>
-                    <thead>
-                        <th>Jour</th>
-                    </thead>
-                    <tbody>
-                        <td>test</td>
-                    </tbody>
-                </table>
-            </div>
-            {{/if}}
             <div>&nbsp;</div>
             <div class="d-flex flex-column flex-md-row">
                 <form class="col-10 col-md-7 col-lg-5" action="/gestion/add_reservation" method="post">
@@ -303,7 +307,7 @@
                     </div>
                     <div>
                         <label for="date">Date :</label>
-                        <input type="datetime-local" name="date">
+                        <input type="datetime-local" name="date" step="900">
                     </div>
                     <div>
                         <label for="activities">Activités : </label>
@@ -337,11 +341,13 @@
                     <form action="/gestion/statistiques" method="post">
                         <div>
                             <label for="fdc_ouverture">Fonds de caisse ouverture : </label>
-                            <input type="number" name="fdc_ouverture" value="{{statistiques.fdc_ouverture}}" step="0.05" readonly>
+                            <input type="number" name="fdc_ouverture" value="{{statistiques.fdc_ouverture}}" step="0.05"
+                                readonly>
                         </div>
                         <div>
                             <label for="fdc_fermeture">Fonds de caisse fermeture : </label>
-                            <input type="number" name="fdc_fermeture" value="{{statistiques.fdc_fermeture}}" step="0.05" readonly>
+                            <input type="number" name="fdc_fermeture" value="{{statistiques.fdc_fermeture}}" step="0.05"
+                                readonly>
                         </div>
                         <div>
                             <label for="total_bcc">Total Bancontact : </label>

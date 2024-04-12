@@ -7,17 +7,24 @@ router.get('/', (req, res) => {
     if (req.session.connected) {
         res.render("gestion.hbs");
     } else {
-        res.render("login.hbs");
-    }
+        res.render("login.hbs", {error : req.session.error});
+        req.session.error = null;
+    };
 });
 
 router.post('/auth', (req, res) => {
-    if (Bcrypt.compareSync(req.body.password, Gestion.member(req.body.user).password)) {
-        req.session.connected = true;
-        req.session.member = Gestion.member(req.body.user);
-        res.redirect('/gestion');
+    if (Gestion.member(req.body.user) !== undefined) {
+        if (Bcrypt.compareSync(req.body.password, Gestion.member(req.body.user).password)) {
+            req.session.connected = true;
+            req.session.member = Gestion.member(req.body.user);
+            res.redirect('/gestion');
+        } else {
+            req.session.error = "Mot de passe incorrect.";
+            res.redirect('/login');
+        }
     } else {
-        res.redirect('/login');
+        req.session.error = "Prénom incorrect.";
+        res.redirect("/login");
     }
 });
 

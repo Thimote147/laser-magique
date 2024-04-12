@@ -133,3 +133,28 @@ module.exports.addMember = (firstname, lastname) => {
     const stmt = db.prepare("INSERT INTO members (firstname, lastname, email, phone_number, is_admin, password) VALUES (?,?,?,?,?,?)");
     const info = stmt.run(firstname, lastname, "", "", 0, bcrypt.hashSync(firstname.charAt(0).toLowerCase(), 10));
 };
+
+module.exports.filter = (firstname, date) => {
+    if (firstname === '') {
+        const stmt = db.prepare("SELECT * FROM reservations WHERE date = ?");
+        const info = stmt.all(date);
+
+        console.log(info);
+
+        return info;
+    } else if (date === '') {
+        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ?");
+        const info = stmt.all(firstname);
+
+        console.log(info);
+
+        return info;
+    } else {
+        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ? AND date = ?");
+        const info = stmt.get(firstname, date);
+
+        console.log(info);
+
+        return info;
+    };
+};

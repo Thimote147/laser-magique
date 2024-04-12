@@ -26,6 +26,18 @@ function formatDate(milliseconds) {
     }
 };
 
+function forToday(reservations) {
+    const forToday = [];
+
+    reservations.forEach((reservation) => {
+        if (today(reservation.date) === true) {
+            reservation.date = formatDate(reservation.date);
+            forToday.push(reservation);
+        };
+    });
+
+    return forToday;
+};
 
 router.get('/', (req, res) => {
     if (req.session.connected) {
@@ -37,15 +49,7 @@ router.get('/', (req, res) => {
         } else {
             statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().id);
         }
-        const reservations = Gestion.reservations();
-        const forToday = [];
-        reservations.forEach((reservation) => {
-            if (today(reservation.date) === true) {
-                reservation.date = formatDate(reservation.date);
-                forToday.push(reservation);
-            };
-        });
-        res.render("gestion.hbs", { weapons: Gestion.weapons(), headsets: Gestion.headsets(), trikes: Gestion.trikes(), reservations: forToday, statistiques: statistiques });
+        res.render("gestion.hbs", { weapons: Gestion.weapons(), headsets: Gestion.headsets(), trikes: Gestion.trikes(), reservations: forToday(Gestion.reservations()), statistiques: statistiques });
     } else {
         res.render("login.hbs");
     }
@@ -154,9 +158,20 @@ router.post("/statistiques", (req, res) => {
 
     fdc_fermeture = fdc_fermeture.toFixed(2);
 
-
     Gestion.updateStatistiques(fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, req.body.enveloppe);
     res.redirect("/gestion");
+});
+
+router.get("/filter", (req, res) => {
+    if (req.session.connected) {
+        if (req.query.firstname === '' && req.query.date === '') {
+            res.render("gestion.hbs", { reservations: forToday(Gestion.reservations()) });
+        } else {
+            res.render("gestion.hbs", { reservations: Gestion.filter(req.query.firstname, req.query.date) });
+        };
+    } else {
+        res.render("login.hbs");
+    };
 });
 
 module.exports = router;

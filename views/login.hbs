@@ -1,5 +1,5 @@
 <main>
-    <div id="loginPage" class="container-fluid bg-dark">
+    <section id="loginPage" class="container-fluid bg-dark">
         <form id="login" action="/login/auth" method="post">
             <h1>Connexion</h1>
 
@@ -8,8 +8,14 @@
 
             <label for="password">Mot de passe :</label>
             <input type="password" name="password">
-            
+
+            {{#if error}}
+            <div class="bg-danger my-3 pt-2">
+                <p>{{error}}</p>
+            </div>
+            {{/if}}
+
             <button type="submit">Se connecter</button>
         </form>
-    </div>
+    </section>
 </main>
