@@ -1,7 +1,7 @@
 <main>
-    <section id="loginPage" class="container-fluid bg-dark">
-        <form id="login" action="/login/auth" method="post">
-            <h1>Connexion</h1>
+    <section class="d-flex align-items-center justify-content-center bg-dark vh-100">
+        <form class="d-flex flex-column bg-white p-4 rounded-3 " action="/login/auth" method="post">
+            <h1 class="text-black">Connexion</h1>
 
             <label for="user">Utilisateur :</label>
             <input type="text" name="user">
@@ -11,11 +11,11 @@
 
             {{#if error}}
             <div class="bg-danger my-3 pt-2">
-                <p>{{error}}</p>
+                <p class="text-center">{{error}}</p>
             </div>
             {{/if}}
 
-            <button type="submit">Se connecter</button>
+            <button class="btn btn-primary mt-3" type="submit">Se connecter</button>
         </form>
     </section>
 </main>
