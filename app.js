@@ -49,7 +49,7 @@ app.use("/accueil", homeRouter);
 app.use("/partie-cyber-games", cybergamesRouter);
 app.use("/gestion", gestionRouter);
 app.use("/login", loginRouter);
-app.use("/profile", profileRouter);
+app.use("/profil", profileRouter);
 app.use("/weapons", weaponsRouter);
 app.use("/headsets", headsetsRouter);
 app.use("/trikes", trikesRouter);

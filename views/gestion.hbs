@@ -1,7 +1,7 @@
 <main class="my-0">
     <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title my-5">Gestion du Laser Magique</h1>
-        <h5>Bonjour <a href="/profile">{{session.member.firstname}}</a> !</h5>
+        <h5>Bonjour <a href="/profil">{{session.member.firstname}}</a> !</h5>
         <div class="d-flex flex-column col-12 mb-5">
             {{#if session.member.is_admin}}
             <div>
@@ -16,12 +16,11 @@
                         <input type="date" name="date">
                     </div>
 
-                    <button type="submit">Rechercher</button>
+                    <button class="btn btn-primary" type="submit">Rechercher</button>
                 </form>
             </div>
             {{/if}}
-            <table id="res">
-                <title>Réservations</title>
+            <table id="res" class="overflow-x-scroll">
                 <thead class="bg-green">
                     <th>Heure</th>
                     <th>Prénom</th>
@@ -282,10 +281,12 @@
                                 </div>
                             </div>
                             <form action="/gestion/cancel" method="post">
-                                <button type="submit" name="reservation" value="{{id}}">Annuler</button>
+                                <button class="btn btn-primary" type="submit" name="reservation"
+                                    value="{{id}}">Annuler</button>
                             </form>
                             <form action="/gestion/delete" method="post">
-                                <button type="submit" name="reservation" value="{{id}}">Supprimer</button>
+                                <button class="btn btn-primary" type="submit" name="reservation"
+                                    value="{{id}}">Supprimer</button>
                             </form>
                         </td>
                     </tr>
@@ -351,7 +352,7 @@
                         </div>
                     </div>
 
-                    <button type="submit">Ajouter</button>
+                    <button class="btn btn-primary" type="submit">Ajouter</button>
                 </form>
                 <div class="col-md-3">&nbsp;</div>
                 <form class="col-10 col-md-5" action="/gestion/statistiques" method="post">

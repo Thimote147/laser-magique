@@ -26,7 +26,7 @@ struct WebViewContainer: UIViewRepresentable {
 struct ContentView: View {
     var body: some View {
         NavigationView {
-            WebViewContainer(urlString: "https://www.apple.com")
+            WebViewContainer(urlString: "http://laser-magique.thimotefetu.fr")
                 .edgesIgnoringSafeArea(.bottom)
         }
     }
