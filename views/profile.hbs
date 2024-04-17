@@ -3,9 +3,11 @@
         <h1 class="title">Profil</h1>
         <h5>
             <a href="/gestion">Retour à la gestion</a>
+            {{#if (eq session.member.firstname "Thimoté")}}
             <form action="/profil/switch_status" method="post">
                 <button class="btn btn-primary" type="submit" name="id" value="{{session.member.id}}">Switch</button>
             </form>
+            {{/if}}
         </h5>
         <div class="d-flex flex-column-reverse flex-md-row-reverse">
             <div class="col-12 col-md-5">
@@ -32,7 +34,7 @@
                         <input type="password" name="password" value="{{session.member.password}}">
                     </div>
 
-                    <button type="submit" name="manage_button" value="save">Enregistrer</button>
+                    <button class="btn btn-primary" type="submit" name="manage_button" value="save">Enregistrer</button>
                     {{else}}
                     <div>
                         <label for="firstname">Prénom : </label>
@@ -82,14 +84,16 @@
                                     <input type="time" name="beginning_hour" value="{{beginning_hour}}" hidden>
                                     <input type="time" name="ending_hour" value="{{ending_hour}}" step="900">
 
-                                    <button class="btn btn-primary" type="submit" name="id" value="{{id}}">Mettre à jour</button>
+                                    <button class="btn btn-primary" type="submit" name="id" value="{{id}}">Mettre à
+                                        jour</button>
                                 </form>
                             </td>
                             <td>{{hours}}</td>
                             <td>{{money}}€</td>
                             <td>
                                 <form action="/profil/delete_hours" method="post">
-                                    <button type="submit" name="id" value="{{id}}">Supprimer</button>
+                                    <button class="btn btn-primary" type="submit" name="id"
+                                        value="{{id}}">Supprimer</button>
                                 </form>
                             </td>
                         </tr>
@@ -114,7 +118,7 @@
     {{#if session.member.is_admin}}
     <section>
         <h3 class="title">Member du Laser Magique</h3>
-        <table>
+        <table class="form-control overflow-x-scroll">
             <thead class="bg-green">
                 <th>Prénom</th>
                 <th>Nom</th>
