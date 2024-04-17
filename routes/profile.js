@@ -109,8 +109,6 @@ router.post("/add_hours", (req, res) => {
 router.post("/update_hours", (req, res) => {
     const difference = substractionHours(req.body.beginning_hour, req.body.ending_hour);
 
-    console.log(req.body.ending_hour);
-
     if (salary(difference) <= 0) {
         req.session.error = "L'heure de fin ne peut pas être inférieur ou égale à l'heure de début"
     } else {

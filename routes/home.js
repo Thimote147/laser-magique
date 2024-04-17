@@ -61,8 +61,6 @@ router.post('/reservation', (req, res) => {
         amount = 38 * req.body.persons;
     }
 
-    console.log(new Date(req.body.date).getTime());
-
     Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, req.body.date, req.body.activities, req.body.resComment, nbr_laser, nbr_vr, nbr_ct, amount);
     res.redirect('/accueil#booking');
 });

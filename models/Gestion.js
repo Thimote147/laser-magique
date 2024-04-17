@@ -136,24 +136,18 @@ module.exports.addMember = (firstname, lastname) => {
 
 module.exports.filter = (firstname, date) => {
     if (firstname === '') {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE date = ?");
+        const stmt = db.prepare("SELECT * FROM reservations WHERE strftime('%Y-%m-%d', datetime(date/1000, 'unixepoch', 'localtime')) = ?");
         const info = stmt.all(date);
-
-        console.log(info);
 
         return info;
     } else if (date === '') {
         const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ?");
         const info = stmt.all(firstname);
 
-        console.log(info);
-
         return info;
     } else {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ? AND date = ?");
+        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ? AND strftime('%Y-%m-%d', datetime(date/1000, 'unixepoch', 'localtime')) = ?");
         const info = stmt.get(firstname, date);
-
-        console.log(info);
 
         return info;
     };

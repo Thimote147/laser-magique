@@ -167,7 +167,22 @@ router.get("/filter", (req, res) => {
         if (req.query.firstname === '' && req.query.date === '') {
             res.render("gestion.hbs", { reservations: forToday(Gestion.reservations()) });
         } else {
-            res.render("gestion.hbs", { reservations: Gestion.filter(req.query.firstname, req.query.date) });
+            const forSelectedDay = [];
+            const filteredReservations = Gestion.filter(req.query.firstname, req.query.date);
+
+            if (filteredReservations !== undefined && filteredReservations.length === undefined) {
+                filteredReservations.date = formatDate(filteredReservations.date);
+                forSelectedDay.push(filteredReservations);
+                res.render("gestion.hbs", { reservations: forSelectedDay });
+            } else if (filteredReservations !== undefined && filteredReservations.length !== undefined && filteredReservations.length !== 0) {
+                Gestion.filter(req.query.firstname, req.query.date).forEach((reservation) => {
+                    reservation.date = formatDate(reservation.date);
+                    forSelectedDay.push(reservation);
+                });
+                res.render("gestion.hbs", { reservations: forSelectedDay });
+            } else {
+                res.render("gestion.hbs", { reservations: [{ date: "/", firstname: "Cette réservation", persons: "n'existe pas" }] });
+            }
         };
     } else {
         res.render("login.hbs");
