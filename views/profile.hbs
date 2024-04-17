@@ -1,9 +1,14 @@
-<main class="container-fluid text-white">
-    <section>
+<main class="my-0">
+    <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title">Profil</h1>
-        <h5><a href="/gestion">Retour à la gestion</a></h5>
+        <h5>
+            <a href="/gestion">Retour à la gestion</a>
+            <form action="/profile/switch_status" method="post">
+                <button type="submit" name="id" value="{{session.member.id}}">Switch</button>
+            </form>
+        </h5>
         <div class="d-flex flex-column-reverse flex-md-row-reverse">
-            <div class="col-8 col-md-5">
+            <div class="col-12 col-md-5">
                 <form class="form-control" action="/profile/manage" method="post">
                     {{#if (eq session.modify true)}}
                     <div>
@@ -56,27 +61,8 @@
                     <button type="submit" name="manage_button" value="disconnect">Se déconnecter</button>
                 </form>
             </div>
-            <div class="col-1"></div>
-            <div>
-                {{#if session.member.is_admin}}
-                <table class="form-control">
-                    <thead>
-                        <th>Employés</th>
-                        <th>Nombre d'heures</th>
-                        <th>Salaire du mois</th>
-                    </thead>
-                    <tbody>
-                        {{#each hours_members}}
-                        <tr>
-                            <td>{{member_id}}</td>
-                            <td>{{hours}}</td>
-                            <td>{{salary}}€</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-                {{else}}
-                <table class="form-control">
+            <div class="col-12 col-md-7">
+                <table class="form-control overflow-x-scroll">
                     <thead>
                         <th>Jour</th>
                         <th>Heure de début</th>
@@ -121,7 +107,6 @@
                     <p>Nombre d'heures sur le mois : {{totalHours}}</p>
                     <p>Salaire du mois : {{totalMoney}}€</p>
                 </div>
-                {{/if}}
             </div>
         </div>
     </section>
@@ -134,6 +119,8 @@
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Numéro de téléphone</th>
+                <th>Heures sur le mois</th>
+                <th>Salaire</th>
                 <th>Action</th>
             </thead>
             <tbody>
@@ -143,6 +130,8 @@
                     <td>{{lastname}}</td>
                     <td>{{email}}</td>
                     <td>{{phone_number}}</td>
+                    <td>{{hours}}</td>
+                    <td>{{salary}}€</td>
                     <td>
                         <form action="/profile/delete_member" method="post">
                             <button type="submit" name="id" value="{{id}}">Supprimer</button>
@@ -151,14 +140,16 @@
                 </tr>
                 {{/each}}
                 <form action="/profile/add_member" method="post">
-                <tr>
-                    <td><input type="text" name="firstname"></td>
-                    <td><input type="text" name="lastname"></td>
-                    <td></td>
-                    <td></td>
+                    <tr>
+                        <td><input type="text" name="firstname"></td>
+                        <td><input type="text" name="lastname"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
 
-                    <td><button type="submit">Ajouter</button></td>
-                </tr>
+                        <td><button type="submit">Ajouter</button></td>
+                    </tr>
                 </form>
             </tbody>
         </table>

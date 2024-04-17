@@ -103,7 +103,7 @@ module.exports.updateStatistiques = (fdc_fermeture, total_bcc, total_cash, total
 };
 
 module.exports.getHours = (id_member) => {
-    const stmt = db.prepare("SELECT * from hours_member WHERE id_member = ? ORDER by day, beginning_hour");
+    const stmt = db.prepare("SELECT m.firstname, m.lastname, m.email, m.phone_number, h.id, h.day, h.beginning_hour, h.ending_hour, h.hours, h.money FROM members m, hours_member h WHERE m.id = ? AND m.id = h.id_member ORDER BY h.day, h.beginning_hour");
     const info = stmt.all(id_member);
 
     return info;
@@ -114,7 +114,7 @@ module.exports.addHours = (id_member, day, beginning_hour, ending_hour) => {
     const info = stmt.run(id_member, day, beginning_hour, ending_hour, "0h00", 0.00);
 };
 
-module.exports.updateHours = (id, ending_hour, salary) => {
+module.exports.updateHours = (id, ending_hour, difference, salary) => {
     const stmt = db.prepare("UPDATE hours_member SET ending_hour = ?, hours = ?, money = ? WHERE id = ?");
     const info = stmt.run(ending_hour, difference, salary, id);
 };
@@ -158,3 +158,9 @@ module.exports.filter = (firstname, date) => {
         return info;
     };
 };
+
+//temporaire
+module.exports.updateStatus = (id, status) => {
+    const stmt = db.prepare("UPDATE members SET is_admin = ? WHERE id = ?");
+    const info = stmt.run(status, id);
+}

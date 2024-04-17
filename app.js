@@ -27,6 +27,7 @@ const profileRouter = require("./routes/profile.js");
 const weaponsRouter = require("./routes/weapons.js");
 const headsetsRouter = require("./routes/headsets.js");
 const trikesRouter = require("./routes/trikes.js");
+const inventoryRouter = require("./routes/inventory.js");
 
 const app = express();
 const port = 3000;
@@ -52,6 +53,7 @@ app.use("/profile", profileRouter);
 app.use("/weapons", weaponsRouter);
 app.use("/headsets", headsetsRouter);
 app.use("/trikes", trikesRouter);
+app.use("/inventaire", inventoryRouter);
 
 // Create error on page not found
 app.use(function (req, res, next) {

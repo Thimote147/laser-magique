@@ -49,7 +49,7 @@ router.get('/', (req, res) => {
         } else {
             statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().id);
         }
-        res.render("gestion.hbs", { weapons: Gestion.weapons(), headsets: Gestion.headsets(), trikes: Gestion.trikes(), reservations: forToday(Gestion.reservations()), statistiques: statistiques });
+        res.render("gestion.hbs", { reservations: forToday(Gestion.reservations()), statistiques: statistiques });
     } else {
         res.render("login.hbs");
     }
@@ -66,7 +66,7 @@ router.post('/delete', (req, res) => {
 });
 
 router.post('/add_reservation', (req, res) => {
-    let amount = 0;
+    let amount;
 
     let nbr_laser = 0;
     let nbr_vr = 0;

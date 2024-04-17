@@ -7,4 +7,4 @@ node_modules/
 # exclude webstorm config
 .idea/
 #database data
-data/
+data/gestion.db

@@ -1,0 +1,60 @@
+<main class="my-0">
+    <section class="container-fluid bg-dark text-white py-0">
+        <h1 class="title my-5">Inventaire du Laser Magique</h1>
+
+        <h5><a href="/gestion">Retour à la gestion</a></h5>
+
+        <div id="tables" class="d-sm-flex">
+            <table id="weapons">
+                <thead>
+                    <th>Liste des Armes</th>
+                    <th>Problème</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    {{#each weapons}}
+                    <tr>
+                        <td><a href="/weapons?id={{id}}">{{id}}</a></td>
+                        <td>{{problem}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <table id="headsets">
+                <thead>
+                    <th>Liste des Casques</th>
+                    <th>Problème du casque</th>
+                    <th>Problème des manettes</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    {{#each headsets}}
+                    <tr>
+                        <td><a href="/headsets">{{id}}</a></td>
+                        <td>{{headset_problem}}</td>
+                        <td>{{joycons_problem}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <table id="trikes">
+                <thead>
+                    <th>Liste des Trikes</th>
+                    <th>Problème</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    {{#each trikes}}
+                    <tr>
+                        <td><a href="/trikes">{{id}}</a></td>
+                        <td>{{problem}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

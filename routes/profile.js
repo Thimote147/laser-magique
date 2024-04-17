@@ -50,34 +50,36 @@ function salary(hours) {
 
 router.get('/', (req, res) => {
     if (req.session.connected) {
+        let formatDay = Gestion.getHours(req.session.member.id);
+        let totalMoney = 0;
+        let totalHours = "0h00";
+
+        formatDay.forEach((hour) => {
+            hour.day = new Date(hour.day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
+            hour.day = hour.day.charAt(0).toUpperCase() + hour.day.slice(1)
+            totalMoney += hour.money;
+            totalHours = addHours(totalHours, hour.hours);
+        });
+
         if (req.session.member.is_admin) {
             let hours_members = []
 
             Gestion.allMembers().forEach((member) => {
                 let hours = "0h00"
-                
+
                 Gestion.getHours(member.id).forEach((data) => {
                     hours = addHours(hours, data.hours);
                 });
 
-                hours_members.push({ member_id: member.id, hours: hours, salary: salary(hours) });
+                hours_members.push({ firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(hours) });
             });
 
-            res.render("profile.hbs", { members: Gestion.allMembers(), hours_members: hours_members });
+            res.render("profile.hbs", { members: hours_members, hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error });
+            req.session.error = null;
         } else {
-            let formatDay = Gestion.getHours(req.session.member.id);
-            let totalMoney = 0;
-            let totalHours = "0h00";
-
-            formatDay.forEach((hour) => {
-                hour.day = new Date(hour.day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
-                hour.day = hour.day.charAt(0).toUpperCase() + hour.day.slice(1)
-                totalMoney += hour.money;
-                totalHours = addHours(totalHours, hour.hours);
-            });
-
-            res.render("profile.hbs", { hours: formatDay, totalMoney: totalMoney, totalHours: totalHours });
-        }
+            res.render("profile.hbs", { hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error });
+            req.session.error = null;
+        };
     } else {
         res.render("login.hbs");
     }
@@ -93,7 +95,7 @@ router.post('/manage', (req, res) => {
         res.redirect("/profile");
     } else if (req.body.manage_button === "disconnect") {
         req.session.destroy();
-        res.redirect('/accueil');
+        res.redirect('/gestion');
     }
 });
 
@@ -105,7 +107,13 @@ router.post("/add_hours", (req, res) => {
 router.post("/update_hours", (req, res) => {
     const difference = substractionHours(req.body.beginning_hour, req.body.ending_hour);
 
-    Gestion.updateHours(req.body.id, req.body.ending_hour, salary(difference));
+    console.log(req.body.ending_hour);
+
+    if (salary(difference) <= 0) {
+        req.session.error = "L'heure de fin ne peut pas être inférieur ou égale à l'heure de début"
+    } else {
+        Gestion.updateHours(req.body.id, req.body.ending_hour, difference, salary(difference));
+    }
     res.redirect("/profile");
 });
 
@@ -122,8 +130,19 @@ router.post("/delete_member", (req, res) => {
 
 router.post("/add_member", (req, res) => {
     Gestion.addMember(req.body.firstname, req.body.lastname);
-    
+
     res.redirect("/profile");
 });
+
+//temporaire
+router.post("/switch_status", (req, res) => {
+    if (req.session.member.is_admin == 1) {
+        Gestion.updateStatus(req.session.member.id, 0)
+    } else {
+        Gestion.updateStatus(req.session.member.id, 1)
+    }
+    req.session.member = Gestion.member(req.session.member.firstname);
+    res.redirect("/profile")
+})
 
 module.exports = router;
