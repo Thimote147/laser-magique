@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 router.post('/auth', (req, res) => {
     if (Gestion.member(req.body.user) !== undefined) {
-        if (Bcrypt.compareSync(req.body.password, Gestion.member(req.body.user).password)) {
+        if (Bcrypt.compareSync(req.body.password, Gestion.login(req.body.user))) {
             req.session.connected = true;
             req.session.member = Gestion.member(req.body.user);
             res.redirect('/gestion');

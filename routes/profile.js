@@ -90,7 +90,9 @@ router.post('/manage', (req, res) => {
         req.session.modify = true;
         res.redirect("/profil");
     } else if (req.body.manage_button === "save") {
-        Gestion.updateMember(req.body.firstname, req.body.email, req.body.phone_number, Bcrypt.hashSync(req.body.password, 10));
+        if (req.body.password != Gestion.login(req.session.member.firstname)) {
+            Gestion.updateMember(req.body.firstname, req.body.email, req.body.phone_number, Bcrypt.hashSync(req.body.password, 10));
+        }
         req.session.modify = false;
         res.redirect("/profil");
     } else if (req.body.manage_button === "disconnect") {

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 module.exports.login = (firstname) => {
     const stmt = db.prepare("SELECT password FROM members WHERE firstname = ?");
-    return stmt.get(firstname);
+    return stmt.get(firstname).password;
 };
 
 module.exports.weapons = () => {
