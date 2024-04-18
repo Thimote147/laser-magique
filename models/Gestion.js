@@ -103,7 +103,7 @@ module.exports.updateStatistiques = (fdc_fermeture, total_bcc, total_cash, total
 };
 
 module.exports.getHours = (id_member) => {
-    const stmt = db.prepare("SELECT m.firstname, m.lastname, m.email, m.phone_number, h.id, h.day, h.beginning_hour, h.ending_hour, h.hours, h.money FROM members m, hours_member h WHERE m.id = ? AND m.id = h.id_member ORDER BY h.day, h.beginning_hour");
+    const stmt = db.prepare("SELECT m.id, m.firstname, m.lastname, m.email, m.phone_number, h.id, h.day, h.beginning_hour, h.ending_hour, h.hours, h.money FROM members m, hours_member h WHERE m.id = ? AND m.id = h.id_member ORDER BY h.day, h.beginning_hour");
     const info = stmt.all(id_member);
 
     return info;
@@ -131,7 +131,7 @@ module.exports.deleteMember = (id) => {
 
 module.exports.addMember = (firstname, lastname) => {
     const stmt = db.prepare("INSERT INTO members (firstname, lastname, email, phone_number, is_admin, password) VALUES (?,?,?,?,?,?)");
-    const info = stmt.run(firstname, lastname, "", "", 0, bcrypt.hashSync(firstname.charAt(0).toLowerCase(), 10));
+    const info = stmt.run(firstname, lastname, "À compléter", "À compléter", 0, bcrypt.hashSync(firstname.charAt(0).toLowerCase(), 10));
 };
 
 module.exports.filter = (firstname, date) => {

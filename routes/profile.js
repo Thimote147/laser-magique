@@ -82,9 +82,10 @@ router.get('/', (req, res) => {
                     }
                 });
 
-                hours_members.push({ firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(hours) });
+                hours_members.push({ id: member.id, firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(hours) });
             });
 
+            console.log(hours_members);
 
             res.render("profile.hbs", { members: hours_members, hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
             req.session.error = null;
@@ -135,6 +136,7 @@ router.post("/delete_hours", (req, res) => {
 });
 
 router.post("/delete_member", (req, res) => {
+    console.log(req.body.id);
     Gestion.deleteMember(req.body.id);
 
     res.redirect("/profil");
