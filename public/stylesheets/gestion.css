@@ -1,17 +1,21 @@
-#res {
+.table {
     border-collapse: collapse;
 }
 
-#res th,
-#res td {
+.table th,
+.table td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
 }
 
-#res th {
-    background-color: #4CAF50;
+.table th {
+    background-color: #69b357;
     color: white;
+}
+
+.table td {
+    color: #fff;
 }
 
 .bg-modal-blur {

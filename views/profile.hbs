@@ -65,41 +65,43 @@
                 </form>
             </div>
             <div class="col-12 col-md-7">
-                <table class="form-control overflow-x-scroll">
-                    <thead>
-                        <th>Jour</th>
-                        <th>Heure de début</th>
-                        <th>Heure de fin</th>
-                        <th>Nombre d'heures</th>
-                        <th>Total de la journée</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody>
-                        {{#each hours}}
-                        <tr>
-                            <td>{{day}}</td>
-                            <td>{{beginning_hour}}</td>
-                            <td>
-                                <form action="/profil/update_hours" method="post">
-                                    <input type="time" name="beginning_hour" value="{{beginning_hour}}" hidden>
-                                    <input type="time" name="ending_hour" value="{{ending_hour}}" step="900">
+                <div class="overflow-x-scroll">
+                    <table class="table">
+                        <thead>
+                            <th>Jour</th>
+                            <th>Heure de début</th>
+                            <th>Heure de fin</th>
+                            <th>Nombre d'heures</th>
+                            <th>Total de la journée</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            {{#each hours}}
+                            <tr>
+                                <td class="bg-dark">{{day}}</td>
+                                <td class="bg-dark">{{beginning_hour}}</td>
+                                <td class="bg-dark">
+                                    <form action="/profil/update_hours" method="post">
+                                        <input type="time" name="beginning_hour" value="{{beginning_hour}}" hidden>
+                                        <input type="time" name="ending_hour" value="{{ending_hour}}" step="900">
 
-                                    <button class="btn btn-primary" type="submit" name="id" value="{{id}}">Mettre à
-                                        jour</button>
-                                </form>
-                            </td>
-                            <td>{{hours}}</td>
-                            <td>{{money}}€</td>
-                            <td>
-                                <form action="/profil/delete_hours" method="post">
-                                    <button class="btn btn-primary" type="submit" name="id"
-                                        value="{{id}}">Supprimer</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+                                        <button class="btn btn-primary" type="submit" name="id" value="{{id}}">Mettre à
+                                            jour</button>
+                                    </form>
+                                </td>
+                                <td class="bg-dark">{{hours}}</td>
+                                <td class="bg-dark">{{money}}€</td>
+                                <td class="bg-dark">
+                                    <form action="/profil/delete_hours" method="post">
+                                        <button class="btn btn-primary" type="submit" name="id"
+                                            value="{{id}}">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
                 <div>
                     <form class="d-flex my-2" action="/profil/add_hours" method="post">
                         <div>
@@ -118,46 +120,49 @@
     {{#if session.member.is_admin}}
     <section>
         <h3 class="title">Member du Laser Magique</h3>
-        <table class="form-control overflow-x-scroll">
-            <thead class="bg-green">
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Numéro de téléphone</th>
-                <th>Heures sur le mois</th>
-                <th>Salaire</th>
-                <th>Action</th>
-            </thead>
-            <tbody>
-                {{#each members}}
-                <tr>
-                    <td>{{firstname}}</td>
-                    <td>{{lastname}}</td>
-                    <td>{{email}}</td>
-                    <td>{{phone_number}}</td>
-                    <td>{{hours}}</td>
-                    <td>{{salary}}€</td>
-                    <td>
-                        <form action="/profil/delete_member" method="post">
-                            <button class="btn btn-primary" type="submit" name="id" value="{{id}}">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-                {{/each}}
-                <form action="/profil/add_member" method="post">
+        <div class="overflow-x-scroll">
+            <table class="table">
+                <thead class="bg-green">
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Numéro de téléphone</th>
+                    <th>Heures sur le mois</th>
+                    <th>Salaire</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    {{#each members}}
                     <tr>
-                        <td><input type="text" name="firstname"></td>
-                        <td><input type="text" name="lastname"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-
-                        <td><button class="btn btn-primary" type="submit">Ajouter</button></td>
+                        <td class="bg-dark">{{firstname}}</td>
+                        <td class="bg-dark">{{lastname}}</td>
+                        <td class="bg-dark">{{email}}</td>
+                        <td class="bg-dark">{{phone_number}}</td>
+                        <td class="bg-dark">{{hours}}</td>
+                        <td class="bg-dark">{{salary}}€</td>
+                        <td class="bg-dark">
+                            <form action="/profil/delete_member" method="post">
+                                <button class="btn btn-primary" type="submit" name="id"
+                                    value="{{id}}">Supprimer</button>
+                            </form>
+                        </td>
                     </tr>
-                </form>
-            </tbody>
-        </table>
+                    {{/each}}
+                    <form action="/profil/add_member" method="post">
+                        <tr>
+                            <td class="bg-dark"><input type="text" name="firstname"></td>
+                            <td class="bg-dark"><input type="text" name="lastname"></td>
+                            <td class="bg-dark"></td>
+                            <td class="bg-dark"></td>
+                            <td class="bg-dark"></td>
+                            <td class="bg-dark"></td>
+
+                            <td class="bg-dark"><button class="btn btn-primary" type="submit">Ajouter</button></td>
+                        </tr>
+                    </form>
+                </tbody>
+            </table>
+        </div>
     </section>
     {{/if}}
 </main>
