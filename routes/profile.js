@@ -50,15 +50,24 @@ function salary(hours) {
 
 router.get('/', (req, res) => {
     if (req.session.connected) {
-        let formatDay = Gestion.getHours(req.session.member.id);
+        let allDay = Gestion.getHours(req.session.member.id);
         let totalMoney = 0;
         let totalHours = "0h00";
+        let formatDay = [];
 
-        formatDay.forEach((hour) => {
-            hour.day = new Date(hour.day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
-            hour.day = hour.day.charAt(0).toUpperCase() + hour.day.slice(1)
-            totalMoney += hour.money;
-            totalHours = addHours(totalHours, hour.hours);
+        let today = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
+        today = today.charAt(0).toUpperCase() + today.slice(1);
+
+        allDay.forEach((hour) => {
+            if (hour.day.slice(0, 7) == new Date().toISOString().slice(0, 7)) {
+                hour.day = new Date(hour.day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
+                hour.day = hour.day.charAt(0).toUpperCase() + hour.day.slice(1);
+                totalMoney += hour.money;
+                totalHours = addHours(totalHours, hour.hours);
+                hour.today = (today === hour.day);
+
+                formatDay.push(hour);
+            }
         });
 
         if (req.session.member.is_admin) {
@@ -68,16 +77,19 @@ router.get('/', (req, res) => {
                 let hours = "0h00"
 
                 Gestion.getHours(member.id).forEach((data) => {
-                    hours = addHours(hours, data.hours);
+                    if (data.day.slice(0,7) == new Date().toISOString().slice(0, 7)) {
+                        hours = addHours(hours, data.hours);
+                    }
                 });
 
                 hours_members.push({ firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(hours) });
             });
 
-            res.render("profile.hbs", { members: hours_members, hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error });
+
+            res.render("profile.hbs", { members: hours_members, hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
             req.session.error = null;
         } else {
-            res.render("profile.hbs", { hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error });
+            res.render("profile.hbs", { hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
             req.session.error = null;
         };
     } else {

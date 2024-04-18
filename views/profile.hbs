@@ -80,6 +80,7 @@
                             <tr>
                                 <td class="bg-dark">{{day}}</td>
                                 <td class="bg-dark">{{beginning_hour}}</td>
+                                {{#if today}}
                                 <td class="bg-dark">
                                     <form action="/profil/update_hours" method="post">
                                         <input type="time" name="beginning_hour" value="{{beginning_hour}}" hidden>
@@ -89,6 +90,9 @@
                                             jour</button>
                                     </form>
                                 </td>
+                                {{else}}
+                                <td class="bg-dark">{{ending_hour}}</td>
+                                {{/if}}
                                 <td class="bg-dark">{{hours}}</td>
                                 <td class="bg-dark">{{money}}€</td>
                                 <td class="bg-dark">
