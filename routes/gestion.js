@@ -27,7 +27,7 @@ function formatDate(milliseconds) {
 };
 
 function forToday(reservations) {
-    const forToday = [];
+    let forToday = [];
 
     reservations.forEach((reservation) => {
         if (today(reservation.date) === true) {
@@ -66,6 +66,16 @@ router.post('/delete', (req, res) => {
 });
 
 router.post('/add_reservation', (req, res) => {
+    if (req.body.lastname === undefined) {
+        req.body.lastname = "";
+    }
+    if (req.body.email === undefined) {
+        req.body.email = "";
+    }
+    if (req.body.phone_number === undefined) {
+        req.body.phone_number = "";
+    }
+
     let amount;
 
     let nbr_laser = 0;
@@ -83,7 +93,9 @@ router.post('/add_reservation', (req, res) => {
         amount = 20 * req.body.persons * nbr_ct //TODO
     } //TODO
 
-    Gestion.addReservation(req.body.firstname, "", "", "", req.body.persons, new Date(req.body.date).getTime(), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
+    console.log(req.body.lastname);
+
+    Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, new Date(req.body.date).getTime(), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
     res.redirect('/gestion');
 });
 
