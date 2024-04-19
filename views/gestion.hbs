@@ -51,9 +51,18 @@
                             <td class="bg-dark">{{persons}}</td>
                             <td class="bg-dark">{{activities}}</td>
                             <td class="bg-dark">{{payment_by}}</td>
+                            {{#if is_canceled}}
+                            <td class="bg-dark">
+                                <form action="/gestion/cancel" method="post">
+                                    <input type="hidden" name="is_canceled" value="{{is_canceled}}">
+                                    <button class="btn btn-primary m-1" type="submit" name="reservation"
+                                        value="{{id}}">Réactiver</button>
+                                </form>
+                            </td>
+                            {{else}}
                             <td class="bg-dark">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn text-white" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-primary text-white m-1" data-bs-toggle="modal"
                                     data-bs-target="#modal{{id}}">Infos</button>
 
                                 <!-- Modal -->
@@ -81,7 +90,7 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between">
                                                         <label for="activities">Activités : </label>
-                                                        <select name="activities">
+                                                        <select name="activities" class="select-size-modal">
                                                             <optgroup label="Nos Jeux">
                                                                 {{#if (eq activities "Laser Game")}}
                                                                 <option value="Laser Game" selected>Laser Game
@@ -133,7 +142,7 @@
                                                                 {{/if}}
                                                             </optgroup>
                                                             <optgroup label="Nos Combinaisons">
-                                                                {{#if (eq activities 
+                                                                {{#if (eq activities
                                                                 "Laser Game + Réalité Virtuelle")}}
                                                                 <option value="Laser Game + Réalité Virtuelle" selected>
                                                                     Laser Game + Réalité Virtuelle
@@ -152,7 +161,7 @@
                                                                     Laser Game + Cyber Games
                                                                 </option>
                                                                 {{/if}}
-                                                                {{#if (eq activities 
+                                                                {{#if (eq activities
                                                                 "Réalité Virtuelle + Cyber Games")}}
                                                                 <option value="Réalité Virtuelle + Cyber Games"
                                                                     selected>
@@ -163,7 +172,7 @@
                                                                     Réalité Virtuelle + Cyber Games
                                                                 </option>
                                                                 {{/if}}
-                                                                {{#if (eq activities 
+                                                                {{#if (eq activities
                                                                 "Laser Game + Réalité Virtuelle + Cyber Games")}}
                                                                 <option
                                                                     value="Laser Game + Réalité Virtuelle + Cyber Games"
@@ -307,21 +316,24 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
+                                                <!-- <p><span class="text-green">*</span> Réduction en cas de partie(s) non jouée(s) ou autre</p> -->
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
+                                                    data-bs-dismiss="modal">Fermer</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <form action="/gestion/cancel" method="post">
-                                    <button class="btn btn-primary" type="submit" name="reservation"
+                                    <input type="hidden" name="is_canceled" value="{{is_canceled}}">
+                                    <button class="btn btn-primary m-1" type="submit" name="reservation"
                                         value="{{id}}">Annuler</button>
                                 </form>
                                 <form action="/gestion/delete" method="post">
-                                    <button class="btn btn-primary" type="submit" name="reservation"
+                                    <button class="btn btn-primary m-1" type="submit" name="reservation"
                                         value="{{id}}">Supprimer</button>
                                 </form>
                             </td>
+                            {{/if}}
                         </tr>
                         {{/each}}
                     </tbody>
@@ -338,9 +350,18 @@
                             <td class="bg-dark">{{persons}}</td>
                             <td class="bg-dark">{{activities}}</td>
                             <td class="bg-dark">{{payment_by}}</td>
+                            {{#if is_canceled}}
+                            <td class="bg-dark">
+                                <form action="/gestion/cancel" method="post">
+                                    <input type="hidden" name="is_canceled" value="{{is_canceled}}">
+                                    <button class="btn btn-primary m-1" type="submit" name="reservation"
+                                        value="{{id}}">Réactiver</button>
+                                </form>
+                            </td>
+                            {{else}}
                             <td class="bg-dark">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn text-white" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-primary text-white m-1" data-bs-toggle="modal"
                                     data-bs-target="#modal{{id}}">Infos</button>
 
                                 <!-- Modal -->
@@ -368,7 +389,7 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between">
                                                         <label for="activities">Activités : </label>
-                                                        <select name="activities">
+                                                        <select name="activities" class="select-size-modal">
                                                             <optgroup label="Nos Jeux">
                                                                 {{#if (eq activities "Laser Game")}}
                                                                 <option value="Laser Game" selected>Laser Game
@@ -420,7 +441,7 @@
                                                                 {{/if}}
                                                             </optgroup>
                                                             <optgroup label="Nos Combinaisons">
-                                                                {{#if (eq activities 
+                                                                {{#if (eq activities
                                                                 "Laser Game + Réalité Virtuelle")}}
                                                                 <option value="Laser Game + Réalité Virtuelle" selected>
                                                                     Laser Game + Réalité Virtuelle
@@ -439,7 +460,7 @@
                                                                     Laser Game + Cyber Games
                                                                 </option>
                                                                 {{/if}}
-                                                                {{#if (eq activities 
+                                                                {{#if (eq activities
                                                                 "Réalité Virtuelle + Cyber Games")}}
                                                                 <option value="Réalité Virtuelle + Cyber Games"
                                                                     selected>
@@ -595,20 +616,21 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
+                                                    data-bs-dismiss="modal">Fermer</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <form action="/gestion/cancel" method="post">
-                                    <button class="btn btn-primary" type="submit" name="reservation"
+                                    <button class="btn btn-primary m-1" type="submit" name="reservation"
                                         value="{{id}}">Annuler</button>
                                 </form>
                                 <form action="/gestion/delete" method="post">
-                                    <button class="btn btn-primary" type="submit" name="reservation"
+                                    <button class="btn btn-primary m-1" type="submit" name="reservation"
                                         value="{{id}}">Supprimer</button>
                                 </form>
                             </td>
+                            {{/if}}
                         </tr>
                         {{/each}}
                     </tbody>
@@ -620,7 +642,7 @@
                 <form class="col-10 col-md-4" action="/gestion/add_reservation" method="post">
                     <h3>Ajouter une réservation</h3>
 
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="firstname">Prénom : </label>
                         </div>
@@ -629,7 +651,7 @@
                         </div>
                     </div>
                     {{#if session.member.is_admin}}
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="lastname">Nom : </label>
                         </div>
@@ -637,7 +659,7 @@
                             <input type="text" name="lastname">
                         </div>
                     </div>
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="email">Email : </label>
                         </div>
@@ -645,7 +667,7 @@
                             <input type="email" inputmode="email" name="email">
                         </div>
                     </div>
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="phone_number">Numéro de téléphone : </label>
                         </div>
@@ -654,7 +676,7 @@
                         </div>
                     </div>
                     {{/if}}
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="persons">Nombre de personnes : </label>
                         </div>
@@ -662,7 +684,7 @@
                             <input type="number" inputmode="numeric" name="persons" min="2">
                         </div>
                     </div>
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="date">Date :</label>
                         </div>
@@ -670,12 +692,12 @@
                             <input type="datetime-local" name="date" step="900">
                         </div>
                     </div>
-                    <div class="d-flex flex-column justify-content-between my-2">
+                    <div class="d-flex flex-column my-2">
                         <div class="col-12">
                             <label for="activities">Activités : </label>
                         </div>
                         <div class="col-12">
-                            <select name="activities">
+                            <select name="activities" class="select-size">
                                 <optgroup label="Nos Jeux">
                                     <option value="Laser Game" selected>Laser Game</option>
                                     <option value="Réalité Virtuelle">Réalité Virtuelle</option>

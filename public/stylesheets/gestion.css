@@ -21,3 +21,11 @@
 .bg-modal-blur {
     background-color: rgba(25, 25, 30, .3);
 }
+
+.select-size {
+    width: clamp(150px, 100%, 375px);
+}
+
+.select-size-modal {
+    width: 200px;
+}

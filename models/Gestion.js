@@ -59,9 +59,9 @@ module.exports.updateReservation = (id, persons, activities, nbr_laser, nbr_vr, 
     const info = stmt.run(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation, id);
 };
 
-module.exports.cancel = (id) => {
-    const stmt = db.prepare("UPDATE reservations SET is_canceled = 1 WHERE id = ?");
-    const info = stmt.run(id);
+module.exports.cancel = (id, is_canceled) => {
+    const stmt = db.prepare("UPDATE reservations SET is_canceled = ? WHERE id = ?");
+    const info = stmt.run(is_canceled, id);
 }
 
 module.exports.delete = (id) => {

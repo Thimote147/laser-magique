@@ -56,7 +56,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/cancel', (req, res) => {
-    Gestion.cancel(req.body.reservation);
+    if (req.body.is_canceled == 1) {
+        is_canceled = 0;
+    } else {
+        is_canceled = 1;
+    }
+
+    Gestion.cancel(req.body.reservation, is_canceled);
     res.redirect("/gestion");
 });
 
