@@ -97,9 +97,9 @@ module.exports.getStatistiques = (id) => {
     return info;
 };
 
-module.exports.updateStatistiques = (fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe) => {
-    const stmt = db.prepare("UPDATE statistiques SET fdc_fermeture = ?, total_bcc = ?, total_cash = ?, total_boissons = ?, total_snack = ?, enveloppe = ?");
-    const info = stmt.run(fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe);
+module.exports.updateStatistiques = (id, fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe) => {
+    const stmt = db.prepare("UPDATE statistiques SET fdc_fermeture = ?, total_bcc = ?, total_cash = ?, total_boissons = ?, total_snack = ?, enveloppe = ? WHERE id = ?");
+    const info = stmt.run(fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe, id);
 };
 
 module.exports.getHours = (id_member) => {

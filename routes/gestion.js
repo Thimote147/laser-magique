@@ -193,6 +193,7 @@ router.post('/update_infos', (req, res) => {
 });
 
 router.post("/statistiques", (req, res) => {
+    
     let fdc_fermeture = parseFloat(req.body.fdc_ouverture - req.body.enveloppe);
 
     let total_bcc = 0;
@@ -203,6 +204,7 @@ router.post("/statistiques", (req, res) => {
     const reservations = Gestion.reservations();
     reservations.forEach((reservation) => {
         if (today(reservation.date) === true) {
+            id = reservation.id;
             fdc_fermeture += reservation.payment_cash;
             total_bcc += reservation.payment_bcc;
             total_cash += reservation.payment_cash;
@@ -213,7 +215,7 @@ router.post("/statistiques", (req, res) => {
 
     fdc_fermeture = fdc_fermeture.toFixed(2);
 
-    Gestion.updateStatistiques(fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, req.body.enveloppe);
+    Gestion.updateStatistiques(Gestion.getLastStatistiques().id, fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, req.body.enveloppe);
     res.redirect("/gestion");
 });
 
