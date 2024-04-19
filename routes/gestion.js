@@ -90,10 +90,47 @@ router.post('/add_reservation', (req, res) => {
         amount = 10 * req.body.persons * nbr_vr
     } else if (req.body.activities === "Cyber Games") {
         nbr_ct++;
-        amount = 20 * req.body.persons * nbr_ct //TODO
-    } //TODO
-
-    console.log(req.body.lastname);
+        amount = 20 * req.body.persons * nbr_ct
+    } else if (req.body.activities === "Anniversaire Laser Game") {
+        nbr_laser = 3;
+        if (req.body.persons <= 10) {
+            amount = 200;
+        } else {
+            amount = 20 * req.body.persons;
+        }
+    } else if (req.body.activities === "Anniversaire Trio Pack") {
+        nbr_laser++;
+        nbr_vr++;
+        nbr_ct++;
+        if (req.body.persons <= 8) {
+            amount = 280;
+        } else {
+            amount = 35 * req.body.persons;
+        }
+    }
+    else if (req.body.activities === "Famille Trio Pack") {
+        nbr_laser++;
+        nbr_vr++;
+        nbr_ct++;
+        amount = 35 * req.body.persons;
+    } else if (req.body.activities === "Laser Game + Réalité Virtuelle") {
+        nbr_laser++;
+        nbr_vr++;
+        amount = ((8 * req.body.nbr_laser) + (10 * req.body.nbr_vr)) * req.body.persons;
+    } else if (req.body.activities === "Laser Game + Cyber Games") {
+        nbr_laser++;
+        nbr_ct++;
+        amount = 28 * req.body.persons;
+    } else if (req.body.activities === "Réalité Virtuelle + Cyber Games") {
+        nbr_vr++;
+        nbr_ct++;
+        amount = 30 * req.body.persons;
+    } else if (req.body.activities === "Laser Game + Réalité Virtuelle + Cyber Games") {
+        nbr_laser++;
+        nbr_vr++;
+        nbr_ct++;
+        amount = 35 * req.body.persons
+    }
 
     Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, new Date(req.body.date).getTime(), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
     res.redirect('/gestion');
@@ -137,7 +174,7 @@ router.post('/update_infos', (req, res) => {
     } else if (req.body.activities === "Réalité Virtuelle + Cyber Games") {
         price = 30 * req.body.persons
     } else if (req.body.activities === "Laser Game + Réalité Virtuelle + Cyber Games") {
-        price = 38 * req.body.persons
+        price = 35 * req.body.persons
     }
 
     const food = (req.body.soft * 2.5) + (req.body.aquarius * 3.5) + (req.body.capri_sun * 2) + (req.body.chips * 2) + (req.body.pop_corn * 3.5) + (req.body.bonbon * 3);
