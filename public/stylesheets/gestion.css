@@ -23,7 +23,7 @@
 }
 
 .select-size {
-    width: clamp(150px, 100%, 375px);
+    width: clamp(150px, 100%, 325px);
 }
 
 .select-size-modal {

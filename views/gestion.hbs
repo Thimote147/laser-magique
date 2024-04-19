@@ -61,6 +61,9 @@
                             </td>
                             {{else}}
                             <td class="bg-dark">
+                                {{#if (eq firstname "Cette réservation n'existe pas")}}
+                                <p>Impossible</p>
+                                {{else}}
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary text-white m-1" data-bs-toggle="modal"
                                     data-bs-target="#modal{{id}}">Infos</button>
@@ -332,6 +335,7 @@
                                     <button class="btn btn-primary m-1" type="submit" name="reservation"
                                         value="{{id}}">Supprimer</button>
                                 </form>
+                                {{/if}}
                             </td>
                             {{/if}}
                         </tr>
@@ -360,6 +364,9 @@
                             </td>
                             {{else}}
                             <td class="bg-dark">
+                                {{#if (eq firstname "Cette réservation n'existe pas")}}
+                                <p>Impossible</p>
+                                {{else}}
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary text-white m-1" data-bs-toggle="modal"
                                     data-bs-target="#modal{{id}}">Infos</button>
@@ -629,6 +636,7 @@
                                     <button class="btn btn-primary m-1" type="submit" name="reservation"
                                         value="{{id}}">Supprimer</button>
                                 </form>
+                                {{/if}}
                             </td>
                             {{/if}}
                         </tr>
@@ -647,7 +655,7 @@
                             <label for="firstname">Prénom : </label>
                         </div>
                         <div class="col-12">
-                            <input type="text" name="firstname">
+                            <input type="text" name="firstname" required>
                         </div>
                     </div>
                     {{#if session.member.is_admin}}
@@ -681,7 +689,7 @@
                             <label for="persons">Nombre de personnes : </label>
                         </div>
                         <div class="col-12">
-                            <input type="number" inputmode="numeric" name="persons" min="2">
+                            <input type="number" inputmode="numeric" name="persons" min="2" required>
                         </div>
                     </div>
                     <div class="d-flex flex-column my-2">
@@ -689,7 +697,7 @@
                             <label for="date">Date :</label>
                         </div>
                         <div class="col-12">
-                            <input type="datetime-local" name="date" step="900">
+                            <input type="datetime-local" name="date" step="900" readonly>
                         </div>
                     </div>
                     <div class="d-flex flex-column my-2">

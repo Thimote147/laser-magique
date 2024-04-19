@@ -238,7 +238,7 @@ router.get("/filter", (req, res) => {
                 });
                 res.render("gestion.hbs", { reservations: forSelectedDay });
             } else {
-                res.render("gestion.hbs", { reservations: [{ date: "/", firstname: "Cette réservation", persons: "n'existe pas" }] });
+                res.render("gestion.hbs", { reservations: [{ date: "/", firstname: "Cette réservation n'existe pas" }] });
             }
         };
     } else {
