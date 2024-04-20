@@ -143,6 +143,9 @@ router.post('/add_reservation', (req, res) => {
 });
 
 router.post('/update_infos', (req, res) => {
+    req.body.payment_bcc = req.body.payment_bcc.split(",").join(".");
+    req.body.payment_cash = req.body.payment_cash.split(",").join(".");
+
     let price;
     if (req.body.activities === "Laser Game") {
         price = 8 * req.body.persons * req.body.nbr_laser
