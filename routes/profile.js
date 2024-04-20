@@ -45,7 +45,11 @@ function addHours(time1, time2) {
 }
 
 function salary(hours) {
-    return ((hours.split("h")[0] * 10) + ((hours.split("h")[1] * 10) / 60))
+    if (req.session.member.firstname === "Joachim") { 
+        return ((hours.split("h")[0] * 15) + ((hours.split("h")[1] * 15) / 60)) 
+    } else {
+        return ((hours.split("h")[0] * 10) + ((hours.split("h")[1] * 10) / 60))
+    }
 }
 
 router.get('/', (req, res) => {
@@ -77,7 +81,7 @@ router.get('/', (req, res) => {
                 let hours = "0h00"
 
                 Gestion.getHours(member.id).forEach((data) => {
-                    if (data.day.slice(0,7) == new Date().toISOString().slice(0, 7)) {
+                    if (data.day.slice(0, 7) == new Date().toISOString().slice(0, 7)) {
                         hours = addHours(hours, data.hours);
                     }
                 });
