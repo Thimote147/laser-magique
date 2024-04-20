@@ -44,8 +44,8 @@ function addHours(time1, time2) {
     return formattedHours + "h" + formattedMinutes;
 }
 
-function salary(hours) {
-    if (req.session.member.firstname === "Joachim") { 
+function salary(member, hours) {
+    if (member == "Joachim") { 
         return ((hours.split("h")[0] * 15) + ((hours.split("h")[1] * 15) / 60)) 
     } else {
         return ((hours.split("h")[0] * 10) + ((hours.split("h")[1] * 10) / 60))
@@ -86,7 +86,7 @@ router.get('/', (req, res) => {
                     }
                 });
 
-                hours_members.push({ id: member.id, firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(hours) });
+                hours_members.push({ id: member.id, firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(member.firstname, hours) });
             });
 
             console.log(hours_members);
