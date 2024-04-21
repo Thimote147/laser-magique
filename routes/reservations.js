@@ -95,11 +95,11 @@ function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, c
         }
         nbr_vr = 0;
 
-        if (nbr_ct === 1) {
+        if (nbr_ct == 1) {
             price = ((8 * nbr_laser) + 20) * persons;
-        } else if (nbr_ct === 2) {
+        } else if (nbr_ct == 2) {
             price = ((8 * nbr_laser) + 36) * persons;
-        } else if (nbr_ct === 3) {
+        } else if (nbr_ct == 3) {
             price = ((8 * nbr_laser) + 51) * persons;
         } else {
             price = ((8 * nbr_laser) + 51 + (15 * (nbr_ct - 3))) * persons;

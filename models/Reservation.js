@@ -40,7 +40,6 @@ module.exports.add = (id, choice, persons) => {
     } else if (choice === "laser") {
         let stmt = db.prepare("SELECT nbr_laser, remaining, total from reservations WHERE id = ?").get(id);
         stmt.nbr_laser++;
-        console.log(persons);
         stmt.remaining += 8 * persons;
         stmt.total += 8 * persons;
         const info = db.prepare("UPDATE reservations SET nbr_laser = ?, remaining = ?, total = ? WHERE id = ?").run(stmt.nbr_laser, stmt.remaining, stmt.total, id);
