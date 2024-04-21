@@ -9,7 +9,19 @@ const session = require('express-session');
  * eq checks if value are equal
  */
 hbs.registerHelper('eq', function (a, b) {
-  if (a === b) {
+  if (a == b) {
+    return true;
+  }
+  else {
+    return false;
+  }
+});
+
+/**
+ * neq checks if value are equal
+ */
+hbs.registerHelper('neq', function (a, b) {
+  if (a != b) {
     return true;
   }
   else {
@@ -28,6 +40,7 @@ const weaponsRouter = require("./routes/weapons.js");
 const headsetsRouter = require("./routes/headsets.js");
 const trikesRouter = require("./routes/trikes.js");
 const inventoryRouter = require("./routes/inventory.js");
+const reservationsRouter = require("./routes/reservations.js")
 
 const app = express();
 const port = 3000;
@@ -54,6 +67,7 @@ app.use("/weapons", weaponsRouter);
 app.use("/headsets", headsetsRouter);
 app.use("/trikes", trikesRouter);
 app.use("/inventaire", inventoryRouter);
+app.use("/reservation", reservationsRouter);
 
 // Create error on page not found
 app.use(function (req, res, next) {

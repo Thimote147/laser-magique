@@ -142,59 +142,6 @@ router.post('/add_reservation', (req, res) => {
     res.redirect('/gestion');
 });
 
-router.post('/update_infos', (req, res) => {
-    req.body.payment_bcc = req.body.payment_bcc.split(",").join(".");
-    req.body.payment_cash = req.body.payment_cash.split(",").join(".");
-
-    let price;
-    if (req.body.activities === "Laser Game") {
-        price = 8 * req.body.persons * req.body.nbr_laser
-    } else if (req.body.activities === "Réalité Virtuelle") {
-        price = 10 * req.body.persons * req.body.nbr_vr
-    } else if (req.body.activities === "Cyber Games") {
-        price = 20 * req.body.persons * req.body.nbr_ct
-    } else if (req.body.activities === "Anniversaire Laser Game") {
-        if (req.body.persons <= 10) {
-            price = 200;
-        } else {
-            price = 20 * req.body.persons;
-        }
-    } else if (req.body.activities === "Anniversaire Trio Pack") {
-        if (req.body.persons <= 8) {
-            price = 280;
-        } else {
-            price = 35 * req.body.persons;
-        }
-    }
-    else if (req.body.activities === "Famille Trio Pack") {
-        price = 35 * req.body.persons;
-    } else if (req.body.activities === "Laser Game + Réalité Virtuelle") {
-        price = ((8 * req.body.nbr_laser) + (10 * req.body.nbr_vr)) * req.body.persons;
-    } else if (req.body.activities === "Laser Game + Cyber Games") {
-        if (req.body.nbr_ct === 1) {
-            price = ((8 * req.body.nbr_laser) + 20) * req.body.persons;
-        } else if (req.body.nbr_ct === 2) {
-            price = ((8 * req.body.nbr_laser) + 36) * req.body.persons;
-        } else if (req.body.nbr_ct === 3) {
-            price = ((8 * req.body.nbr_laser) + 51) * req.body.persons;
-        } else {
-            price = ((8 * req.body.nbr_laser) + 51 + (15 * (req.body.nbr_ct - 3))) * req.body.persons;
-        }
-    } else if (req.body.activities === "Réalité Virtuelle + Cyber Games") {
-        price = 30 * req.body.persons
-    } else if (req.body.activities === "Laser Game + Réalité Virtuelle + Cyber Games") {
-        price = 35 * req.body.persons
-    }
-
-    const food = (req.body.soft * 2.5) + (req.body.aquarius * 3.5) + (req.body.capri_sun * 2) + (req.body.chips * 2) + (req.body.pop_corn * 3.5) + (req.body.bonbon * 3);
-
-    const remaining = price - req.body.deposit - req.body.payment_bcc - req.body.payment_cash + food;
-    const total = price + food;
-
-    Gestion.updateReservation(req.body.id, req.body.persons, req.body.activities, req.body.nbr_laser, req.body.nbr_vr, req.body.nbr_ct, req.body.soft, req.body.aquarius, req.body.capri_sun, req.body.chips, req.body.pop_corn, req.body.bonbon, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, remaining, total, req.body.observation);
-    res.redirect('/gestion');
-});
-
 router.post("/statistiques", (req, res) => {
     
     let fdc_fermeture = parseFloat(req.body.fdc_ouverture - req.body.enveloppe);

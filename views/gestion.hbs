@@ -273,21 +273,21 @@
                                                                 {{else}}
                                                                 <option value="">/</option>
                                                                 {{/if}}
-                                                                {{#if (eq payment_by "bcc")}}
-                                                                <option value="bcc" selected>Bcc</option>
+                                                                {{#if (eq payment_by "Bcc")}}
+                                                                <option value="Bcc" selected>Bcc</option>
                                                                 {{else}}
-                                                                <option value="bcc">Bcc</option>
+                                                                <option value="Bcc">Bcc</option>
                                                                 {{/if}}
-                                                                {{#if (eq payment_by "cash")}}
-                                                                <option value="cash" selected>Cash</option>
+                                                                {{#if (eq payment_by "Cash")}}
+                                                                <option value="Cash" selected>Cash</option>
                                                                 {{else}}
-                                                                <option value="cash">Cash</option>
+                                                                <option value="Cash">Cash</option>
                                                                 {{/if}}
-                                                                {{#if (eq payment_by "bcc/cash")}}
-                                                                <option value="bcc/cash" selected>Bcc &amp; Cash
+                                                                {{#if (eq payment_by "Bcc/Cash")}}
+                                                                <option value="Bcc/Cash" selected>Bcc &amp; Cash
                                                                 </option>
                                                                 {{else}}
-                                                                <option value="bcc/cash">Bcc &amp; Cash</option>
+                                                                <option value="Bcc/Cash">Bcc &amp; Cash</option>
                                                                 {{/if}}
                                                                 {{#if (eq payment_by "Social Deal")}}
                                                                 <option value="Social Deal" selected>Social Deal
@@ -353,7 +353,11 @@
                         <tr>
                             {{/if}}
                             <td class="bg-dark">{{date}}</td>
+                            {{#if is_canceled}}
                             <td class="bg-dark">{{firstname}}</td>
+                            {{else}}
+                            <td class="bg-dark"><a href="/reservation?id={{id}}">{{firstname}}</a></td>
+                            {{/if}}
                             <td class="bg-dark">{{persons}}</td>
                             <td class="bg-dark">{{activities}}</td>
                             <td class="bg-dark">{{payment_by}}</td>
@@ -371,268 +375,6 @@
                                 <p>Impossible</p>
                                 {{else}}
                                 <div class="d-flex">
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary text-white m-1" data-bs-toggle="modal"
-                                        data-bs-target="#modal{{id}}">Infos</button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade bg-modal-blur" id="modal{{id}}"
-                                        aria-labelledby="modalLabel{{id}}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content bg-dark">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="modalLabel{{id}}">
-                                                        Informations de la réservation
-                                                    </h1>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form class="d-flex flex-column" action="/gestion/update_infos"
-                                                        method="post">
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="firstname">Prénom : </label>
-                                                            <input type="text" name="firstname" value="{{firstname}}"
-                                                                readonly>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="persons">Nombre de personnes : </label>
-                                                            <input type="number" inputmode="numeric" name="persons"
-                                                                value="{{persons}}" min="2">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="activities">Activités : </label>
-                                                            <select name="activities" class="select-size-modal">
-                                                                <optgroup label="Nos Jeux">
-                                                                    {{#if (eq activities "Laser Game")}}
-                                                                    <option value="Laser Game" selected>Laser Game
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Laser Game">Laser Game</option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities "Réalité Virtuelle")}}
-                                                                    <option value="Réalité Virtuelle" selected>
-                                                                        Réalité Virtuelle
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Réalité Virtuelle">Réalité Virtuelle
-                                                                    </option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities "Cyber Games")}}
-                                                                    <option value="Cyber Games" selected>Cyber Games
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Cyber Games">Cyber Games</option>
-                                                                    {{/if}}
-                                                                </optgroup>
-                                                                <optgroup label="Nos Packs">
-                                                                    {{#if (eq activities "Anniversaire Laser Game")}}
-                                                                    <option value="Anniversaire Laser Game" selected>
-                                                                        Anniversaire Laser Game
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Anniversaire Laser Game">
-                                                                        Anniversaire Laser Game
-                                                                    </option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities "Anniversaire Trio Pack")}}
-                                                                    <option value="Anniversaire Trio Pack" selected>
-                                                                        Anniversaire Trio Pack
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Anniversaire Trio Pack">
-                                                                        Anniversaire Trio Pack
-                                                                    </option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities "Famille Trio Pack")}}
-                                                                    <option value="Famille Trio Pack" selected>
-                                                                        Famille Trio Pack
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Famille Trio Pack">Famille Trio Pack
-                                                                    </option>
-                                                                    {{/if}}
-                                                                </optgroup>
-                                                                <optgroup label="Nos Combinaisons">
-                                                                    {{#if (eq activities
-                                                                    "Laser Game + Réalité Virtuelle")}}
-                                                                    <option value="Laser Game + Réalité Virtuelle"
-                                                                        selected>
-                                                                        Laser Game + Réalité Virtuelle
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Laser Game + Réalité Virtuelle">
-                                                                        Laser Game + Réalité Virtuelle
-                                                                    </option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities "Laser Game + Cyber Games")}}
-                                                                    <option value="Laser Game + Cyber Games" selected>
-                                                                        Laser Game + Cyber Games
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Laser Game + Cyber Games">
-                                                                        Laser Game + Cyber Games
-                                                                    </option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities
-                                                                    "Réalité Virtuelle + Cyber Games")}}
-                                                                    <option value="Réalité Virtuelle + Cyber Games"
-                                                                        selected>
-                                                                        Réalité Virtuelle + Cyber Games
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option value="Réalité Virtuelle + Cyber Games">
-                                                                        Réalité Virtuelle + Cyber Games
-                                                                    </option>
-                                                                    {{/if}}
-                                                                    {{#if (eq activities
-                                                                    "Laser Game + Réalité Virtuelle + Cyber Games")}}
-                                                                    <option
-                                                                        value="Laser Game + Réalité Virtuelle + Cyber Games"
-                                                                        selected>
-                                                                        Laser Game + Réalité Virtuelle + Cyber Games
-                                                                    </option>
-                                                                    {{else}}
-                                                                    <option
-                                                                        value="Laser Game + Réalité Virtuelle + Cyber Games">
-                                                                        Laser Game + Réalité Virtuelle + Cyber Games
-                                                                    </option>
-                                                                    {{/if}}
-                                                                </optgroup>
-                                                            </select>
-                                                        </div>
-                                                        <dir>
-                                                            <hr class="m-0">
-                                                        </dir>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="nbr_laser">Nombre de partie de Laser : </label>
-                                                            <input type="number" inputmode="numeric" name="nbr_laser"
-                                                                value="{{nbr_laser}}">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="nbr_vr">Nombre de partie de VR : </label>
-                                                            <input type="number" inputmode="numeric" name="nbr_vr"
-                                                                value="{{nbr_vr}}">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="nbr_ct">Nombre de partie de CT : </label>
-                                                            <input type="number" inputmode="numeric" name="nbr_ct"
-                                                                value="{{nbr_ct}}">
-                                                        </div>
-                                                        <dir>
-                                                            <hr class="m-0">
-                                                        </dir>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="soft">Nombre de Soft : </label>
-                                                            <input type="number" inputmode="numeric" name="soft"
-                                                                value="{{soft}}" min="0">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="aquarius">Nombre d'Aquarius : </label>
-                                                            <input type="number" inputmode="numeric" name="aquarius"
-                                                                value="{{aquarius}}" min="0">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="capri_sun">Nombre de Capri Sun : </label>
-                                                            <input type="number" inputmode="numeric" name="capri_sun"
-                                                                value="{{capri_sun}}" min="0">
-                                                        </div>
-                                                        <dir>
-                                                            <hr class="m-0">
-                                                        </dir>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="chips">Nombre de Chips : </label>
-                                                            <input type="number" inputmode="numeric" name="chips"
-                                                                value="{{chips}}" min="0">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="pop_corn">Nombre de Pop Corn : </label>
-                                                            <input type="number" inputmode="numeric" name="pop_corn"
-                                                                value="{{pop_corn}}" min="0">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="bonbon">Nombre de Bonbons : </label>
-                                                            <input type="number" inputmode="numeric" name="bonbon"
-                                                                value="{{bonbon}}" min="0">
-                                                        </div>
-                                                        <dir>
-                                                            <hr class="m-0">
-                                                        </dir>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="deposit">Accompte : </label>
-                                                            <input type="number" inputmode="numeric" name="deposit"
-                                                                value="{{deposit}}">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="payment_bcc">Payé par Bcc : </label>
-                                                            <input type="text" inputmode="decimal" name="payment_bcc"
-                                                                value="{{payment_bcc}}" min="0" step="0.5">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="payment_cash">Payé par Cash : </label>
-                                                            <input type="text" inputmode="decimal" name="payment_cash"
-                                                                value="{{payment_cash}}" min="0" step="0.5">
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="payment_by">Payé en : </label>
-                                                            <select type="text" name="payment_by">
-                                                                {{#if (eq payment_by "")}}
-                                                                <option value="" selected>/</option>
-                                                                {{else}}
-                                                                <option value="">/</option>
-                                                                {{/if}}
-                                                                {{#if (eq payment_by "bcc")}}
-                                                                <option value="bcc" selected>Bcc</option>
-                                                                {{else}}
-                                                                <option value="bcc">Bcc</option>
-                                                                {{/if}}
-                                                                {{#if (eq payment_by "cash")}}
-                                                                <option value="cash" selected>Cash</option>
-                                                                {{else}}
-                                                                <option value="cash">Cash</option>
-                                                                {{/if}}
-                                                                {{#if (eq payment_by "bcc/cash")}}
-                                                                <option value="bcc/cash" selected>Bcc &amp; Cash
-                                                                </option>
-                                                                {{else}}
-                                                                <option value="bcc/cash">Bcc &amp; Cash</option>
-                                                                {{/if}}
-                                                                {{#if (eq payment_by "Social Deal")}}
-                                                                <option value="Social Deal" selected>Social Deal
-                                                                </option>
-                                                                {{else}}
-                                                                <option value="Social Deal">Social Deal</option>
-                                                                {{/if}}
-                                                            </select>
-                                                        </div>
-                                                        <dir>
-                                                            <hr class="m-0">
-                                                        </dir>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="remaining">Restant : </label>
-                                                            <input type="number" inputmode="numeric" name="remaining"
-                                                                value="{{remaining}}" readonly>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="total">Total : </label>
-                                                            <input type="number" inputmode="numeric" name="total"
-                                                                value="{{total}}" readonly>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <label for="observation">Observations : </label>
-                                                            <textarea name="observation" cols="30" rows="10"
-                                                                placeholder="Aucune remarque à notifier ?">{{observation}}</textarea>
-                                                        </div>
-
-                                                        <button class="btn btn-primary" type="submit" name="id"
-                                                            value="{{id}}">Enregistrer</button>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Fermer</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <form action="/gestion/cancel" method="post">
                                         <button class="btn btn-primary m-1" type="submit" name="reservation"
                                             value="{{id}}">Annuler</button>
@@ -652,7 +394,7 @@
                 </table>
             </section>
             <div>&nbsp;</div>
-            <div class="d-flex flex-column flex-md-row">
+            <div class="d-flex flex-column-reverse flex-md-row">
                 <form class="col-10 col-md-4" action="/gestion/add_reservation" method="post">
                     <h3>Ajouter une réservation</h3>
 

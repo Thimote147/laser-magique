@@ -1,4 +1,3 @@
-const e = require("express");
 const db = require("./db_conf.js");
 const bcrypt = require("bcrypt");
 
@@ -52,11 +51,6 @@ module.exports.findById = (id_res) => {
     const stmt = db.prepare("SELECT * FROM reservations WHERE id = ?");
 
     return stmt.get(id_res);
-};
-
-module.exports.updateReservation = (id, persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation) => {
-    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, nbr_laser = ?, nbr_vr = ?, nbr_ct = ?, soft = ?, aquarius = ?, capri_sun = ?, chips = ?, pop_corn = ?, bonbon = ?, deposit = ?, payment_bcc = ?, payment_cash = ?, payment_by = ?, remaining = ?, total = ?, observation = ? WHERE id = ?");
-    const info = stmt.run(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation, id);
 };
 
 module.exports.cancel = (id, is_canceled) => {
