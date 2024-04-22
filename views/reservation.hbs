@@ -131,6 +131,17 @@
                 <label for="persons">Nombre de personnes : </label>
                 <input type="number" inputmode="numeric" name="persons" value="{{reservation.persons}}" min="2">
             </div>
+            {{#if session.member.is_admin}}
+            <div class="d-flex justify-content-between">
+                <label for="date">Date : </label>
+                <input type="datetime-local" name="date" value="{{reservation.date}}">
+            </div>
+            {{else}}
+            <div class="d-flex justify-content-between">
+                <p>Heure : </p>
+                <p>{{reservation.hour}}</p>
+            </div>
+            {{/if}}
             <div class="d-flex justify-content-between">
                 <label for="activities">Activités : </label>
                 <select name="activities" class="select-size-modal">
@@ -247,8 +258,8 @@
             </div>
             <div class="d-flex justify-content-between">
                 <label for="payment_cash">Payé par Cash : </label>
-                <input type="text" inputmode="decimal" name="payment_cash" value="{{reservation.payment_cash}}"
-                    min="0" step="0.5">
+                <input type="text" inputmode="decimal" name="payment_cash" value="{{reservation.payment_cash}}" min="0"
+                    step="0.5">
             </div>
             <div class="d-flex justify-content-between">
                 <label for="payment_by">Payé en : </label>
@@ -282,6 +293,11 @@
                     {{/if}}
                 </select>
             </div>
+            <div class="d-flex justify-content-between">
+                <label for="observation">Observations : </label>
+                <textarea name="observation" cols="20" rows="5">{{reservation.observation}}</textarea>
+            </div>
+
             <p>Restant à payer : {{reservation.remaining}}€</p>
             <p>Total à payer : {{reservation.total}}€</p>
 

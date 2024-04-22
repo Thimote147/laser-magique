@@ -44,10 +44,14 @@
                         <tr>
                             {{/if}}
                             <td class="bg-dark">{{date}}</td>
+                            {{#if (eq firstname "Cette réservation n'existe pas")}}
+                            <td class="bg-dark">{{firstname}}</td>
+                            {{else}}
                             {{#if is_canceled}}
                             <td class="bg-dark">{{firstname}}</td>
                             {{else}}
                             <td class="bg-dark"><a href="/reservation?id={{id}}">{{firstname}}</a></td>
+                            {{/if}}
                             {{/if}}
                             <td class="bg-dark">{{lastname}}</td>
                             <td class="bg-dark">{{email}}</td>

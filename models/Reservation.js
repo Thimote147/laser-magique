@@ -116,7 +116,7 @@ module.exports.delete = (id, choice, persons) => {
     }
 }
 
-module.exports.update = (id, persons, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation) => {
-    const stmt = db.prepare("UPDATE reservations SET persons = ?, activities = ?, nbr_laser = ?, nbr_vr = ?, nbr_ct = ?, deposit = ?, payment_bcc = ?, payment_cash = ?, payment_by = ?, remaining = ?, total = ?, observation = ? WHERE id = ?");
-    const info = stmt.run(persons, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation, id);
+module.exports.update = (id, persons, date, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation) => {
+    const stmt = db.prepare("UPDATE reservations SET persons = ?, date = ?, activities = ?, nbr_laser = ?, nbr_vr = ?, nbr_ct = ?, deposit = ?, payment_bcc = ?, payment_cash = ?, payment_by = ?, remaining = ?, total = ?, observation = ? WHERE id = ?");
+    const info = stmt.run(persons, date, activities, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, payment_by, remaining, total, observation, id);
 };

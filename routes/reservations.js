@@ -114,7 +114,7 @@ function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, c
     const remaining = price - deposit - payment_bcc - payment_cash + food;
     const total = price + food;
 
-    return { nbr_laser: nbr_laser, nbr_vr: nbr_vr, nbr_ct: nbr_ct, price: price, remaining: remaining, total: total};
+    return { nbr_laser: nbr_laser, nbr_vr: nbr_vr, nbr_ct: nbr_ct, price: price, remaining: remaining, total: total };
 }
 
 router.get('/', (req, res) => {
@@ -124,7 +124,13 @@ router.get('/', (req, res) => {
         Gestion.reservations().forEach((reservation) => {
 
             if (reservation.id == req.query.id) {
-                reservation.date = formatDate(reservation.date);
+                if (new Date(reservation.date).toLocaleTimeString().split(" ")[1] == "AM") {
+                    reservation.date = new Date(reservation.date).toJSON().split("T")[0] + "T0" + new Date(reservation.date).toLocaleTimeString().slice(0, 4);
+                } else {
+                    reservation.date = new Date(reservation.date).toJSON().split("T")[0] + "T" + (12 + parseInt(new Date(reservation.date).toLocaleTimeString().slice(0, 2))) + new Date(reservation.date).toLocaleTimeString().slice(2, 5);
+                }
+
+                reservation.hour = formatDate(reservation.date);
                 InfosReservation = reservation;
             };
         });
@@ -153,7 +159,7 @@ router.post('/update_infos', (req, res) => {
 
     const updated_price = price(req.body.persons, req.body.activities, req.body.nbr_laser, req.body.nbr_vr, req.body.nbr_ct, req.body.soft, req.body.aquarius, req.body.capri_sun, req.body.chips, req.body.pop_corn, req.body.bonbon, req.body.deposit, req.body.payment_bcc, req.body.payment_cash);
 
-    Reservation.update(req.body.id, req.body.persons, req.body.activities, updated_price.nbr_laser, updated_price.nbr_vr, updated_price.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, updated_price.remaining, updated_price.total, req.body.observation);
+    Reservation.update(req.body.id, req.body.persons, req.body.date, req.body.activities, updated_price.nbr_laser, updated_price.nbr_vr, updated_price.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, updated_price.remaining, updated_price.total, req.body.observation);
     res.redirect("/reservation?id=" + req.body.id);
 });
 
