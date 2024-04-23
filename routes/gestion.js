@@ -1,49 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Gestion = require("../models/Gestion.js");
-
-function today(milliseconds) {
-    const date = new Date(milliseconds);
-    const todayDate = new Date();
-
-    if (
-        date.getFullYear() === todayDate.getFullYear() &&
-        date.getMonth() === todayDate.getMonth() &&
-        date.getDate() === todayDate.getDate()
-    ) {
-        return true;
-    }
-    return false;
-};
-
-
-function formatDate(milliseconds) {
-    const date = new Date(milliseconds);
-    if (date.getMinutes() < 10) {
-        return `${date.getHours()}:0${date.getMinutes()}`;
-    } else {
-        return `${date.getHours()}:${date.getMinutes()}`;
-    }
-};
-
-function forToday(reservations) {
-    let forToday = [];
-
-    reservations.forEach((reservation) => {
-        if (today(reservation.date) === true) {
-            reservation.date = formatDate(reservation.date);
-            forToday.push(reservation);
-        };
-    });
-
-    return forToday;
-};
+const { formatHour, forToday, today, formatDateTime } = require("./functions/function.js");
 
 router.get('/', (req, res) => {
     if (req.session.connected) {
         let statistiques;
 
-        if (Gestion.getLastStatistiques().date !== new Date().toISOString().slice(0, 10)) {
+        if (!today(Gestion.getLastStatistiques().date)) {
             statistiques = Gestion.createStatistiques(Gestion.getLastStatistiques().fdc_fermeture);
             statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().id);
         } else {
@@ -138,7 +102,7 @@ router.post('/add_reservation', (req, res) => {
         amount = 35 * req.body.persons
     }
 
-    Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, new Date(req.body.date).getTime(), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
+    Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, formatDateTime(req.body.date), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
     res.redirect('/gestion');
 });
 
@@ -153,7 +117,7 @@ router.post("/statistiques", (req, res) => {
 
     const reservations = Gestion.reservations();
     reservations.forEach((reservation) => {
-        if (today(reservation.date) === true) {
+        if (today(reservation.date)) {
             id = reservation.id;
             fdc_fermeture += reservation.payment_cash;
             total_bcc += reservation.payment_bcc;
@@ -178,12 +142,12 @@ router.get("/filter", (req, res) => {
             const filteredReservations = Gestion.filter(req.query.firstname, req.query.date);
 
             if (filteredReservations !== undefined && filteredReservations.length === undefined) {
-                filteredReservations.date = formatDate(filteredReservations.date);
+                filteredReservations.date = formatHour(filteredReservations.date);
                 forSelectedDay.push(filteredReservations);
                 res.render("gestion.hbs", { reservations: forSelectedDay });
             } else if (filteredReservations !== undefined && filteredReservations.length !== undefined && filteredReservations.length !== 0) {
                 Gestion.filter(req.query.firstname, req.query.date).forEach((reservation) => {
-                    reservation.date = formatDate(reservation.date);
+                    reservation.date = formatHour(reservation.date);
                     forSelectedDay.push(reservation);
                 });
                 res.render("gestion.hbs", { reservations: forSelectedDay });

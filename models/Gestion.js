@@ -130,7 +130,7 @@ module.exports.addMember = (firstname, lastname) => {
 
 module.exports.filter = (firstname, date) => {
     if (firstname === '') {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE strftime('%Y-%m-%d', datetime(date/1000, 'unixepoch', 'localtime')) = ?");
+        const stmt = db.prepare("SELECT * FROM reservations WHERE strftime('%Y-%m-%d', date) = ?");
         const info = stmt.all(date);
 
         return info;
@@ -140,7 +140,7 @@ module.exports.filter = (firstname, date) => {
 
         return info;
     } else {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ? AND strftime('%Y-%m-%d', datetime(date/1000, 'unixepoch', 'localtime')) = ?");
+        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ? AND strftime('%Y-%m-%d', date) = ?");
         const info = stmt.get(firstname, date);
 
         return info;
