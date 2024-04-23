@@ -125,9 +125,9 @@ router.get('/', (req, res) => {
 
             if (reservation.id == req.query.id) {
                 if (new Date(reservation.date).toLocaleTimeString().split(" ")[1] == "AM") {
-                    reservation.date = new Date(reservation.date).toJSON().split("T")[0] + "T0" + new Date(reservation.date).toLocaleTimeString().slice(0, 4);
+                    reservation.date = new Date(reservation.date).toISOString().split("T")[0] + "T0" + new Date(reservation.date).toLocaleTimeString().slice(0, 4);
                 } else {
-                    reservation.date = new Date(reservation.date).toJSON().split("T")[0] + "T" + (12 + parseInt(new Date(reservation.date).toLocaleTimeString().slice(0, 2))) + new Date(reservation.date).toLocaleTimeString().slice(2, 5);
+                    reservation.date = new Date(reservation.date).toISOString().split("T")[0] + "T" + (12 + parseInt(new Date(reservation.date).toLocaleTimeString().slice(0, 2))) + new Date(reservation.date).toLocaleTimeString().slice(2, 5);
                 }
 
                 reservation.hour = formatDate(reservation.date);
