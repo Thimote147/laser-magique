@@ -4,7 +4,7 @@
         <h5>Bonjour <a href="/profil">{{session.member.firstname}}</a> !</h5>
         <div class="d-flex flex-column col-12 mb-5">
             {{#if session.member.is_admin}}
-            <div>
+            <div id="filter">
                 <h6>Filtrer les réservations :</h6>
                 <form action="/gestion/filter" method="get">
                     <div>
@@ -20,7 +20,7 @@
                 </form>
             </div>
             {{/if}}
-            <section class="overflow-x-scroll">
+            <section id="reservations" class="overflow-x-scroll">
                 <table class="table">
                     <thead class="bg-green">
                         <th>Heure</th>
@@ -226,7 +226,7 @@
                     <button class="btn btn-primary" type="submit">Ajouter</button>
                 </form>
                 <div class="col-md-3">&nbsp;</div>
-                <form class="col-10 col-md-5" action="/gestion/statistiques" method="post">
+                <form id="statistiques" class="col-10 col-md-5" action="/gestion/statistiques" method="post">
                     <h3>Statistiques de la journée :</h3>
                     <div class="d-flex justify-content-between my-2">
                         <div class="col-6">

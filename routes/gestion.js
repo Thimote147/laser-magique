@@ -103,7 +103,7 @@ router.post('/add_reservation', (req, res) => {
     }
 
     Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, formatDateTime(req.body.date), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
-    res.redirect('/gestion');
+    res.redirect('/gestion#reservations');
 });
 
 router.post("/statistiques", (req, res) => {
@@ -130,7 +130,7 @@ router.post("/statistiques", (req, res) => {
     fdc_fermeture = fdc_fermeture.toFixed(2);
 
     Gestion.updateStatistiques(Gestion.getLastStatistiques().id, fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, req.body.enveloppe);
-    res.redirect("/gestion");
+    res.redirect("/gestion#statistiques");
 });
 
 router.get("/filter", (req, res) => {

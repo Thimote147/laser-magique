@@ -1,4 +1,8 @@
 function formatDateTime(dateTime) {
+    if (dateTime.length === 5) {
+        dateTime = new Date().toISOString().split("T")[0] + "T" + dateTime;
+    }
+
     if ((new Date(dateTime).toLocaleTimeString().split(" ")[1] == "AM" && new Date(dateTime).toLocaleTimeString().slice(0, 1) != 12) || (new Date(dateTime).toLocaleTimeString().split(" ")[1] == "PM" && new Date(dateTime).toLocaleTimeString().slice(0, 1) == 12)) {
         if (parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 2)) < 10) {
             dateTime = new Date(dateTime).toISOString().split("T")[0] + "T0" + (parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 1)) % 12) + new Date(dateTime).toLocaleTimeString().slice(1, 4);
@@ -14,7 +18,6 @@ function formatDateTime(dateTime) {
             dateTime = new Date(dateTime).toISOString().split("T")[0] + "T" + (12 + parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 1))) + new Date(dateTime).toLocaleTimeString().slice(1, 4);
         } else {
             if (parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 2)) == 12) {
-                console.log(parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 2)))
                 dateTime = new Date(dateTime).toISOString().split("T")[0] + "T" + parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 2)) + new Date(dateTime).toLocaleTimeString().slice(2, 5);
             } else {
                 dateTime = new Date(dateTime).toISOString().split("T")[0] + "T" + (12 + parseInt(new Date(dateTime).toLocaleTimeString().slice(0, 2))) + new Date(dateTime).toLocaleTimeString().slice(2, 5);
@@ -155,7 +158,30 @@ function today(dateTime) {
     return new Date(dateTime).toISOString().split("T")[0] == new Date().toISOString().split("T")[0]
 };
 
+function substractionHours(beginning_hour, ending_hour) {
+
+    function timeToMilliseconds(time) {
+        let parts = time.split(':');
+        let hours = parseInt(parts[0], 10);
+        let minutes = parseInt(parts[1], 10);
+        return (hours * 60 + minutes) * 60 * 1000;
+    }
+
+    let milliseconds1 = timeToMilliseconds(beginning_hour);
+    let milliseconds2 = timeToMilliseconds(ending_hour);
+
+    let milliseconds = milliseconds2 - milliseconds1;
+
+    var hours = Math.floor(milliseconds / (1000 * 60 * 60));
+    var minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+
+    var formattedHours = hours;
+    var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+    return formattedHours + "h" + formattedMinutes;
+}
+
 
 module.exports = {
-    formatDateTime, formatHour, forToday, price, today
+    formatDateTime, formatHour, forToday, price, substractionHours, today
 };

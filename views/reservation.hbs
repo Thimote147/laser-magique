@@ -1,4 +1,9 @@
 <main class="m-0">
+    {{#if (eq reservation "Cette réservation n'existe pas")}}
+    <section class="container-fluid d-flex justify-content-center align-items-center vh-100">
+        <h1>{{reservation}}</h1>
+    </section>
+    {{else}}
     <section class="container-fluid">
         <h1 class="title my-5">Réservation de {{reservation.firstname}}</h1>
         <h5><a href="/gestion">Retour à la gestion</a></h5>
@@ -138,8 +143,8 @@
             </div>
             {{else}}
             <div class="d-flex justify-content-between">
-                <p>Heure : </p>
-                <p>{{reservation.hour}}</p>
+                <label for="hour">Heure : </label>
+                <input type="time" name="hour" value="{{reservation.hour}}" readonly>
             </div>
             {{/if}}
             <div class="d-flex justify-content-between">
@@ -304,4 +309,5 @@
             <button class="btn btn-primary" type="submit" name="id" value="{{reservation.id}}">Enregistrer</button>
         </form>
     </section>
+    {{/if}}
 </main>

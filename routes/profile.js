@@ -2,29 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Gestion = require("../models/Gestion.js");
 const Bcrypt = require('bcrypt');
-
-function substractionHours(beginning_hour, ending_hour) {
-
-    function timeToMilliseconds(time) {
-        let parts = time.split(':');
-        let hours = parseInt(parts[0], 10);
-        let minutes = parseInt(parts[1], 10);
-        return (hours * 60 + minutes) * 60 * 1000;
-    }
-
-    let milliseconds1 = timeToMilliseconds(beginning_hour);
-    let milliseconds2 = timeToMilliseconds(ending_hour);
-
-    let milliseconds = milliseconds2 - milliseconds1;
-
-    var hours = Math.floor(milliseconds / (1000 * 60 * 60));
-    var minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
-
-    var formattedHours = hours;
-    var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-
-    return formattedHours + "h" + formattedMinutes;
-}
+const { substractionHours } = require("./functions/function.js");
 
 function addHours(time1, time2) {
 
@@ -45,8 +23,8 @@ function addHours(time1, time2) {
 }
 
 function salary(member, hours) {
-    if (member == "Joachim") { 
-        return ((hours.split("h")[0] * 15) + ((hours.split("h")[1] * 15) / 60)) 
+    if (member == "Joachim") {
+        return ((hours.split("h")[0] * 15) + ((hours.split("h")[1] * 15) / 60))
     } else {
         return ((hours.split("h")[0] * 10) + ((hours.split("h")[1] * 10) / 60))
     }
