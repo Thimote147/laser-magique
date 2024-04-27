@@ -144,7 +144,8 @@
             {{else}}
             <div class="d-flex justify-content-between">
                 <label for="hour">Heure : </label>
-                <input type="time" name="hour" value="{{reservation.hour}}" readonly>
+                <input type="time" name="hour" value="{{reservation.hour}}" hidden>
+                <p>{{reservation.hour}}</p>
             </div>
             {{/if}}
             <div class="d-flex justify-content-between">
