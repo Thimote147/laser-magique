@@ -12,7 +12,7 @@ function generateCalendar(year, month, option) {
 
     let currentWeek = [];
 
-    for (let i = 0; i < startingDayOfWeek; i++) {
+    for (let i = 1; i < startingDayOfWeek; i++) {
         currentWeek.push(null);
     }
 
