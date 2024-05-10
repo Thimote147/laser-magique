@@ -25,9 +25,9 @@ router.post("/add_worker", (req, res) => {
 
 router.post("/add_unavailability", (req, res) => {
     if (req.body.ending_date === "") {
-        Calendar.addUnavailability(req.body.worker, req.body.beginning_date, req.body.beginning_date);
+        Calendar.addUnavailability(req.session.member.firstname, req.body.beginning_date, req.body.beginning_date);
     } else {
-        Calendar.addUnavailability(req.body.worker, req.body.beginning_date, req.body.ending_date);
+        Calendar.addUnavailability(req.session.member.firstname, req.body.beginning_date, req.body.ending_date);
     }
 
     res.redirect("/calendars#unavailability");
