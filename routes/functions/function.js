@@ -1,3 +1,82 @@
+const moment = require('moment');
+const Calendar = require("../../models/Calendar.js");
+
+function generateCalendar(year, month, option) {
+    let calendar = [];
+
+    const firstDayOfMonth = moment(`${year}-${month}-01`, 'YYYY-MM-DD');
+
+    const daysInMonth = firstDayOfMonth.daysInMonth();
+
+    const startingDayOfWeek = firstDayOfMonth.day();
+
+    let currentWeek = [];
+
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        currentWeek.push(null);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        let people;
+
+        if (option === "working") {
+            if (month < 10) {
+                if (day < 10) {
+                    people = Calendar.working(year + "-0" + month + "-0" + day);
+                }else {
+                    people = Calendar.working(year + "-0" + month + "-" + day);
+                }
+            } else {
+                if (day < 10) {
+                    people = Calendar.working(year + "-" + month + "-0" + day);
+                } else {
+                    people = Calendar.working(year + "-" + month + "-" + day);
+                }
+            }
+        } else {
+            if (month < 10) {
+                if (day < 10) {
+                    people = Calendar.notWorking(year + "-0" + month + "-0" + day);
+                } else {
+                    people = Calendar.notWorking(year + "-0" + month + "-" + day);
+                }
+            } else {
+                if (day < 10) {
+                    people = Calendar.notWorking(year + "-" + month + "-0" + day);
+                } else {
+                    people = Calendar.notWorking(year + "-" + month + "-" + day);
+                }
+            }
+        }
+
+        let addPeople = [];
+
+        for (let i = 0; i < people.length; i++) {
+            if (option === "working") {
+                addPeople.push(people[i].beginning_day.split('T')[1] + " : " +people[i].member);
+            } else {
+                addPeople.push(people[i].member);
+            }
+        }
+
+        currentWeek.push({ date: day, people: addPeople });
+
+        if (currentWeek.length === 7) {
+            calendar.push(currentWeek);
+            currentWeek = [];
+        }
+    }
+
+    if (currentWeek.length > 0) {
+        while (currentWeek.length < 7) {
+            currentWeek.push(null);
+        }
+        calendar.push(currentWeek);
+    }
+
+    return calendar;
+}
+
 function formatDateTime(dateTime) {
     if (dateTime.length === 5) {
         dateTime = new Date().toISOString().split("T")[0] + "T" + dateTime;
@@ -152,7 +231,7 @@ function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, c
     const total = price + food;
 
     return { nbr_laser: nbr_laser, nbr_vr: nbr_vr, nbr_ct: nbr_ct, price: price, remaining: remaining, total: total };
-}; 
+};
 
 function today(dateTime) {
     return new Date(dateTime).toISOString().split("T")[0] == new Date().toISOString().split("T")[0]
@@ -183,5 +262,5 @@ function substractionHours(beginning_hour, ending_hour) {
 
 
 module.exports = {
-    formatDateTime, formatHour, forToday, price, substractionHours, today
+    formatDateTime, formatHour, forToday, price, substractionHours, today, generateCalendar
 };

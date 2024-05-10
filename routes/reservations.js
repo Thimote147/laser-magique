@@ -48,7 +48,6 @@ router.post('/update_infos', (req, res) => {
     if (req.session.member.is_admin) {
         Reservation.update(req.body.id, req.body.persons, formatDateTime(req.body.date), req.body.activities, updated_price.nbr_laser, updated_price.nbr_vr, updated_price.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, updated_price.remaining, updated_price.total, req.body.observation);
     } else {
-        console.log("OK")
         Reservation.update(req.body.id, req.body.persons, formatDateTime(req.body.hour), req.body.activities, updated_price.nbr_laser, updated_price.nbr_vr, updated_price.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, updated_price.remaining, updated_price.total, req.body.observation);
     }
     res.redirect("/reservation?id=" + req.body.id + "#details");

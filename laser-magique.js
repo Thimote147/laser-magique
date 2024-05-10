@@ -29,7 +29,6 @@ hbs.registerHelper('neq', function (a, b) {
   }
 });
 
-// TODO Require your controllers here
 const indexRouter = require("./routes/index.js");
 const homeRouter = require("./routes/home.js")
 const cybergamesRouter = require("./routes/cyber_games.js");
@@ -40,7 +39,8 @@ const weaponsRouter = require("./routes/weapons.js");
 const headsetsRouter = require("./routes/headsets.js");
 const trikesRouter = require("./routes/trikes.js");
 const inventoryRouter = require("./routes/inventory.js");
-const reservationsRouter = require("./routes/reservations.js")
+const reservationsRouter = require("./routes/reservations.js");
+const calendarRouter = require("./routes/calendars.js");
 
 const app = express();
 const port = 3000;
@@ -56,7 +56,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // Get static files fro
 app.use(session({ secret: "Your secret key", resave: false, saveUninitialized: false }));
 app.use(function (req, res, next) { res.locals.session = req.session; next(); });
 
-// TODO Call your controllers here
 app.use("/", indexRouter);
 app.use("/accueil", homeRouter);
 app.use("/partie-cyber-games", cybergamesRouter);
@@ -68,6 +67,7 @@ app.use("/headsets", headsetsRouter);
 app.use("/trikes", trikesRouter);
 app.use("/inventaire", inventoryRouter);
 app.use("/reservation", reservationsRouter);
+app.use("/calendars", calendarRouter);
 
 // Create error on page not found
 app.use(function (req, res, next) {

@@ -1,7 +1,10 @@
 <main class="my-0">
     <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title my-5">Gestion du Laser Magique</h1>
+        <div class="d-flex justify-content-between">
         <h5>Bonjour <a href="/profil">{{session.member.firstname}}</a> !</h5>
+        <h5>Accéder aux <a href="/calendars">calendriers</a> de travail</h5>
+        </div>
         <div class="d-flex flex-column col-12 mb-5">
             {{#if session.member.is_admin}}
             <div id="filter">

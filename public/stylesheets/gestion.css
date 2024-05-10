@@ -29,3 +29,8 @@
 .select-size-modal {
     width: 200px;
 }
+
+.table ul {
+    list-style: none;
+    padding: 0;
+}
