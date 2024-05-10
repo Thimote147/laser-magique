@@ -86,7 +86,6 @@
                         </tbody>
                     </table>
                 </div>
-                {{#if session.member.is_admin}}
                 <form action="/calendars/add_unavailability" method="post">
                     <h3>Ajouter une Indisponibilité : </h3>
                     <div class="d-flex flex-column">
@@ -110,7 +109,6 @@
                     </div>
                     <button class="btn btn-primary m-1" type="submit">Ajouter</button>
                 </form>
-                {{/if}}
             </section>
         </div>
         </div>
