@@ -20,32 +20,16 @@ function generateCalendar(year, month, option) {
         let people;
 
         if (option === "working") {
-            if (month < 10) {
-                if (day < 10) {
-                    people = Calendar.working(year + "-0" + month + "-0" + day);
-                }else {
-                    people = Calendar.working(year + "-0" + month + "-" + day);
-                }
+            if (day < 10) {
+                people = Calendar.working(year + "-" + month + "-0" + day);
             } else {
-                if (day < 10) {
-                    people = Calendar.working(year + "-" + month + "-0" + day);
-                } else {
-                    people = Calendar.working(year + "-" + month + "-" + day);
-                }
+                people = Calendar.working(year + "-" + month + "-" + day);
             }
         } else {
-            if (month < 10) {
-                if (day < 10) {
-                    people = Calendar.notWorking(year + "-0" + month + "-0" + day);
-                } else {
-                    people = Calendar.notWorking(year + "-0" + month + "-" + day);
-                }
+            if (day < 10) {
+                people = Calendar.notWorking(year + "-" + month + "-0" + day);
             } else {
-                if (day < 10) {
-                    people = Calendar.notWorking(year + "-" + month + "-0" + day);
-                } else {
-                    people = Calendar.notWorking(year + "-" + month + "-" + day);
-                }
+                people = Calendar.notWorking(year + "-" + month + "-" + day);
             }
         }
 
@@ -53,7 +37,7 @@ function generateCalendar(year, month, option) {
 
         for (let i = 0; i < people.length; i++) {
             if (option === "working") {
-                addPeople.push(people[i].beginning_day.split('T')[1] + " : " +people[i].member);
+                addPeople.push(people[i].beginning_day.split('T')[1] + " : " + people[i].member);
             } else {
                 addPeople.push(people[i].member);
             }

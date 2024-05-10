@@ -6,8 +6,9 @@ const Calendar = require("../models/Calendar.js");
 
 router.get("/", (req, res) => {
     if (req.session.connected) {
-        const workingCalendar = generateCalendar(2024, 5, 'working');
-        const notWorkingCalendar = generateCalendar(2024, 5, 'not working');
+        const date = new Date().toJSON();
+        const workingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'working');
+        const notWorkingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'not working');
         res.render("calendars.hbs", { working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
     } else {
         res.render("login.hbs");
