@@ -41,6 +41,7 @@ const trikesRouter = require("./routes/trikes.js");
 const inventoryRouter = require("./routes/inventory.js");
 const reservationsRouter = require("./routes/reservations.js");
 const calendarRouter = require("./routes/calendars.js");
+const apiRouter = require("./routes/api.js");
 
 const app = express();
 const port = 3000;
@@ -68,6 +69,7 @@ app.use("/trikes", trikesRouter);
 app.use("/inventaire", inventoryRouter);
 app.use("/reservation", reservationsRouter);
 app.use("/calendars", calendarRouter);
+app.use("/api", apiRouter);
 
 // Create error on page not found
 app.use(function (req, res, next) {
