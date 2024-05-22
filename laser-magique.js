@@ -4,6 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 const hbs = require('hbs');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 
 /**
  * eq checks if value are equal
@@ -45,6 +46,9 @@ const apiRouter = require("./routes/api.js");
 
 const app = express();
 const port = 3000;
+
+// Middleware to parse JSON requests
+app.use(bodyParser.json());
 
 // Setup views folder and handlebar engine
 app.set('views', path.join(__dirname, 'views'));

@@ -31,7 +31,7 @@ router.post('/cancel', (req, res) => {
 });
 
 router.post('/delete', (req, res) => {
-    Gestion.delete(req.body.reservation);
+    Gestion.deleteReservation(req.body.reservation);
     res.redirect("/gestion");
 });
 

@@ -58,7 +58,7 @@ module.exports.cancel = (id, is_canceled) => {
     const info = stmt.run(is_canceled, id);
 }
 
-module.exports.delete = (id) => {
+module.exports.deleteReservation = (id) => {
     const stmt = db.prepare("DELETE FROM reservations WHERE id = ?");
     const info = stmt.run(id);
 }
