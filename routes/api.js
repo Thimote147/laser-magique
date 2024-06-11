@@ -100,4 +100,12 @@ router.post('/delete_reservation', (req, res) => {
     }
 });
 
+// router.get('/get_conso', (req, res) => {
+//     if (Gestion.member(req.body.user) !== undefined) {
+//         if (Bcrypt.compareSync(req.body.password, Gestion.login(req.body.user))) {
+//             Gestion.
+//         }
+//     }
+// });
+
 module.exports = router;

@@ -11850,7 +11850,7 @@ a.text-dark:focus {
 @font-face {
     font-family: "FontAwesome";
     src: url("../fonts/fontawesome-webfont.eot?v=4.7.0");
-    src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
+    src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
     font-weight: normal;
     font-style: normal;
     font-display: swap
@@ -16463,7 +16463,7 @@ html.lb-disable-scrolling {
 @font-face {
     font-family: "MyFontLight";
     src: url(../fonts/oswald-light-webfont.eot);
-    src: url(../fonts/oswald-light-webfont.eot?#iefix) format("embedded-opentype"), url(../fonts/oswald-light-webfont.woff2) format("font-woff2"), url(../fonts/oswald-light-webfont.woff) format("font-woff"), url(../fonts/oswald-light-webfont.svg#MyFontLight) format("svg"), url(../fonts/oswald-light-webfont.ttf) format("truetype");
+    src: url(../fonts/oswald-light-webfont.eot?#iefix) format("embedded-opentype"), url(../fonts/oswald-light-webfont.woff2) format("font-woff2"), url(../fonts/oswald-light-webfont.woff) format("font-woff"), url(../fonts/oswald-light-webfont.svg#MyFontLight) format("svg"), url(../fonts/oswald-light-webfont.woff) format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap
@@ -16472,7 +16472,7 @@ html.lb-disable-scrolling {
 @font-face {
     font-family: "MyFontMedium";
     src: url(../fonts/oswald-regular-webfont.eot);
-    src: url(../fonts/oswald-regular-webfont.eot?#iefix) format("embedded-opentype"), url(../fonts/oswald-regular-webfont.woff2) format("font-woff2"), url(../fonts/oswald-regular-webfont.woff) format("font-woff"), url(../fonts/oswald-regular-webfont.svg#MyFontMedium) format("svg"), url(../fonts/oswald-regular-webfont.ttf) format("truetype");
+    src: url(../fonts/oswald-regular-webfont.eot?#iefix) format("embedded-opentype"), url(../fonts/oswald-regular-webfont.woff2) format("font-woff2"), url(../fonts/oswald-regular-webfont.woff) format("font-woff"), url(../fonts/oswald-regular-webfont.svg#MyFontMedium) format("svg"), url(../fonts/oswald-regular-webfont.woff) format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap
@@ -16481,7 +16481,7 @@ html.lb-disable-scrolling {
 @font-face {
     font-family: "MyFontBold";
     src: url(../fonts/oswald-bold-webfont.eot);
-    src: url(../fonts/oswald-bold-webfont.eot?#iefix) format("embedded-opentype"), url(../fonts/oswald-bold-webfont.woff2) format("font-woff2"), url(../fonts/oswald-bold-webfont.woff) format("font-woff"), url(../fonts/oswald-bold-webfont.svg#MyFontBold) format("svg"), url(../fonts/oswald-bold-webfont.ttf) format("truetype");
+    src: url(../fonts/oswald-bold-webfont.eot?#iefix) format("embedded-opentype"), url(../fonts/oswald-bold-webfont.woff2) format("font-woff2"), url(../fonts/oswald-bold-webfont.woff) format("font-woff"), url(../fonts/oswald-bold-webfont.svg#MyFontBold) format("svg"), url(../fonts/oswald-bold-webfont.woff) format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap
