@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
         const workingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'working');
         const notWorkingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'not working');
 
-        res.render("calendars.hbs", { month: month[date.slice(5, 7) % 12], working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
+        res.render("calendars.hbs", { month: month[date.slice(5, 7) % 12] + " " + date.slice(0, 4), working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
     } else {
         res.render("login.hbs");
     }
@@ -36,16 +36,21 @@ router.post("/add_unavailability", (req, res) => {
 router.get('/filter', (req, res) => {
     if (req.session.connected) {
         let date;
-        
+
         if (req.query.month === "") {
             date = new Date().toJSON();
         } else {
             date = new Date(req.query.month).toJSON();
+            if (parseInt(date.slice(5, 7)) < 9) {
+                date = date.slice(0, 5) + "0" + (parseInt(date.slice(5, 7)) + 1) + date.slice(7);
+            } else {
+                date = date.slice(0, 5) + (parseInt(date.slice(5, 7)) + 1) + date.slice(7);
+            }
         }
         const workingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'working');
         const notWorkingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'not working');
 
-        res.render("calendars.hbs", { month: month[date.slice(5, 7) % 12], working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
+        res.render("calendars.hbs", { month: month[date.slice(5, 7) % 12] + " " + date.slice(0, 4), working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
     } else {
         res.render('login.hbs');
     }

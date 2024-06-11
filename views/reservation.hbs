@@ -9,7 +9,7 @@
         <h5><a href="/gestion">Retour à la gestion</a></h5>
         <div class="d-flex">
             <div class="col-5">
-                <h5 class="text-decoration-underline">Consommations :</h5>
+                <h5 class="text-decoration-underline">Conso :</h5>
                 <div class="ml-4">
                     {{#if (neq reservation.soft "0")}}
                     <p class="m-0">{{reservation.soft}}x Softs/Bières</p>
@@ -34,49 +34,57 @@
             <div class="col-7">
                 <form class="my-2" action="/reservation/add" method="post">
                     <h6 class="text-decoration-underline">Ajouter conso :</h6>
-                    <input type="number" name="id" value="{{reservation.id}}" hidden>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="soft">Soft/Bière</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="aquarius">Aquarius</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="capri_sun">Capri
-                        Sun/Café</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="chips">Chips</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="pop_corn">Pop Corn</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="bonbon">Bonbon</button>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <input type="number" name="id" value="{{reservation.id}}" hidden>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="soft">Soft/Bière</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice"
+                            value="aquarius">Aquarius</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="capri_sun">Capri
+                            Sun/Café</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="chips">Chips</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="pop_corn">Pop
+                            Corn</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="bonbon">Bonbon</button>
+                    </div>
                 </form>
                 <form class="my-4" action="/reservation/delete" method="post">
                     <h6 class="text-decoration-underline">Supprimer conso :</h6>
-                    <input type="number" name="id" value="{{reservation.id}}" hidden>
-                    {{#if (eq reservation.soft "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Soft/Bière</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="soft">Soft/Bière</button>
-                    {{/if}}
-                    {{#if (eq reservation.aquarius "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Aquarius</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="aquarius">Aquarius</button>
-                    {{/if}}
-                    {{#if (eq reservation.capri_sun "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Capri Sun/Café</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="capri_sun">Capri
-                        Sun/Café</button>
-                    {{/if}}
-                    {{#if (eq reservation.chips "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">chips</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="chips">Chips</button>
-                    {{/if}}
-                    {{#if (eq reservation.pop_corn "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Pop Corn</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="pop_corn">Pop Corn</button>
-                    {{/if}}
-                    {{#if (eq reservation.bonbon "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Bonbon</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="bonbon">Bonbon</button>
-                    {{/if}}
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <input type="number" name="id" value="{{reservation.id}}" hidden>
+                        {{#if (eq reservation.soft "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Soft/Bière</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="soft">Soft/Bière</button>
+                        {{/if}}
+                        {{#if (eq reservation.aquarius "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Aquarius</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice"
+                            value="aquarius">Aquarius</button>
+                        {{/if}}
+                        {{#if (eq reservation.capri_sun "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Capri Sun/Café</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="capri_sun">Capri
+                            Sun/Café</button>
+                        {{/if}}
+                        {{#if (eq reservation.chips "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">chips</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="chips">Chips</button>
+                        {{/if}}
+                        {{#if (eq reservation.pop_corn "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Pop Corn</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="pop_corn">Pop
+                            Corn</button>
+                        {{/if}}
+                        {{#if (eq reservation.bonbon "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Bonbon</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="bonbon">Bonbon</button>
+                        {{/if}}
+                    </div>
                 </form>
             </div>
         </div>
@@ -98,33 +106,39 @@
             <div class="col-7">
                 <form action="/reservation/add" method="post">
                     <h6 class="text-decoration-underline">Ajouter parties :</h6>
-                    <input type="number" name="id" value="{{reservation.id}}" hidden>
-                    <input type="number" name="persons" value="{{reservation.persons}}" hidden>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="laser">Laser Game</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="vr">Réalité
-                        Virtuelle</button>
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="ct">Cyber Trike</button>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <input type="number" name="id" value="{{reservation.id}}" hidden>
+                        <input type="number" name="persons" value="{{reservation.persons}}" hidden>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="laser">Laser
+                            Game</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="vr">Réalité
+                            Virtuelle</button>
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="ct">Cyber Trike</button>
+                    </div>
                 </form>
                 <form class="my-4" action="/reservation/delete" method="post">
                     <h6 class="text-decoration-underline">Supprimer parties :</h6>
-                    <input type="number" name="id" value="{{reservation.id}}" hidden>
-                    <input type="number" name="persons" value="{{reservation.persons}}" hidden>
-                    {{#if (eq reservation.nbr_laser "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Laser Game</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="laser">Laser Game</button>
-                    {{/if}}
-                    {{#if (eq reservation.nbr_vr "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Réalité Virtuelle</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="vr">Réalité
-                        Virtuelle</button>
-                    {{/if}}
-                    {{#if (eq reservation.nbr_ct "0")}}
-                    <button class="btn btn-secondary m-1" disabled="disabled">Cyber Trike</button>
-                    {{else}}
-                    <button class="btn btn-primary m-1" type="submit" name="choice" value="ct">Cyber Trike</button>
-                    {{/if}}
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <input type="number" name="id" value="{{reservation.id}}" hidden>
+                        <input type="number" name="persons" value="{{reservation.persons}}" hidden>
+                        {{#if (eq reservation.nbr_laser "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Laser Game</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="laser">Laser
+                            Game</button>
+                        {{/if}}
+                        {{#if (eq reservation.nbr_vr "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Réalité Virtuelle</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="vr">Réalité
+                            Virtuelle</button>
+                        {{/if}}
+                        {{#if (eq reservation.nbr_ct "0")}}
+                        <button class="btn btn-secondary m-1" disabled="disabled">Cyber Trike</button>
+                        {{else}}
+                        <button class="btn btn-primary m-1" type="submit" name="choice" value="ct">Cyber Trike</button>
+                        {{/if}}
+                    </div>
                 </form>
             </div>
         </div>
@@ -133,7 +147,7 @@
         <h3 class="text-decoration-underline">Détails :</h3>
         <form class="col-12 col-md-6" action="/reservation/update_infos" method="post">
             <div class="d-flex justify-content-between">
-                <label for="persons">Nombre de personnes : </label>
+                <label for="persons">Personnes : </label>
                 <input type="number" inputmode="numeric" name="persons" value="{{reservation.persons}}" min="2">
             </div>
             {{#if session.member.is_admin}}

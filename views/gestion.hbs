@@ -2,8 +2,8 @@
     <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title my-5">Gestion du Laser Magique</h1>
         <div class="d-flex justify-content-between">
-        <h5>Bonjour <a href="/profil">{{session.member.firstname}}</a> !</h5>
-        <h5>Accéder aux <a href="/calendars">calendriers</a> de travail</h5>
+            <h5>Bonjour <a href="/profil">{{session.member.firstname}}</a> !</h5>
+            <h5>Accéder aux <a href="/calendars">calendriers</a> de travail</h5>
         </div>
         <div class="d-flex flex-column col-12 mb-5">
             {{#if session.member.is_admin}}
@@ -31,9 +31,9 @@
                         {{#if session.member.is_admin}}
                         <th>Nom</th>
                         <th>Email</th>
-                        <th>Numéro de téléphone</th>
+                        <th>Téléphone</th>
                         {{/if}}
-                        <th>Nombre de personnes</th>
+                        <th>Personnes</th>
                         <th>Activités</th>
                         <th>Payé par</th>
                         <th>Actions</th>
