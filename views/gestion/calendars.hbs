@@ -27,7 +27,11 @@
                             <tr>
                                 {{#each week as |day|}}
                                 <td class="bg-dark">
+                                    {{#if (eq day.date ../../today)}}
+                                    <h6 class="text-green">{{day.date}}</h6>
+                                    {{else}}
                                     <h6>{{day.date}}</h6>
+                                    {{/if}}
                                     <ul>
                                         {{#each day.people as |person|}}
                                         <li>{{person}}</li>
@@ -80,7 +84,11 @@
                             <tr>
                                 {{#each week as |day|}}
                                 <td class="bg-dark">
+                                    {{#if (eq day.date ../../today)}}
+                                    <h6 class="text-green">{{day.date}}</h6>
+                                    {{else}}
                                     <h6>{{day.date}}</h6>
+                                    {{/if}}
                                     <ul>
                                         {{#each day.people as |person|}}
                                         <li>{{person}}</li>

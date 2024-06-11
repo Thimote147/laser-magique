@@ -13,9 +13,9 @@ router.get('/', (req, res) => {
         } else {
             statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().id);
         }
-        res.render("gestion.hbs", { reservations: forToday(Gestion.reservations()), statistiques: statistiques });
+        res.render("gestion/gestion.hbs", { reservations: forToday(Gestion.reservations()), statistiques: statistiques });
     } else {
-        res.render("login.hbs");
+        res.render("gestion/login.hbs");
     }
 });
 
@@ -136,7 +136,7 @@ router.post("/statistiques", (req, res) => {
 router.get("/filter", (req, res) => {
     if (req.session.connected) {
         if (req.query.firstname === '' && req.query.date === '') {
-            res.render("gestion.hbs", { reservations: forToday(Gestion.reservations()) });
+            res.render("gestion/gestion.hbs", { reservations: forToday(Gestion.reservations()) });
         } else {
             const forSelectedDay = [];
             const filteredReservations = Gestion.filter(req.query.firstname, req.query.date);
@@ -144,19 +144,19 @@ router.get("/filter", (req, res) => {
             if (filteredReservations !== undefined && filteredReservations.length === undefined) {
                 filteredReservations.date = formatHour(filteredReservations.date);
                 forSelectedDay.push(filteredReservations);
-                res.render("gestion.hbs", { reservations: forSelectedDay });
+                res.render("gestion/gestion.hbs", { reservations: forSelectedDay });
             } else if (filteredReservations !== undefined && filteredReservations.length !== undefined && filteredReservations.length !== 0) {
                 Gestion.filter(req.query.firstname, req.query.date).forEach((reservation) => {
                     reservation.date = formatHour(reservation.date);
                     forSelectedDay.push(reservation);
                 });
-                res.render("gestion.hbs", { reservations: forSelectedDay });
+                res.render("gestion/gestion.hbs", { reservations: forSelectedDay });
             } else {
-                res.render("gestion.hbs", { reservations: [{ date: "/", firstname: "Cette réservation n'existe pas" }] });
+                res.render("gestion/gestion.hbs", { reservations: [{ date: "/", firstname: "Cette réservation n'existe pas" }] });
             }
         };
     } else {
-        res.render("login.hbs");
+        res.render("gestion/login.hbs");
     };
 });
 

@@ -67,14 +67,14 @@ router.get('/', (req, res) => {
                 hours_members.push({ id: member.id, firstname: member.firstname, lastname: member.lastname, email: member.email, phone_number: member.phone_number, hours: hours, salary: salary(member.firstname, hours) });
             });
 
-            res.render("profile.hbs", { members: hours_members, hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
+            res.render("gestion/profile.hbs", { members: hours_members, hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
             req.session.error = null;
         } else {
-            res.render("profile.hbs", { hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
+            res.render("gestion/profile.hbs", { hours: formatDay, totalMoney: totalMoney, totalHours: totalHours, error: req.session.error, today: today });
             req.session.error = null;
         };
     } else {
-        res.render("login.hbs");
+        res.render("gestion/login.hbs");
     }
 });
 
@@ -127,7 +127,6 @@ router.post("/add_member", (req, res) => {
     res.redirect("/profil");
 });
 
-//temporaire
 router.post("/switch_status", (req, res) => {
     if (req.session.member.is_admin == 1) {
         Gestion.updateStatus(req.session.member.id, 0)

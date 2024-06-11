@@ -12,9 +12,9 @@ router.get("/", (req, res) => {
         const workingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'working');
         const notWorkingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'not working');
 
-        res.render("calendars.hbs", { month: month[date.slice(5, 7) % 12] + " " + date.slice(0, 4), working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
+        res.render("gestion/calendars.hbs", { today: date.slice(8, 10), month: month[date.slice(5, 7) % 12] + " " + date.slice(0, 4), working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
     } else {
-        res.render("login.hbs");
+        res.render("gestion/login.hbs");
     }
 });
 
@@ -50,9 +50,9 @@ router.get('/filter', (req, res) => {
         const workingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'working');
         const notWorkingCalendar = generateCalendar(date.slice(0, 4), date.slice(5, 7), 'not working');
 
-        res.render("calendars.hbs", { month: month[date.slice(5, 7) % 12] + " " + date.slice(0, 4), working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
+        res.render("gestion/calendars.hbs", { month: month[date.slice(5, 7) % 12] + " " + date.slice(0, 4), working: workingCalendar, notWorking: notWorkingCalendar, members: Gestion.allMembers() });
     } else {
-        res.render('login.hbs');
+        res.render('gestion/login.hbs');
     }
 });
 

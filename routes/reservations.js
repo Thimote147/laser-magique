@@ -21,9 +21,9 @@ router.get('/', (req, res) => {
             InfosReservation = "Cette réservation n'existe pas";
         }
 
-        res.render('reservation.hbs', { reservation: InfosReservation });
+        res.render('gestion/reservation.hbs', { reservation: InfosReservation });
     } else {
-        res.render('login.hbs');
+        res.render('gestion/login.hbs');
     }
 });
 
