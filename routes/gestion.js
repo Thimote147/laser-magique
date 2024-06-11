@@ -107,7 +107,7 @@ router.post('/add_reservation', (req, res) => {
 });
 
 router.post("/statistiques", (req, res) => {
-    
+
     let fdc_fermeture = parseFloat(req.body.fdc_ouverture - req.body.enveloppe);
 
     let total_bcc = 0;
@@ -158,6 +158,11 @@ router.get("/filter", (req, res) => {
     } else {
         res.render("gestion/login.hbs");
     };
+});
+
+router.post("/disconnect", (req, res) => {
+    req.session.destroy();
+    res.redirect("/home");
 });
 
 module.exports = router;

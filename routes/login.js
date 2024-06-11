@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     if (req.session.connected) {
         res.render("gestion/gestion.hbs");
     } else {
-        res.render("gestion/login.hbs", {error : req.session.error});
+        res.render("gestion/login.hbs", { error: req.session.error });
         req.session.error = null;
     };
 });

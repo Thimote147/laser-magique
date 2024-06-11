@@ -42,6 +42,7 @@ const trikesRouter = require("./routes/trikes.js");
 const inventoryRouter = require("./routes/inventory.js");
 const reservationsRouter = require("./routes/reservations.js");
 const calendarRouter = require("./routes/calendars.js");
+const stockRouter = require("./routes/stocks.js");
 const apiRouter = require("./routes/api.js");
 
 const app = express();
@@ -62,17 +63,18 @@ app.use(session({ secret: "Your secret key", resave: false, saveUninitialized: f
 app.use(function (req, res, next) { res.locals.session = req.session; next(); });
 
 app.use("/", indexRouter);
-app.use("/accueil", homeRouter);
+app.use("/home", homeRouter);
 app.use("/partie-cyber-games", cybergamesRouter);
 app.use("/gestion", gestionRouter);
 app.use("/login", loginRouter);
-app.use("/profil", profileRouter);
+app.use("/profile", profileRouter);
 app.use("/weapons", weaponsRouter);
 app.use("/headsets", headsetsRouter);
 app.use("/trikes", trikesRouter);
-app.use("/inventaire", inventoryRouter);
+app.use("/inventory", inventoryRouter);
 app.use("/reservation", reservationsRouter);
 app.use("/calendars", calendarRouter);
+app.use("/stocks", stockRouter);
 app.use("/api", apiRouter);
 
 // Create error on page not found

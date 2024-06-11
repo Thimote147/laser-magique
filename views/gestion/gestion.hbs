@@ -1,10 +1,6 @@
-<main class="my-0">
+<main class="mt-5">
     <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title my-5">Gestion du Laser Magique</h1>
-        <div class="d-flex justify-content-between">
-            <h5>Bonjour <a href="/profil">{{session.member.firstname}}</a> !</h5>
-            <h5>Accéder aux <a href="/calendars">calendriers</a> de travail</h5>
-        </div>
         <div class="d-flex flex-column col-12 mb-5">
             {{#if session.member.is_admin}}
             <div id="filter">
@@ -23,9 +19,9 @@
                 </form>
             </div>
             {{/if}}
-            <section id="reservations" class="overflow-x-scroll">
+            <section id="reservations" class="overflow-x-scroll py-0">
                 <table class="table">
-                    <thead class="bg-green">
+                    <thead>
                         <th>Heure</th>
                         <th>Prénom</th>
                         {{#if session.member.is_admin}}
@@ -46,24 +42,24 @@
                             {{else}}
                         <tr>
                             {{/if}}
-                            <td class="bg-dark">{{date}}</td>
+                            <td>{{date}}</td>
                             {{#if (eq firstname "Cette réservation n'existe pas")}}
-                            <td class="bg-dark">{{firstname}}</td>
+                            <td>{{firstname}}</td>
                             {{else}}
                             {{#if is_canceled}}
-                            <td class="bg-dark">{{firstname}}</td>
+                            <td>{{firstname}}</td>
                             {{else}}
-                            <td class="bg-dark"><a href="/reservation?id={{id}}">{{firstname}}</a></td>
+                            <td><a href="/reservation?id={{id}}">{{firstname}}</a></td>
                             {{/if}}
                             {{/if}}
-                            <td class="bg-dark">{{lastname}}</td>
-                            <td class="bg-dark">{{email}}</td>
-                            <td class="bg-dark">{{phone_number}}</td>
-                            <td class="bg-dark">{{persons}}</td>
-                            <td class="bg-dark">{{activities}}</td>
-                            <td class="bg-dark">{{payment_by}}</td>
+                            <td>{{lastname}}</td>
+                            <td>{{email}}</td>
+                            <td>{{phone_number}}</td>
+                            <td>{{persons}}</td>
+                            <td>{{activities}}</td>
+                            <td>{{payment_by}}</td>
                             {{#if is_canceled}}
-                            <td class="bg-dark">
+                            <td>
                                 <form action="/gestion/cancel" method="post">
                                     <input type="hidden" name="is_canceled" value="{{is_canceled}}">
                                     <button class="btn btn-primary m-1" type="submit" name="reservation"
@@ -71,7 +67,7 @@
                                 </form>
                             </td>
                             {{else}}
-                            <td class="bg-dark">
+                            <td>
                                 {{#if (eq firstname "Cette réservation n'existe pas")}}
                                 <p>Impossible</p>
                                 {{else}}
@@ -100,17 +96,17 @@
                             {{else}}
                         <tr>
                             {{/if}}
-                            <td class="bg-dark">{{date}}</td>
+                            <td>{{date}}</td>
                             {{#if is_canceled}}
-                            <td class="bg-dark">{{firstname}}</td>
+                            <td>{{firstname}}</td>
                             {{else}}
-                            <td class="bg-dark"><a href="/reservation?id={{id}}">{{firstname}}</a></td>
+                            <td><a href="/reservation?id={{id}}">{{firstname}}</a></td>
                             {{/if}}
-                            <td class="bg-dark">{{persons}}</td>
-                            <td class="bg-dark">{{activities}}</td>
-                            <td class="bg-dark">{{payment_by}}</td>
+                            <td>{{persons}}</td>
+                            <td>{{activities}}</td>
+                            <td>{{payment_by}}</td>
                             {{#if is_canceled}}
-                            <td class="bg-dark">
+                            <td>
                                 <form action="/gestion/cancel" method="post">
                                     <input type="hidden" name="is_canceled" value="{{is_canceled}}">
                                     <button class="btn btn-primary m-1" type="submit" name="reservation"
@@ -118,7 +114,7 @@
                                 </form>
                             </td>
                             {{else}}
-                            <td class="bg-dark">
+                            <td>
                                 {{#if (eq firstname "Cette réservation n'existe pas")}}
                                 <p>Impossible</p>
                                 {{else}}

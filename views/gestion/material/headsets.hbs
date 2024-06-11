@@ -1,0 +1,46 @@
+<main class="mt-5">
+    <section class="container-fluid bg-dark text-white py-0">
+        <h1 class="title my-5">Gestion des casques</h1>
+
+        <form class="form-control" action="/headsets/update" method="post">
+            <label for="id">Numéro du casque : </label>
+            <input type="number" name="id" inputmode="numeric" min="1" max="8" required>
+
+            <label for="headset_problem">Problème du casque : </label>
+            <input type="text" name="headset_problem">
+
+            <label for="joycons_problem">Problème des manettes : </label>
+            <input type="text" name="joycons_problem">
+
+            <label for="description">Description : </label>
+            <textarea name="description"></textarea>
+
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        </form>
+
+        <table class="table">
+            <thead>
+                <th>Numéro du casque</th>
+                <th>Problème du casque</th>
+                <th>Problème des manettes</th>
+                <th>Description</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                {{#each headsets}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{headset_problem}}</td>
+                    <td>{{joycons_problem}}</td>
+                    <td>{{description}}</td>
+                    <td>
+                        <form action="/headsets/repaired" method="post">
+                            <button type="submit" class="btn btn-primary" name="id" value="{{id}}">Réparé</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+</main>

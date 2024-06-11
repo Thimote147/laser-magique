@@ -78,10 +78,10 @@
                         <tbody>
                             {{#each hours}}
                             <tr>
-                                <td class="bg-dark">{{day}}</td>
-                                <td class="bg-dark">{{beginning_hour}}</td>
+                                <td>{{day}}</td>
+                                <td>{{beginning_hour}}</td>
                                 {{#if today}}
-                                <td class="bg-dark">
+                                <td>
                                     <form action="/profil/update_hours" method="post">
                                         <input type="time" name="beginning_hour" value="{{beginning_hour}}" hidden>
                                         <input type="time" name="ending_hour" value="{{ending_hour}}" step="900">
@@ -91,11 +91,11 @@
                                     </form>
                                 </td>
                                 {{else}}
-                                <td class="bg-dark">{{ending_hour}}</td>
+                                <td>{{ending_hour}}</td>
                                 {{/if}}
-                                <td class="bg-dark">{{hours}}</td>
-                                <td class="bg-dark">{{money}}€</td>
-                                <td class="bg-dark">
+                                <td>{{hours}}</td>
+                                <td>{{money}}€</td>
+                                <td>
                                     <form action="/profil/delete_hours" method="post">
                                         <button class="btn btn-primary" type="submit" name="id"
                                             value="{{id}}">Supprimer</button>
@@ -138,25 +138,25 @@
                 <tbody>
                     {{#each members}}
                     <tr>
-                        <td class="bg-dark">{{firstname}}</td>
-                        <td class="bg-dark">{{lastname}}</td>
-                        <td class="bg-dark">
+                        <td>{{firstname}}</td>
+                        <td>{{lastname}}</td>
+                        <td>
                             {{#if (eq email "À compléter")}}
                             {{email}}
                             {{else}}
                             <a href="mailto:{{email}}">{{email}}</a>
                             {{/if}}
                         </td>
-                        <td class="bg-dark">
+                        <td>
                             {{#if (eq phone_number "À compléter")}}
                             {{phone_number}}
                             {{else}}
                             <a href="tel:{{phone_number}}">{{phone_number}}</a>
                             {{/if}}
                         </td>
-                        <td class="bg-dark">{{hours}}</td>
-                        <td class="bg-dark">{{salary}}€</td>
-                        <td class="bg-dark">
+                        <td>{{hours}}</td>
+                        <td>{{salary}}€</td>
+                        <td>
                             <form action="/profil/delete_member" method="post">
                                 <button class="btn btn-primary" type="submit" name="id"
                                     value="{{id}}">Supprimer</button>
@@ -166,14 +166,14 @@
                     {{/each}}
                     <form action="/profil/add_member" method="post">
                         <tr>
-                            <td class="bg-dark"><input type="text" name="firstname"></td>
-                            <td class="bg-dark"><input type="text" name="lastname"></td>
-                            <td class="bg-dark"></td>
-                            <td class="bg-dark"></td>
-                            <td class="bg-dark"></td>
-                            <td class="bg-dark"></td>
+                            <td><input type="text" name="firstname"></td>
+                            <td><input type="text" name="lastname"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
 
-                            <td class="bg-dark"><button class="btn btn-primary" type="submit">Ajouter</button></td>
+                            <td><button class="btn btn-primary" type="submit">Ajouter</button></td>
                         </tr>
                     </form>
                 </tbody>

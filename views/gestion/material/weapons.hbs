@@ -1,12 +1,41 @@
-<main>
-    <section id="gestionPage" class="container-fluid bg-dark text-white">
-        <h1 class="title">Gestion des armes</h1>
-
-        <h5><a href="/gestion">Retour à la gestion</a></h5>
+<main class="mt-5">
+    <section class="container-fluid bg-dark text-white py-0">
+        <h1 class="title my-5">Gestion des armes</h1>
 
         <form class="form-control" action="/weapons/update" method="post">
-            <label for="num">Numéro de l'arme : </label>
-            <input type="number" inputmode="numeric" value="{{id}}">
+            <label for="id">Numéro de l'arme : </label>
+            <input type="number" min="1" max="25" inputmode="numeric" name="id" value="{{id}}" required>
+
+            <label for="problem">Problème : </label>
+            <input type="text" name="problem" required>
+
+            <label for="description">Descritpion : </label>
+            <textarea name="description"></textarea>
+
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
         </form>
+
+        <table class="table">
+            <thead>
+                <th>Numéro d'arme</th>
+                <th>Problème</th>
+                <th>Description</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                {{#each weapons}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{problem}}</td>
+                    <td>{{description}}</td>
+                    <td>
+                        <form action="/weapons/repaired" method="post">
+                            <button class="btn btn-primary" type="submit" name="id" value="{{id}}">Réparé</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </section>
 </main>

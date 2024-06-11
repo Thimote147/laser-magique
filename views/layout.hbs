@@ -23,11 +23,10 @@
 </head>
 
 <body>
-    {{#if (eq session.connected undefined)}}
     <header>
         <nav class="navbar navbar-expand-xl transparent fixed-top">
             <div class="container-fluid">
-                <a href="/"><img class="navbar-brand" src="/images/logo-inv-sm.png" width="80"
+                <a href="#"><img class="navbar-brand" src="/images/logo-inv-sm.png" width="80"
                         alt="Logo Laser Magique" /></a>
                 <button class="navbar-toggler first-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
@@ -35,38 +34,77 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-around" id="collapsibleNavbar">
                     <ul class="navbar-nav">
+                        {{#if session.connected}}
                         <li class="nav-item">
-                            <a href="/">
+                            <a href="/gestion">
+                                <p>Gestion</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/calendars">
+                                <p>Calendriers</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/profile">
+                                <p>Profil</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/stocks">
+                                <p>Stock</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button type="button" class="btn text-white dropdown-toggle" data-bs-toggle="dropdown">
+                                    Inventaire
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/weapons">Laser Game</a></li>
+                                    <li><a class="dropdown-item" href="/headsets">Réalité Virtuelle</a></li>
+                                    <li><a class="dropdown-item" href="/trikes">Cyber Trike</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/gestion/disconnect" method="post">
+                                <button type="submit" class="btn btn-primary m-0">Se déconnecter</button>
+                            </form>
+                        </li>
+                        {{else}}
+                        <li class="nav-item">
+                            <a href="/home">
                                 <p>Accueil</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#about-lg">
+                            <a href="/home#about-lg">
                                 <p>Laser Game</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#about-vr">
+                            <a href="/home#about-vr">
                                 <p>Réalité virtuelle</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#about-cyber">
+                            <a href="/home#about-cyber">
                                 <p>Cyber games</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#pricing">
+                            <a href="/home#pricing">
                                 <p>Formules et tarifs</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#galery">
+                            <a href="/home#galery">
                                 <p>Photos</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#booking">
+                            <a href="/home#booking">
                                 <p>Réservations</p>
                             </a>
                         </li>
@@ -75,21 +113,21 @@
                                 <p>Contact</p>
                             </a>
                         </li>
+                        {{/if}}
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    {{/if}}
     {{{body}}}
-    {{#if (eq session.connected undefined)}}
     <footer id="footer">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6 col-md-3 col-12">
                     <h3>Coordonnées</h3>
                     <p class="coords"><i class="fa fa-map-marker"></i>Drève de l'Infante 27b<br>1410 Waterloo</p>
-                    <p class="coords"><i class="fa fa-phone"></i><a class="text-white" href="tel:(0032) 470 537 206">(0032) 470 537
+                    <p class="coords"><i class="fa fa-phone"></i><a class="text-white"
+                            href="tel:(0032) 470 537 206">(0032) 470 537
                             206</a>
                     </p>
                     <p class="coords"><i class="fa fa-envelope-o"></i><a class="text-white"
@@ -137,7 +175,6 @@
                 trouvé sur ce site est interdite.</p>
         </div>
     </footer>
-    {{/if}}
 </body>
 
 <script>
