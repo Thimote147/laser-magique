@@ -1,8 +1,7 @@
-<main class="my-0">
+<main>
     <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title">Profil</h1>
         <h5>
-            <a href="/gestion">Retour à la gestion</a>
             {{#if (eq session.member.firstname "Thimoté")}}
             <form action="/profile/switch_status" method="post">
                 <button class="btn btn-primary" type="submit" name="id" value="{{session.member.id}}">Switch</button>

@@ -37,7 +37,7 @@ function generateCalendar(year, month, option) {
 
         for (let i = 0; i < people.length; i++) {
             if (option === "working") {
-                addPeople.push(people[i].beginning_day.split('T')[1] + " : " + people[i].member);
+                addPeople.push(people[i].beginning_day.slice(11, 13) + "h" + people[i].beginning_day.slice(14, 16) + " : " + people[i].member);
             } else {
                 addPeople.push(people[i].member);
             }
@@ -93,9 +93,9 @@ function formatDateTime(dateTime) {
 function formatHour(dateTime) {
     const date = new Date(dateTime);
     if (date.getMinutes() < 10) {
-        return `${date.getHours()}:0${date.getMinutes()}`;
+        return `${date.getHours()}h0${date.getMinutes()}`;
     } else {
-        return `${date.getHours()}:${date.getMinutes()}`;
+        return `${date.getHours()}h${date.getMinutes()}`;
     }
 };
 
