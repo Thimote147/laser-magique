@@ -4,14 +4,14 @@
         <h5>
             <a href="/gestion">Retour à la gestion</a>
             {{#if (eq session.member.firstname "Thimoté")}}
-            <form action="/profil/switch_status" method="post">
+            <form action="/profile/switch_status" method="post">
                 <button class="btn btn-primary" type="submit" name="id" value="{{session.member.id}}">Switch</button>
             </form>
             {{/if}}
         </h5>
         <div class="d-flex flex-column-reverse flex-md-row-reverse">
             <div class="col-12 col-md-5">
-                <form class="form-control" action="/profil/manage" method="post">
+                <form class="form-control" action="/profile/manage" method="post">
                     {{#if (eq session.modify true)}}
                     <div class="d-flex justify-content-between">
                         <label for="firstname">Prénom : </label>
@@ -82,7 +82,7 @@
                                 <td>{{beginning_hour}}</td>
                                 {{#if today}}
                                 <td>
-                                    <form action="/profil/update_hours" method="post">
+                                    <form action="/profile/update_hours" method="post">
                                         <input type="time" name="beginning_hour" value="{{beginning_hour}}" hidden>
                                         <input type="time" name="ending_hour" value="{{ending_hour}}" step="900">
 
@@ -96,7 +96,7 @@
                                 <td>{{hours}}</td>
                                 <td>{{money}}€</td>
                                 <td>
-                                    <form action="/profil/delete_hours" method="post">
+                                    <form action="/profile/delete_hours" method="post">
                                         <button class="btn btn-primary" type="submit" name="id"
                                             value="{{id}}">Supprimer</button>
                                     </form>
@@ -107,7 +107,7 @@
                     </table>
                 </div>
                 <div>
-                    <form class="d-flex my-2" action="/profil/add_hours" method="post">
+                    <form class="d-flex my-2" action="/profile/add_hours" method="post">
                         <div>
                             <label for="beginning_hour">Heure de début : </label>
                             <input type="time" name="beginning_hour" step="900">
@@ -157,14 +157,14 @@
                         <td>{{hours}}</td>
                         <td>{{salary}}€</td>
                         <td>
-                            <form action="/profil/delete_member" method="post">
+                            <form action="/profile/delete_member" method="post">
                                 <button class="btn btn-primary" type="submit" name="id"
                                     value="{{id}}">Supprimer</button>
                             </form>
                         </td>
                     </tr>
                     {{/each}}
-                    <form action="/profil/add_member" method="post">
+                    <form action="/profile/add_member" method="post">
                         <tr>
                             <td><input type="text" name="firstname"></td>
                             <td><input type="text" name="lastname"></td>

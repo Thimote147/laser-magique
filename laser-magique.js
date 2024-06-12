@@ -43,6 +43,9 @@ const inventoryRouter = require("./routes/inventory.js");
 const reservationsRouter = require("./routes/reservations.js");
 const calendarRouter = require("./routes/calendars.js");
 const stockRouter = require("./routes/stocks.js");
+const reglementRouter = require("./routes/reglement.js");
+const conditionsGeneralesRouter = require("./routes/conditions-generales.js");
+const viePriveeRouter = require("./routes/vie-privee.js");
 const apiRouter = require("./routes/api.js");
 
 const app = express();
@@ -75,6 +78,9 @@ app.use("/inventory", inventoryRouter);
 app.use("/reservation", reservationsRouter);
 app.use("/calendars", calendarRouter);
 app.use("/stocks", stockRouter);
+app.use("/reglement-d-ordre-interieur", reglementRouter);
+app.use("/conditions-generales", conditionsGeneralesRouter);
+app.use("/vie-privee", viePriveeRouter);
 app.use("/api", apiRouter);
 
 // Create error on page not found

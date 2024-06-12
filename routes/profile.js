@@ -81,13 +81,13 @@ router.get('/', (req, res) => {
 router.post('/manage', (req, res) => {
     if (req.body.manage_button === "modify") {
         req.session.modify = true;
-        res.redirect("/profil");
+        res.redirect("/profile");
     } else if (req.body.manage_button === "save") {
         if (req.body.password != Gestion.login(req.session.member.firstname)) {
             Gestion.updateMember(req.body.firstname, req.body.email, req.body.phone_number, Bcrypt.hashSync(req.body.password, 10));
         }
         req.session.modify = false;
-        res.redirect("/profil");
+        res.redirect("/profile");
     } else if (req.body.manage_button === "disconnect") {
         req.session.destroy();
         res.redirect('/gestion');
@@ -96,7 +96,7 @@ router.post('/manage', (req, res) => {
 
 router.post("/add_hours", (req, res) => {
     Gestion.addHours(req.session.member.id, new Date().toISOString().split('T')[0], req.body.beginning_hour, req.body.beginning_hour);
-    res.redirect("/profil");
+    res.redirect("/profile");
 });
 
 router.post("/update_hours", (req, res) => {
@@ -107,24 +107,24 @@ router.post("/update_hours", (req, res) => {
     } else {
         Gestion.updateHours(req.body.id, req.body.ending_hour, difference, salary(req.session.member.firstname, difference));
     }
-    res.redirect("/profil");
+    res.redirect("/profile");
 });
 
 router.post("/delete_hours", (req, res) => {
     Gestion.deleteHours(req.body.id);
-    res.redirect("/profil");
+    res.redirect("/profile");
 });
 
 router.post("/delete_member", (req, res) => {
     Gestion.deleteMember(req.body.id);
 
-    res.redirect("/profil");
+    res.redirect("/profile");
 });
 
 router.post("/add_member", (req, res) => {
     Gestion.addMember(req.body.firstname, req.body.lastname);
 
-    res.redirect("/profil");
+    res.redirect("/profile");
 });
 
 router.post("/switch_status", (req, res) => {
@@ -134,7 +134,7 @@ router.post("/switch_status", (req, res) => {
         Gestion.updateStatus(req.session.member.id, 1)
     }
     req.session.member = Gestion.member(req.session.member.firstname);
-    res.redirect("/profil")
+    res.redirect("/profile")
 })
 
 module.exports = router;
