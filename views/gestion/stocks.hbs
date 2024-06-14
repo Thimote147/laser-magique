@@ -2,43 +2,44 @@
     <section class="container-fluid bg-dark text-white py-0">
         <h1 class="title my-5">Gestion du stock</h1>
 
-        <table class="table">
-            <thead>
-                <th>Produits</th>
-                <th>Quantité</th>
-                <th>Prix</th>
-                <th>Action</th>
-            </thead>
-            <tbody>
-                {{#each stocks}}
-                <tr>
-                    <td>{{name}}</td>
-                    {{#if (op quantity "<=" 24)}}
-                    {{#if (op quantity "==" 0)}}
-                    <td class="text-red">{{quantity}}</td>
-                    {{else}}
-                    <td class="text-orange">{{quantity}}</td>
-                    {{/if}}
-                    {{else}}
-                    <td>{{quantity}}</td>
-                    {{/if}}
-                    <td>{{price}}</td>
-                    <td>
-                        <form action="/stocks/add" method="post">
-                            <input type="number" min="1" inputmode="numeric" name="quantity" required>
+        <div class="overflow-x-scroll">
+            <table class="table">
+                <thead>
+                    <th>Produits</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    {{#each stocks}}
+                    <tr>
+                        <td>{{name}}</td>
+                        {{#if (op quantity "<=" 24)}} {{#if (op quantity "==" 0)}} <td class="text-red">{{quantity}}
+                            </td>
+                            {{else}}
+                            <td class="text-orange">{{quantity}}</td>
+                            {{/if}}
+                            {{else}}
+                            <td>{{quantity}}</td>
+                            {{/if}}
+                            <td>{{price}}</td>
+                            <td class="d-flex">
+                                <form class="d-flex" action="/stocks/add" method="post">
+                                    <input type="number" min="1" inputmode="numeric" name="quantity" required>
 
-                            <button type="submit" class="btn btn-primary" name="name"
-                                value="{{name}}">Ajouter</button>
-                        </form>
-                        <form action="/stocks/update-price" method="post">
-                            <input type="number" min="0" step="0.5" inputmode="decimal" name="price">
-                            <button type="submit" class="btn btn-primary" name="name"
-                                value="{{name}}">Modifier</button>
-                        </form>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                                    <button type="submit" class="btn btn-primary" name="name"
+                                        value="{{name}}">Ajouter</button>
+                                </form>
+                                <form class="d-flex" action="/stocks/update-price" method="post">
+                                    <input type="number" min="0" step="0.5" inputmode="decimal" name="price">
+                                    <button type="submit" class="btn btn-primary" name="name"
+                                        value="{{name}}">Modifier</button>
+                                </form>
+                            </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </section>
 </main>
