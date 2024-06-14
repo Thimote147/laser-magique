@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
             if (reservation.id == req.query.id) {
                 reservation.date = formatDateTime(reservation.date);
                 reservation.hour = formatHour(reservation.date);
+                reservation.conso_id = reservation.conso;
                 reservation.conso = Reservation.getConso(reservation.conso);
                 InfosReservation = reservation;
             };
@@ -52,12 +53,11 @@ router.post('/update_infos', (req, res) => {
     req.body.payment_bcc = req.body.payment_bcc.split(",").join(".");
     req.body.payment_cash = req.body.payment_cash.split(",").join(".");
 
-    const updated_price = price(req.body.persons, req.body.activities, req.body.nbr_laser, req.body.nbr_vr, req.body.nbr_ct, req.body.soft, req.body.aquarius, req.body.capri_sun, req.body.chips, req.body.pop_corn, req.body.bonbon, req.body.deposit, req.body.payment_bcc, req.body.payment_cash);
+    const updated_price = price(req.body.persons, req.body.activities, req.body.nbr_laser, req.body.nbr_vr, req.body.nbr_ct, Reservation.getConso(req.body.conso), req.body.deposit, req.body.payment_bcc, req.body.payment_cash);
 
     if (req.session.member.is_admin) {
         Reservation.update(req.body.id, req.body.persons, formatDateTime(req.body.date), req.body.activities, updated_price.nbr_laser, updated_price.nbr_vr, updated_price.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, updated_price.remaining, updated_price.total, req.body.observation);
     } else {
-        console.log(req.body)
         Reservation.update(req.body.id, req.body.persons, formatDateTime(req.body.hour), req.body.activities, updated_price.nbr_laser, updated_price.nbr_vr, updated_price.nbr_ct, req.body.deposit, req.body.payment_bcc, req.body.payment_cash, req.body.payment_by, updated_price.remaining, updated_price.total, req.body.observation);
     }
     res.redirect("/reservation?id=" + req.body.id + "#details");

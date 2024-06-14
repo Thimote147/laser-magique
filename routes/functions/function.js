@@ -1,5 +1,6 @@
 const moment = require('moment');
 const Calendar = require("../../models/Calendar.js");
+const Stock = require("../../models/Stock.js");
 
 function generateCalendar(year, month, option) {
     let calendar = [];
@@ -63,7 +64,7 @@ function generateCalendar(year, month, option) {
 
 function formatDateTime(dateTime) {
     if (dateTime.length === 5) {
-        dateTime  =dateTime.split("h").join(":");
+        dateTime = dateTime.split("h").join(":");
         dateTime = new Date().toISOString().split("T")[0] + "T" + dateTime;
     }
 
@@ -113,7 +114,7 @@ function forToday(reservations) {
     return forToday;
 };
 
-function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash) {
+function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, conso, deposit, payment_bcc, payment_cash) {
     let price;
 
     if (activities === "Laser Game") {
@@ -211,7 +212,17 @@ function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, c
         price = 35 * persons
     }
 
-    const food = (soft * 2.5) + (aquarius * 3.5) + (capri_sun * 2) + (chips * 2) + (pop_corn * 3.5) + (bonbon * 3);
+    let food = 0;
+
+    conso.forEach((item) => {
+        if (item.quantity > 0) {
+            console.log(item)
+            food += item.quantity * Stock.getPrice(item.name.split(" ").join("_").toLowerCase());
+        }
+    });
+
+    console.log(food)
+
     const remaining = price - deposit - payment_bcc - payment_cash + food;
     const total = price + food;
 

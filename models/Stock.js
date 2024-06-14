@@ -14,7 +14,6 @@ module.exports.conso = () => {
         conso.name = conso.name.join(" ");
     });
 
-    console.log(stmt)
     return stmt;
 };
 
@@ -39,3 +38,5 @@ module.exports.delete = (name) => {
 };
 
 module.exports.updatePrice = (name, price) => db.prepare("UPDATE stocks SET price = ? WHERE name = ?").run(price, name);
+
+module.exports.getPrice = (name) => db.prepare("SELECT price, type FROM stocks WHERE name = ?").get(name);

@@ -40,7 +40,7 @@ module.exports.cancel = (id, is_canceled) => {
 
 module.exports.deleteReservation = (id) => {
     const conso_id = db.prepare("SELECT conso FROM reservations WHERE id = ?").get(id).conso;
-    console.log(conso_id)
+
     db.prepare("DELETE FROM consommations WHERE id = ?").run(conso_id);
 
     const stmt = db.prepare("DELETE FROM reservations WHERE id = ?");

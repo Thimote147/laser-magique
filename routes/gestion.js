@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Gestion = require("../models/Gestion.js");
+const Stock = require("../models/Stock.js");
+const Reservation = require("../models/Reservation.js");
 const { formatHour, forToday, today, formatDateTime } = require("./functions/function.js");
 
 router.get('/', (req, res) => {
@@ -122,8 +124,16 @@ router.post("/statistiques", (req, res) => {
             fdc_fermeture += reservation.payment_cash;
             total_bcc += reservation.payment_bcc;
             total_cash += reservation.payment_cash;
-            // total_boissons += (reservation.soft * 2.5) + (reservation.aquarius * 3.5) + (reservation.capri_sun * 2);
-            // total_snack += (reservation.chips * 2) + (reservation.pop_corn * 3.5) + (reservation.bonbon * 3);
+
+            Reservation.getConso(reservation.conso).forEach((conso) => {
+                conso.name = conso.name.split(" ").join("_").toLowerCase();
+
+                if (Stock.getPrice(conso.name).type == "drink") {
+                    total_boissons += conso.quantity * Stock.getPrice(conso.name).price;
+                } else {
+                    total_snack += conso.quantity * Stock.getPrice(conso.name).price;
+                }
+            });
         };
     });
 
