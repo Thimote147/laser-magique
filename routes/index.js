@@ -4,9 +4,9 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', (req, res) => {
   if (req.session.connected) {
-    res.render('gestion/gestion.hbs');
+    res.redirect("/gestion");
   } else {
-    res.render('gestion/login.hbs');
+    res.redirect("/login");
   }
 });
 

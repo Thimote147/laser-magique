@@ -162,7 +162,7 @@ router.get("/filter", (req, res) => {
 
 router.post("/disconnect", (req, res) => {
     req.session.destroy();
-    res.redirect("/home");
+    res.redirect("/gestion");
 });
 
 module.exports = router;
