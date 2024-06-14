@@ -63,6 +63,7 @@ function generateCalendar(year, month, option) {
 
 function formatDateTime(dateTime) {
     if (dateTime.length === 5) {
+        dateTime  =dateTime.split("h").join(":");
         dateTime = new Date().toISOString().split("T")[0] + "T" + dateTime;
     }
 

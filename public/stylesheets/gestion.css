@@ -35,3 +35,11 @@
     list-style: none;
     padding: 0;
 }
+
+.text-orange {
+    color: orange !important;
+}
+
+.text-red {
+    color: red !important;
+}

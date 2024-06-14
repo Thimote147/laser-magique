@@ -122,8 +122,8 @@ router.post("/statistiques", (req, res) => {
             fdc_fermeture += reservation.payment_cash;
             total_bcc += reservation.payment_bcc;
             total_cash += reservation.payment_cash;
-            total_boissons += (reservation.soft * 2.5) + (reservation.aquarius * 3.5) + (reservation.capri_sun * 2);
-            total_snack += (reservation.chips * 2) + (reservation.pop_corn * 3.5) + (reservation.bonbon * 3);
+            // total_boissons += (reservation.soft * 2.5) + (reservation.aquarius * 3.5) + (reservation.capri_sun * 2);
+            // total_snack += (reservation.chips * 2) + (reservation.pop_corn * 3.5) + (reservation.bonbon * 3);
         };
     });
 

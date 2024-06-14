@@ -8,11 +8,7 @@ router.get('/', (req, res) => {
         let stocks = Stock.list();
 
         stocks.forEach((stock) => {
-            if (stock.quantity == 0) {
-                stock.quantity = "Vide";
-            } else if (stock.quantity < 24) {
-                stock.quantity = "Racheter";
-            }
+            stock.name = stock.name.slice(0, 1).toUpperCase() + stock.name.slice(1).split("_").join(" ");
         });
 
         res.render('gestion/stocks.hbs', { stocks });
@@ -22,7 +18,17 @@ router.get('/', (req, res) => {
 });
 
 router.post("/add", (req, res) => {
-    Stock.add(req.body.name, req.body.quantity);
+    let name = req.body.name.slice(0, 1).toUpperCase() + req.body.name.slice(1).split("_").join(" ");
+
+    Stock.add(name, req.body.quantity);
+    res.redirect("/stocks");
+});
+
+router.post("/update-price", (req, res) => {
+    let name = req.body.name.split(" ").join("_").toLowerCase();
+    let price = req.body.price.split(",").join(".");
+    
+    Stock.updatePrice(name, price);
     res.redirect("/stocks");
 });
 

@@ -30,6 +30,17 @@ hbs.registerHelper('neq', function (a, b) {
   }
 });
 
+/**
+ * op checks if the operation is true
+ */
+hbs.registerHelper('op', function (a, b, c) { 
+  if (b == "<=") {
+    return a <= c;
+  } else if (b == "==") {
+    return a == c;
+  }
+});
+
 const indexRouter = require("./routes/index.js");
 const homeRouter = require("./routes/home.js")
 const cybergamesRouter = require("./routes/cyber_games.js");

@@ -1,39 +1,21 @@
 const db = require("./db_conf.js");
 const bcrypt = require("bcrypt");
 
-module.exports.login = (firstname) => {
-    const stmt = db.prepare("SELECT password FROM members WHERE firstname = ?");
-    return stmt.get(firstname).password;
-};
+module.exports.login = (firstname) => db.prepare("SELECT password FROM members WHERE firstname = ?").get(firstname).password;
 
-module.exports.weapons = () => {
-    const stmt = db.prepare("SELECT * FROM weapons");
-    return stmt.all();
-};
+module.exports.weapons = () => db.prepare("SELECT * FROM weapons").all();
 
-module.exports.headsets = () => {
-    const stmt = db.prepare("SELECT * FROM headsets");
-    return stmt.all();
-};
+module.exports.headsets = () => db.prepare("SELECT * FROM headsets").all();
 
-module.exports.trikes = () => {
-    const stmt = db.prepare("SELECT * FROM trikes");
-    return stmt.all();
-};
+module.exports.trikes = () => db.prepare("SELECT * FROM trikes").all();
 
-module.exports.reservations = () => {
-    const stmt = db.prepare("SELECT * FROM reservations ORDER BY date");
-    return stmt.all()
-};
+module.exports.reservations = () => db.prepare("SELECT * FROM reservations ORDER BY date").all();
 
-module.exports.member = (firstname) => {
-    const stmt = db.prepare("SELECT * FROM members WHERE firstname = ?");
-    return stmt.get(firstname);
-};
+module.exports.member = (firstname) => db.prepare("SELECT * FROM members WHERE firstname = ?").get(firstname);
 
 module.exports.addReservation = (firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, amount) => {
-    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, nbr_laser, nbr_vr, nbr_ct, soft, aquarius, capri_sun, chips, pop_corn, bonbon, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, 0, 0, 0, 0, 0, 0, 0, 0, 0, amount, amount, 0);
+    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, 0, 0, 0, amount, amount, 0);
 };
 
 module.exports.updateMember = (firstname, email, phone_number, password) => {
@@ -41,11 +23,7 @@ module.exports.updateMember = (firstname, email, phone_number, password) => {
     const info = stmt.run(email, phone_number, password, firstname);
 };
 
-module.exports.allMembers = () => {
-    const stmt = db.prepare("SELECT id, firstname, lastname, email, phone_number FROM members");
-
-    return stmt.all();
-};
+module.exports.allMembers = () => db.prepare("SELECT id, firstname, lastname, email, phone_number FROM members").all();
 
 module.exports.findById = (id_res) => {
     const stmt = db.prepare("SELECT * FROM reservations WHERE id = ?");
@@ -147,7 +125,6 @@ module.exports.filter = (firstname, date) => {
     };
 };
 
-//temporaire
 module.exports.updateStatus = (id, status) => {
     const stmt = db.prepare("UPDATE members SET is_admin = ? WHERE id = ?");
     const info = stmt.run(status, id);

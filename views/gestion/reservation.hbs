@@ -4,31 +4,17 @@
         <h1>{{reservation}}</h1>
     </section>
     {{else}}
-    <section class="container-fluid">
+    <section>
         <h1 class="title my-5">Réservation de {{reservation.firstname}}</h1>
-        <h5><a href="/gestion">Retour à la gestion</a></h5>
         <div class="d-flex">
             <div class="col-5">
                 <h5 class="text-decoration-underline">Conso :</h5>
                 <div class="ml-4">
+                    {{#each reservation.conso}}
                     {{#if (neq reservation.soft "0")}}
-                    <p class="m-0">{{reservation.soft}}x Softs/Bières</p>
+                    <p class="m-0">{{quantity}}x {{name}}</p>
                     {{/if}}
-                    {{#if (neq reservation.aquarius "0")}}
-                    <p class="m-0">{{reservation.aquarius}}x Aquarius</p>
-                    {{/if}}
-                    {{#if (neq reservation.capri_sun "0")}}
-                    <p class="m-0">{{reservation.capri_sun}}x Capri Sun/Café</p>
-                    {{/if}}
-                    {{#if (neq reservation.chips "0")}}
-                    <p class="m-0">{{reservation.chips}}x Chips</p>
-                    {{/if}}
-                    {{#if (neq reservation.pop_corn "0")}}
-                    <p class="m-0">{{reservation.pop_corn}}x Pop Corn</p>
-                    {{/if}}
-                    {{#if (neq reservation.bonbon "0")}}
-                    <p class="m-0">{{reservation.bonbon}}x Bonbons</p>
-                    {{/if}}
+                    {{/each}}
                 </div>
             </div>
             <div class="col-7">
@@ -36,54 +22,20 @@
                     <h6 class="text-decoration-underline">Ajouter conso :</h6>
                     <div class="d-flex flex-wrap justify-content-center">
                         <input type="number" name="id" value="{{reservation.id}}" hidden>
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="soft">Soft/Bière</button>
+                        {{#each stock}}
                         <button class="btn btn-primary m-1" type="submit" name="choice"
-                            value="aquarius">Aquarius</button>
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="capri_sun">Capri
-                            Sun/Café</button>
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="chips">Chips</button>
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="pop_corn">Pop
-                            Corn</button>
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="bonbon">Bonbon</button>
+                            value="{{name}}">{{name}}</button>
+                        {{/each}}
                     </div>
                 </form>
                 <form class="my-4" action="/reservation/delete" method="post">
                     <h6 class="text-decoration-underline">Supprimer conso :</h6>
                     <div class="d-flex flex-wrap justify-content-center">
                         <input type="number" name="id" value="{{reservation.id}}" hidden>
-                        {{#if (eq reservation.soft "0")}}
-                        <button class="btn btn-secondary m-1" disabled="disabled">Soft/Bière</button>
-                        {{else}}
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="soft">Soft/Bière</button>
-                        {{/if}}
-                        {{#if (eq reservation.aquarius "0")}}
-                        <button class="btn btn-secondary m-1" disabled="disabled">Aquarius</button>
-                        {{else}}
+                        {{#each reservation.conso}}
                         <button class="btn btn-primary m-1" type="submit" name="choice"
-                            value="aquarius">Aquarius</button>
-                        {{/if}}
-                        {{#if (eq reservation.capri_sun "0")}}
-                        <button class="btn btn-secondary m-1" disabled="disabled">Capri Sun/Café</button>
-                        {{else}}
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="capri_sun">Capri
-                            Sun/Café</button>
-                        {{/if}}
-                        {{#if (eq reservation.chips "0")}}
-                        <button class="btn btn-secondary m-1" disabled="disabled">chips</button>
-                        {{else}}
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="chips">Chips</button>
-                        {{/if}}
-                        {{#if (eq reservation.pop_corn "0")}}
-                        <button class="btn btn-secondary m-1" disabled="disabled">Pop Corn</button>
-                        {{else}}
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="pop_corn">Pop
-                            Corn</button>
-                        {{/if}}
-                        {{#if (eq reservation.bonbon "0")}}
-                        <button class="btn btn-secondary m-1" disabled="disabled">Bonbon</button>
-                        {{else}}
-                        <button class="btn btn-primary m-1" type="submit" name="choice" value="bonbon">Bonbon</button>
-                        {{/if}}
+                            value="{{name}}">{{name}}</button>
+                        {{/each}}
                     </div>
                 </form>
             </div>
@@ -158,7 +110,7 @@
             {{else}}
             <div class="d-flex justify-content-between">
                 <label for="hour">Heure : </label>
-                <input type="time" name="hour" value="{{reservation.hour}}" hidden>
+                <input type="text" name="hour" value="{{reservation.hour}}" hidden>
                 <p>{{reservation.hour}}</p>
             </div>
             {{/if}}
@@ -273,12 +225,12 @@
             </div>
             <div class="d-flex justify-content-between">
                 <label for="payment_bcc">Payé par Bcc : </label>
-                <input type="text" inputmode="decimal" name="payment_bcc" value="{{reservation.payment_bcc}}" min="0"
+                <input type="number" inputmode="decimal" name="payment_bcc" value="{{reservation.payment_bcc}}" min="0"
                     step="0.5">
             </div>
             <div class="d-flex justify-content-between">
                 <label for="payment_cash">Payé par Cash : </label>
-                <input type="text" inputmode="decimal" name="payment_cash" value="{{reservation.payment_cash}}" min="0"
+                <input type="number" inputmode="decimal" name="payment_cash" value="{{reservation.payment_cash}}" min="0"
                     step="0.5">
             </div>
             <div class="d-flex justify-content-between">
