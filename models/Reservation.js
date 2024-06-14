@@ -57,7 +57,7 @@ module.exports.add = (id, choice, persons) => {
     }
 }
 
-module.exports.delete = (id, choice, persons) => {
+module.exports.delete = (id, choice, persons) => {   
     Stock.conso().forEach((stock) => {
         choice = choice.toLowerCase();
 

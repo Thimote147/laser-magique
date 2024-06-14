@@ -8,6 +8,7 @@ const { formatDateTime, formatHour, price } = require("./functions/function.js")
 router.get('/', (req, res) => {
     if (req.session.connected) {
         let InfosReservation;
+        let stocks = [];
 
         Gestion.reservations().forEach((reservation) => {
 
@@ -23,7 +24,13 @@ router.get('/', (req, res) => {
             InfosReservation = "Cette réservation n'existe pas";
         }
 
-        res.render('gestion/reservation.hbs', { reservation: InfosReservation, stock: Stock.conso() });
+        Stock.conso().forEach((conso) => {
+            if (conso.quantity > 0) {
+                stocks.push(conso);
+            }
+        });
+
+        res.render('gestion/reservation.hbs', { reservation: InfosReservation, stocks });
     } else {
         res.render('gestion/login.hbs');
     }

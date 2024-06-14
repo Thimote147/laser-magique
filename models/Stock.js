@@ -3,7 +3,7 @@ const db  = require("./db_conf.js");
 module.exports.list = () => db.prepare("SELECT * FROM stocks ORDER BY name").all();
 
 module.exports.conso = () => {
-    let stmt = db.prepare("SELECT * FROM stocks WHERE (type = 'drink' OR type = 'food') AND quantity > 0 ORDER BY type, name").all()
+    let stmt = db.prepare("SELECT * FROM stocks WHERE type = 'drink' OR type = 'food' ORDER BY type, name").all()
 
     stmt.forEach((conso) => {
         conso.name = conso.name.split("_");
@@ -14,6 +14,7 @@ module.exports.conso = () => {
         conso.name = conso.name.join(" ");
     });
 
+    console.log(stmt)
     return stmt;
 };
 

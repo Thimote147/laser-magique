@@ -22,7 +22,7 @@
                     <h6 class="text-decoration-underline">Ajouter conso :</h6>
                     <div class="d-flex flex-wrap justify-content-center">
                         <input type="number" name="id" value="{{reservation.id}}" hidden>
-                        {{#each stock}}
+                        {{#each stocks}}
                         <button class="btn btn-primary m-1" type="submit" name="choice"
                             value="{{name}}">{{name}}</button>
                         {{/each}}

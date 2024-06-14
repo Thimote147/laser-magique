@@ -14,8 +14,10 @@ module.exports.reservations = () => db.prepare("SELECT * FROM reservations ORDER
 module.exports.member = (firstname) => db.prepare("SELECT * FROM members WHERE firstname = ?").get(firstname);
 
 module.exports.addReservation = (firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, amount) => {
-    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, nbr_laser, nbr_vr, nbr_ct, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, 0, 0, 0, amount, amount, 0);
+    const conso = db.prepare("INSERT INTO consommations(aquarius_bleu, aquarius_jaune, aquarius_rouge, capri_sun, chips_ketchup, chips_nature, chips_paprika, chips_poivre_et_sel, coca_cola, coca_cola_zero, eau_petillante, eau_plate,fanta, fuze_tea_citron, fuze_tea_mangue, fuze_tea_peche, grills, jupiler, jus_orange, jus_pomme, kidibul, kinder_bueno, popcorn, sachet_de_bonbons, schweppes, sprite) VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)").run().lastInsertRowid;
+
+    const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, nbr_laser, nbr_vr, nbr_ct, conso, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, conso, 0, 0, 0, amount, amount, 0);
 };
 
 module.exports.updateMember = (firstname, email, phone_number, password) => {
@@ -37,8 +39,12 @@ module.exports.cancel = (id, is_canceled) => {
 }
 
 module.exports.deleteReservation = (id) => {
+    const conso_id = db.prepare("SELECT conso FROM reservations WHERE id = ?").get(id).conso;
+    console.log(conso_id)
+    db.prepare("DELETE FROM consommations WHERE id = ?").run(conso_id);
+
     const stmt = db.prepare("DELETE FROM reservations WHERE id = ?");
-    const info = stmt.run(id);
+    stmt.run(id);
 }
 
 module.exports.photos = (start, end) => {
