@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Gestion = require("../models/Gestion.js");
 const Bcrypt = require('bcrypt');
-const { substractionHours } = require("./functions/function.js");
+const { capitalize, formatHour, substractionHours } = require("./functions/function.js");
 
 function addHours(time1, time2) {
 
@@ -38,15 +38,19 @@ router.get('/', (req, res) => {
         let formatDay = [];
 
         let today = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
-        today = today.charAt(0).toUpperCase() + today.slice(1);
+        today = capitalize(today);
 
         allDay.forEach((hour) => {
             if (hour.day.slice(0, 7) == new Date().toISOString().slice(0, 7)) {
                 hour.day = new Date(hour.day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "numeric" });
-                hour.day = hour.day.charAt(0).toUpperCase() + hour.day.slice(1);
+                hour.day = capitalize(hour.day);
+                hour.today = (today === hour.day);
+                if (hour.today && hour.beginning_hour == hour.ending_hour && hour.beginning_hour < formatHour(new Date().getTime()).split("h").join(":")) {
+                    hour.hours = substractionHours(hour.beginning_hour, formatHour(new Date().getTime()).split("h").join(":"));
+                    hour.money = salary(req.session.member.name, hour.hours).toFixed(2);
+                }
                 totalMoney += hour.money;
                 totalHours = addHours(totalHours, hour.hours);
-                hour.today = (today === hour.day);
 
                 formatDay.push(hour);
             }

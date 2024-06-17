@@ -14,7 +14,7 @@ module.exports.reservations = () => db.prepare("SELECT * FROM reservations ORDER
 module.exports.member = (firstname) => db.prepare("SELECT * FROM members WHERE firstname = ?").get(firstname);
 
 module.exports.addReservation = (firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, amount) => {
-    const conso = db.prepare("INSERT INTO consommations(aquarius_bleu, aquarius_jaune, aquarius_rouge, capri_sun, chips_ketchup, chips_nature, chips_paprika, chips_poivre_et_sel, coca_cola, coca_cola_zero, eau_petillante, eau_plate,fanta, fuze_tea_citron, fuze_tea_mangue, fuze_tea_peche, grills, jupiler, jus_orange, jus_pomme, kidibul, kinder_bueno, popcorn, sachet_de_bonbons, schweppes, sprite) VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)").run().lastInsertRowid;
+    const conso = db.prepare("INSERT INTO consommations(aquarius_bleu, aquarius_jaune, aquarius_rouge, cafe, capri_sun, chips_ketchup, chips_nature, chips_paprika, chips_poivre_et_sel, coca_cola, coca_cola_zero, eau_petillante, eau_plate,fanta, fuze_tea_citron, fuze_tea_mangue, fuze_tea_peche, grills, jupiler, jus_orange, jus_pomme, kidibul, kinder_bueno, popcorn, sachet_de_bonbons, schweppes, sprite) VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)").run().lastInsertRowid;
 
     const stmt = db.prepare("INSERT INTO reservations (firstname, lastname, email, phone_number, persons, date, activities, comments, nbr_laser, nbr_vr, nbr_ct, conso, deposit, payment_bcc, payment_cash, remaining, total, is_canceled) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     const info = stmt.run(firstname, lastname, email, phone_number, persons, date, activities, resComment, nbr_laser, nbr_vr, nbr_ct, conso, 0, 0, 0, amount, amount, 0);
@@ -68,12 +68,7 @@ module.exports.getLastStatistiques = () => {
     return info;
 };
 
-module.exports.getStatistiques = (id) => {
-    const stmt = db.prepare("SELECT * FROM statistiques WHERE id = ?");
-    const info = stmt.get(id);
-
-    return info;
-};
+module.exports.getStatistiques = (date) => db.prepare("SELECT * FROM statistiques WHERE date = ?").get(date);
 
 module.exports.updateStatistiques = (id, fdc_fermeture, total_bcc, total_cash, total_boissons, total_snack, enveloppe) => {
     const stmt = db.prepare("UPDATE statistiques SET fdc_fermeture = ?, total_bcc = ?, total_cash = ?, total_boissons = ?, total_snack = ?, enveloppe = ? WHERE id = ?");
@@ -114,20 +109,11 @@ module.exports.addMember = (firstname, lastname) => {
 
 module.exports.filter = (firstname, date) => {
     if (firstname === '') {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE strftime('%Y-%m-%d', date) = ?");
-        const info = stmt.all(date);
-
-        return info;
+        return db.prepare("SELECT * FROM reservations WHERE strftime('%Y-%m-%d', date) = ?").all(date);
     } else if (date === '') {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ?");
-        const info = stmt.all(firstname);
-
-        return info;
+        return db.prepare("SELECT * FROM reservations WHERE firstname = ?").all(firstname);
     } else {
-        const stmt = db.prepare("SELECT * FROM reservations WHERE firstname = ? AND strftime('%Y-%m-%d', date) = ?");
-        const info = stmt.get(firstname, date);
-
-        return info;
+        return db.prepare("SELECT * FROM reservations WHERE firstname = ? AND strftime('%Y-%m-%d', date) = ?").get(firstname, date);
     };
 };
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const Gestion = require("../models/Gestion.js");
 const Stock = require("../models/Stock.js");
 const Reservation = require("../models/Reservation.js");
-const { formatHour, forToday, today, formatDateTime } = require("./functions/function.js");
+const { capitalize, formatHour, forToday, today, formatDateTime } = require("./functions/function.js");
 
 router.get('/', (req, res) => {
     if (req.session.connected) {
@@ -11,10 +11,9 @@ router.get('/', (req, res) => {
 
         if (!today(Gestion.getLastStatistiques().date)) {
             statistiques = Gestion.createStatistiques(Gestion.getLastStatistiques().fdc_fermeture);
-            statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().id);
-        } else {
-            statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().id);
         }
+        statistiques = Gestion.getStatistiques(Gestion.getLastStatistiques().date);
+
         res.render("gestion/gestion.hbs", { reservations: forToday(Gestion.reservations()), statistiques: statistiques });
     } else {
         res.render("gestion/login.hbs");
@@ -104,7 +103,7 @@ router.post('/add_reservation', (req, res) => {
         amount = 35 * req.body.persons
     }
 
-    Gestion.addReservation(req.body.firstname, req.body.lastname, req.body.email, req.body.phone_number, req.body.persons, formatDateTime(req.body.date), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
+    Gestion.addReservation(capitalize(req.body.firstname), capitalize(req.body.lastname), req.body.email, req.body.phone_number, req.body.persons, formatDateTime(req.body.date), req.body.activities, "", nbr_laser, nbr_vr, nbr_ct, amount);
     res.redirect('/gestion#reservations');
 });
 
@@ -146,21 +145,26 @@ router.post("/statistiques", (req, res) => {
 router.get("/filter", (req, res) => {
     if (req.session.connected) {
         if (req.query.firstname === '' && req.query.date === '') {
-            res.render("gestion/gestion.hbs", { reservations: forToday(Gestion.reservations()) });
+            res.redirect("/gestion");
         } else {
             const forSelectedDay = [];
-            const filteredReservations = Gestion.filter(req.query.firstname, req.query.date);
+            const filteredReservations = Gestion.filter(capitalize(req.query.firstname), req.query.date);
 
-            if (filteredReservations !== undefined && filteredReservations.length === undefined) {
-                filteredReservations.date = formatHour(filteredReservations.date);
-                forSelectedDay.push(filteredReservations);
-                res.render("gestion/gestion.hbs", { reservations: forSelectedDay });
-            } else if (filteredReservations !== undefined && filteredReservations.length !== undefined && filteredReservations.length !== 0) {
-                Gestion.filter(req.query.firstname, req.query.date).forEach((reservation) => {
-                    reservation.date = formatHour(reservation.date);
+            // if (filteredReservations !== undefined && filteredReservations.length === undefined) {
+            //     filteredReservations.date = formatHour(filteredReservations.date);
+            //     forSelectedDay.push(filteredReservations);
+            //     res.render("gestion/gestion.hbs", { reservations: forSelectedDay });
+            // } else 
+            if (filteredReservations !== undefined && filteredReservations.length !== undefined && filteredReservations.length !== 0) {
+                filteredReservations.forEach((reservation) => {
+                    reservation.date = reservation.date.slice(8, 10) + "/" + reservation.date.slice(5, 7) + "/" + reservation.date.slice(0, 4) + " " + reservation.date.split("T")[1].split(":").join("h");
                     forSelectedDay.push(reservation);
                 });
-                res.render("gestion/gestion.hbs", { reservations: forSelectedDay });
+                if (req.query.firstname === '' && req.query.date !== '') {
+                    res.render("gestion/gestion.hbs", { reservations: forSelectedDay, statistiques: Gestion.getStatistiques(req.query.date) });
+                } else {
+                    res.render("gestion/gestion.hbs", { reservations: forSelectedDay });
+                }
             } else {
                 res.render("gestion/gestion.hbs", { reservations: [{ date: "/", firstname: "Cette réservation n'existe pas" }] });
             }

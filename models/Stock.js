@@ -1,4 +1,5 @@
-const db  = require("./db_conf.js");
+const db = require("./db_conf.js");
+const { capitalize } = require("../routes/functions/function.js");
 
 module.exports.list = () => db.prepare("SELECT * FROM stocks ORDER BY name").all();
 
@@ -8,7 +9,7 @@ module.exports.conso = () => {
     stmt.forEach((conso) => {
         conso.name = conso.name.split("_");
         conso.name.forEach((word) => {
-            word = word.slice(0,1).toUpperCase() + word.slice(1);
+            word = capitalize(word);
         });
 
         conso.name = conso.name.join(" ");
@@ -21,9 +22,9 @@ module.exports.add = (name, quantity) => {
     let db_name = name.split(" ").join("_").toLowerCase();
 
     const stmt = db.prepare("SELECT quantity FROM stocks WHERE name = ?").get(db_name);
-    
+
     const result = parseInt(stmt.quantity) + parseInt(quantity);
-    
+
     db.prepare("UPDATE stocks SET quantity = ? WHERE name = ?").run(result, db_name);
 };
 

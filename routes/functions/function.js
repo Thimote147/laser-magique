@@ -256,7 +256,10 @@ function substractionHours(beginning_hour, ending_hour) {
     return formattedHours + "h" + formattedMinutes;
 }
 
+function capitalize(word) {
+    return word.charAt(0).toUpperCase()+word.slice(1).toLowerCase();
+}
 
 module.exports = {
-    formatDateTime, formatHour, forToday, price, substractionHours, today, generateCalendar
+    capitalize, formatDateTime, formatHour, forToday, price, substractionHours, today, generateCalendar
 };
