@@ -216,14 +216,11 @@ function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, conso, deposit, p
 
     conso.forEach((item) => {
         if (item.quantity > 0) {
-            console.log(item)
-            food += item.quantity * Stock.getPrice(item.name.split(" ").join("_").toLowerCase());
+            food += item.quantity * Stock.getPrice(item.name.split(" ").join("_").toLowerCase()).price;
         }
     });
 
-    console.log(food)
-
-    const remaining = price - deposit - payment_bcc - payment_cash + food;
+    const remaining = price - deposit - payment_bcc - payment_cash + food;    
     const total = price + food;
 
     return { nbr_laser: nbr_laser, nbr_vr: nbr_vr, nbr_ct: nbr_ct, price: price, remaining: remaining, total: total };

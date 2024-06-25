@@ -9,11 +9,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/get_reservations', (req, res) => {
-    if (Gestion.member(req.query.user) !== undefined) {
-        if (Bcrypt.compareSync(req.query.password, Gestion.login(req.query.user))) {
-            res.send(forToday(Gestion.reservations()));
-        }
-    }
+    res.send(forToday(Gestion.reservations()));
 });
 
 router.post('/add_reservation', (req, res) => {
