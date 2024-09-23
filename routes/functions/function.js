@@ -13,7 +13,7 @@ function generateCalendar(year, month, option) {
 
     let currentWeek = [];
 
-    for (let i = 1; i < startingDayOfWeek; i++) {
+    for (let i = 0; i < startingDayOfWeek + 6; i++) {
         currentWeek.push(null);
     }
 
@@ -58,6 +58,8 @@ function generateCalendar(year, month, option) {
         }
         calendar.push(currentWeek);
     }
+
+    console.log(calendar);
 
     return calendar;
 }
@@ -220,7 +222,7 @@ function price(persons, activities, nbr_laser, nbr_vr, nbr_ct, conso, deposit, p
         }
     });
 
-    const remaining = price - deposit - payment_bcc - payment_cash + food;    
+    const remaining = price - deposit - payment_bcc - payment_cash + food;
     const total = price + food;
 
     return { nbr_laser: nbr_laser, nbr_vr: nbr_vr, nbr_ct: nbr_ct, price: price, remaining: remaining, total: total };
@@ -254,7 +256,7 @@ function substractionHours(beginning_hour, ending_hour) {
 }
 
 function capitalize(word) {
-    return word.charAt(0).toUpperCase()+word.slice(1).toLowerCase();
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
 module.exports = {
