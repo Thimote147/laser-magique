@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon laser-magique.js",
+    "dev": "nodemon laser-magique.js",
+    "start": "node laser-magique.js",
     "test": "eslint --rulesdir ./test ."
   },
   "dependencies": {
