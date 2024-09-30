@@ -6,58 +6,8 @@ const hbs = require('hbs');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-/**
- * eq checks if value are equal
- */
-hbs.registerHelper('eq', function (a, b) {
-  if (a == b) {
-    return true;
-  }
-  else {
-    return false;
-  }
-});
-
-/**
- * neq checks if value are equal
- */
-hbs.registerHelper('neq', function (a, b) {
-  if (a != b) {
-    return true;
-  }
-  else {
-    return false;
-  }
-});
-
-/**
- * op checks if the operation is true
- */
-hbs.registerHelper('op', function (a, b, c) { 
-  if (b == "<=") {
-    return a <= c;
-  } else if (b == "==") {
-    return a == c;
-  }
-});
 
 const indexRouter = require("./routes/index.js");
-const homeRouter = require("./routes/home.js")
-const cybergamesRouter = require("./routes/cyber_games.js");
-const gestionRouter = require("./routes/gestion.js");
-const loginRouter = require("./routes/login.js");
-const profileRouter = require("./routes/profile.js");
-const weaponsRouter = require("./routes/weapons.js");
-const headsetsRouter = require("./routes/headsets.js");
-const trikesRouter = require("./routes/trikes.js");
-const inventoryRouter = require("./routes/inventory.js");
-const reservationsRouter = require("./routes/reservations.js");
-const calendarRouter = require("./routes/calendars.js");
-const stockRouter = require("./routes/stocks.js");
-const reglementRouter = require("./routes/reglement.js");
-const conditionsGeneralesRouter = require("./routes/conditions-generales.js");
-const viePriveeRouter = require("./routes/vie-privee.js");
-const apiRouter = require("./routes/api.js");
 
 const app = express();
 const port = 3000;
@@ -77,22 +27,6 @@ app.use(session({ secret: "Your secret key", resave: false, saveUninitialized: f
 app.use(function (req, res, next) { res.locals.session = req.session; next(); });
 
 app.use("/", indexRouter);
-app.use("/home", homeRouter);
-app.use("/partie-cyber-games", cybergamesRouter);
-app.use("/gestion", gestionRouter);
-app.use("/login", loginRouter);
-app.use("/profile", profileRouter);
-app.use("/weapons", weaponsRouter);
-app.use("/headsets", headsetsRouter);
-app.use("/trikes", trikesRouter);
-app.use("/inventory", inventoryRouter);
-app.use("/reservation", reservationsRouter);
-app.use("/calendars", calendarRouter);
-app.use("/stocks", stockRouter);
-app.use("/reglement-d-ordre-interieur", reglementRouter);
-app.use("/conditions-generales", conditionsGeneralesRouter);
-app.use("/vie-privee", viePriveeRouter);
-app.use("/api", apiRouter);
 
 // Create error on page not found
 app.use(function (req, res, next) {

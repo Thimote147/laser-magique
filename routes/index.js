@@ -3,11 +3,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  if (req.session.connected) {
-    res.redirect("/gestion");
-  } else {
-    res.redirect("/login");
-  }
+    res.render("index.hbs");
 });
 
 module.exports = router;
