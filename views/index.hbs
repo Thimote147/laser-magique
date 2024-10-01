@@ -1,78 +1,110 @@
-<main class="relative w-full h-screen flex items-start md:items-center justify-center px-4 py-10 bg-bg-gradient">
-    <div class="relative w-full h-full bg-bg-gradient overflow-hidden" style="border-radius: 16px;">
-        <div class="flex items-center justify-center gap-2 bg-transparent w-[410px] absolute -translate-x-1/2 left-1/2 bottom-14 z-[2]"
+<main>
+    <div id="activities">
+        <section class="flex flex-col items-center m-auto w-10/12 rounded-xl"
+            style="background-image: url('/images/background/laser.jpg');">
+            <h3 class="text-[1.75rem]">Laser Game</h3>
+            <span class="text-[#69b357]">Une petite partie entre amis ?</span>
+            <hr class="my-2 my-md-3">
+            <p class="text-center">
+                Réservez à l'avance en ligne ou le jour même par téléphone
+                vos parties de Laser Game à Waterloo, près de Bruxelles.
+            </p>
+            <button class="border-solid border-2 hover:bg-white hover:text-black">En savoir plus</button>
+        </section>
+        <section class="flex flex-col items-center m-auto w-10/12 rounded-xl"
+            style="background-image: url('/images/background/cyber.jpg');">
+            <h3 class="text-[1.75rem]">Cyber Trike</h3>
+            <span class="text-[#69b357]">En exclu mondiale !</span>
+            <hr class="my-2 my-md-3">
+            <p class="text-center">
+                Jouez à l’un de nos jeux immersifs, jusqu’8 joueurs dans un espace de 500m² !
+            </p>
+        </section>
+    </div>
+</main>
+
+<nav class="relative w-full h-screen flex items-start md:items-center justify-center px-4 py-10 bg-gradient">
+    <div class="relative w-full h-full bg-gradient overflow-hidden" style="border-radius: 16px;">
+        <div class="flex items-center justify-center gap-2 bg-zinc-800 w-[410px] absolute -translate-x-1/2 left-1/2 bottom-14 z-[2]"
             style="border-radius: 16px;">
+            <button id="homeButton"
+                class="flex items-center justify-center gap-2 hover:bg-[rgb(25,25,30)] hover:text-white duration-300 transition-colors py-3 px-4"
+                style="border-radius: 16px;">
+                <span class="font-medium">Accueil</span>
+            </button>
             <button id="laserButton"
-                class="flex items-center justify-center gap-2 hover:bg-zinc-950 hover:text-white duration-300 transition-colors py-3 px-4"
+                class="flex items-center justify-center gap-2 hover:bg-[rgb(25,25,30)] hover:text-white duration-300 transition-colors py-3 px-4"
                 style="border-radius: 16px;">
                 <span class="font-medium">Laser Game</span>
             </button>
             <button id="cyberButton"
-                class="flex items-center justify-center gap-2 hover:bg-zinc-950 hover:text-white duration-300 transition-colors py-3 px-4"
+                class="flex items-center justify-center gap-2 hover:bg-[rgb(25,25,30)] hover:text-white duration-300 transition-colors py-3 px-4"
                 style="border-radius: 16px;">
-                <span class="font-medium">Cyber Trikes</span>
+                <span class="font-medium">Cyber Trike</span>
             </button>
         </div>
         <div id="menu" class="absolute -translate-x-1/2 left-1/2 bottom-14">
-            <div class="bg-black/5 backdrop-blur-xl overflow-hidden"
+            <div class="bg-black/5 backdrop-blur-xl overflow-hidden bg-zinc-800"
                 style="border-radius: 15.5497px; will-change: auto; transform: none; width: 410px; height: 48px;">
                 <div id="laserMenu" class="p-4 flex flex-col items-center absolute w-full bottom-16"
                     style="opacity: 1; will-change: auto;">
-                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-black/5 py-3 hover:px-3 duration-300"
-                        style="border-radius: 16px;" id="walletInteraction">
+                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-[rgb(25,25,30)] py-3 hover:px-3 duration-300"
+                        style="border-radius: 16px;">
                         <div class="w-full flex flex-col items-start">
                             <p class="font-medium">Qu'est-ce que c'est ?</p>
                         </div>
-                        {{!-- <span class="block shrink-0 py-1 px-2 text-sm opacity-80 border border-black/50"
-                            style="border-radius: 8px;">Dynamic</span>
-                        <span class="block shrink-0 py-1 px-2 text-md opacity-80" style="border-radius: 8px;">06 -
-                            12</span> --}}
                     </div>
-                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-black/5 py-3 hover:px-3 duration-300"
+                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-[rgb(25,25,30)] py-3 hover:px-3 duration-300"
                         style="border-radius: 16px;">
                         <div class="w-full flex flex-col items-start">
                             <p class="font-medium">Notre matériel</p>
                         </div>
-                        {{!-- <span class="block shrink-0 py-1 px-2 text-sm opacity-80 border border-black/50"
-                            style="border-radius: 8px;">Overlay</span>
-                        <span class="block shrink-0 py-1 px-2 text-md opacity-80" style="border-radius: 8px;">05 -
-                            12</span> --}}
                     </div>
-                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-black/5 py-3 hover:px-3 duration-300"
+                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-[rgb(25,25,30)] py-3 hover:px-3 duration-300"
                         style="border-radius: 16px;">
                         <div class="w-full flex flex-col items-start">
                             <p class="font-medium">Références</p>
                         </div>
-                        {{!-- <span class="block shrink-0 py-1 px-2 text-sm opacity-80 border border-black/50"
-                            style="border-radius: 8px;">Scroll</span>
-                        <span class="block shrink-0 py-1 px-2 text-md opacity-80" style="border-radius: 8px;">04 -
-                            12</span> --}}
                     </div>
                     <div class="h-[2px] w-[95%] bg-black/10 mt-4"></div>
                 </div>
                 <div id="cyberMenu" class="p-4 flex flex-col items-center absolute w-full bottom-16"
                     style="opacity: 1; will-change: auto;">
-                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-black/5 py-3 hover:px-3 duration-300"
+                    <div class="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-[rgb(25,25,30)] py-3 hover:px-3 duration-300"
                         style="border-radius: 16px;" id="walletInteraction">
                         <div class="w-full flex flex-col items-start">
                             <p class="font-medium">Qu'est-ce que c'est ?</p>
                         </div>
-                        {{!-- <span class="block shrink-0 py-1 px-2 text-sm opacity-80 border border-black/50"
-                            style="border-radius: 8px;">Dynamic</span>
-                        <span class="block shrink-0 py-1 px-2 text-md opacity-80" style="border-radius: 8px;">06 -
-                            12</span> --}}
                     </div>
                     <div class="h-[2px] w-[95%] bg-black/10 mt-4"></div>
                 </div>
             </div>
         </div>
     </div>
-</main>
+</nav>
 <script>
+    document.getElementById('homeButton').addEventListener('click', function () {
+        window.location.href = '/#';
+    });
+
+    document.getElementById('homeButton').addEventListener('mouseover', function () {
+        const container = document.querySelector('.bg-black\\/5.backdrop-blur-xl.overflow-hidden');
+
+        container.style.transition = 'all 0.3s cubic-bezier(0, -0.55, 0.27, 0.55)';
+        container.style['border-radius'] = '24.4718px';
+        container.style['will-change'] = 'auto';
+        container.style.width = '460px';
+        container.style.height = '80px';
+        container.style.transform = 'translateY(17px)';
+
+        document.getElementById('laserMenu').style.display = 'none';
+        document.getElementById('cyberMenu').style.display = 'none';
+    });
+
     document.getElementById('laserButton').addEventListener('mouseover', function () {
         const container = document.querySelector('.bg-black\\/5.backdrop-blur-xl.overflow-hidden');
 
-        container.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+        container.style.transition = 'all 0.5s cubic-bezier(0, -0.55, 0.27, 1.55)';
         container.style['border-radius'] = '24.4718px';
         container.style['will-change'] = 'auto';
         container.style.width = '460px';
@@ -86,7 +118,7 @@
     document.getElementById('cyberButton').addEventListener('mouseover', function () {
         const container = document.querySelector('.bg-black\\/5.backdrop-blur-xl.overflow-hidden');
 
-        container.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+        container.style.transition = 'all 0.5s cubic-bezier(0, -0.55, 0.27, 1.55)';
         container.style['border-radius'] = '24.4718px';
         container.style['will-change'] = 'auto';
         container.style.width = '460px';
@@ -100,11 +132,14 @@
     document.getElementById('menu').addEventListener('mouseleave', function () {
         const container = document.querySelector('.bg-black\\/5.backdrop-blur-xl.overflow-hidden');
 
-        container.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+        container.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 0.55)';
         container.style['border-radius'] = '15.5497px';
         container.style['will-change'] = 'auto';
         container.style.width = '410px';
         container.style.height = '48px';
         container.style.transform = 'none';
+
+        document.getElementById('laserMenu').style.display = 'none';
+        document.getElementById('cyberMenu').style.display = 'none';
     });
 </script>
