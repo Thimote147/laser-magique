@@ -1,40 +1,48 @@
 {
   "name": "laser-magique",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "nodemon laser-magique.js",
-    "start": "node laser-magique.js",
-    "test": "eslint --rulesdir ./test ."
-  },
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "better-sqlite3": "^9.6.0",
-    "body-parser": "^1.20.2",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "^4.18.2",
-    "express-session": "^1.17.2",
-    "express-sessions": "^1.0.1",
-    "hbs": "^4.2.0",
-    "http-errors": "~1.6.3",
-    "moment": "^2.30.1",
-    "morgan": "~1.9.1",
-    "validator": "^13.11.0"
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "framer-motion": "^11.11.0",
+    "lucide-react": "^0.447.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "react-scripts": "^5.0.1",
+    "usehooks-ts": "^3.1.0",
+    "vite": "^5.4.8",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "eslint": "^8.21.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-hbs": "^1.0.3",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.2.4",
-    "eslint-plugin-promise": "^6.0.0",
-    "nodemon": "^3.1.0"
-  },
-  "main": "laser-magique.js",
-  "keywords": [],
-  "author": "Thimoté Fétu",
-  "license": "ISC",
-  "description": "Laser Magique Website"
+    "sass": "^1.79.4",
+    "sass-loader": "^16.0.2"
+  }
 }
