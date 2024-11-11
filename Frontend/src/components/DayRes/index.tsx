@@ -33,6 +33,16 @@ const DayRes = () => {
         }
     };
 
+    const handleDeleteReservation = (id: number) => {
+        // Implement delete functionality with API call
+        setReservations((prev) => prev.filter((res) => res.reservation_id !== id));
+    };
+
+    const handleEditReservation = (id: number) => {
+        // Implement edit functionality
+        console.log("Edit reservation with ID:", id);
+    };
+
     const gridCols = () => {
         switch (Object.keys(hours).length) {
             case 1: return "grid-cols-1";
@@ -108,7 +118,7 @@ const DayRes = () => {
                     >
                         <div className="flex flex-col items-start gap-1">
                             <h1 className="text-white font-semibold text-xl">
-                                Réservation du jour
+                                Réservation du jour ({currentDate})
                             </h1>
                             <p className="text-white/50 text-sm">
                                 Toutes les réservations sont regroupées par tranche horaire
@@ -188,7 +198,7 @@ const DayRes = () => {
                                     ))}
                                     <AnimatePresence>
                                         {clickHours && (
-                                            <div className="absolute top-[125%] mt-2 left-1/2 -translate-x-1/2 z-2 w-96 flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
+                                            <div className="absolute top-[125%] mt-2 left-1/2 -translate-x-1/2 z-2 w-100 flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
                                                 <div className="w-full flex items-center justify-between mb-2">
                                                     <div className="flex items-center gap-2">
                                                         <div
@@ -229,14 +239,28 @@ const DayRes = () => {
                                                             </p>
                                                             <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
                                                         </div>
-                                                        <button
-                                                            className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-20 text-center"
-                                                            style={{
-                                                                backgroundColor: "20",
-                                                            }}
-                                                        >
-                                                            activité
-                                                        </button>
+                                                        <div className="w-full flex items-center justify-end gap-2">
+                                                            <button
+                                                                className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-20 text-center"
+                                                                style={{
+                                                                    backgroundColor: "20",
+                                                                }}
+                                                            >
+                                                                activité
+                                                            </button>
+                                                            <button
+                                                                className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-20 text-center"
+                                                                onClick={() => handleEditReservation(res.reservation_id)}
+                                                            >
+                                                                Edit
+                                                            </button>
+                                                            <button
+                                                                className="text-red-500 flex font-medium capitalize items-center justify-center text-sm border-2 border-red-500 rounded-lg py-1.5 px-3 w-20 text-center"
+                                                                onClick={() => handleDeleteReservation(res.reservation_id)}
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
                                                     </motion.div>
                                                 ))}
                                             </div>
