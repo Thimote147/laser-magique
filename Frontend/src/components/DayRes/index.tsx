@@ -5,43 +5,36 @@ import { format, parseISO } from "date-fns";
 
 const DayRes = () => {
     const [view, setView] = useState<"calendar" | "flash">("calendar");
-    // const [hoveredHour, setHoveredHour] = useState<string | null>(null);
     const [clickHours, setClickHours] = useState<string | null>(null);
-    const [hours, setHours] = useState<string[]>([]);
-    const [reservations, setReservations] = useState<{ [key: string]: { reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string, date: string }[] }>({});
-    const [filteredReservations, setFilteredReservations] = useState<{
-        reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string, date: string
-    }[]>([]);
-    const [currentDate] = useState(new Date());
+    const [hours, setHours] = useState<{ [key: string]: number }>({});
+    const [reservations, setReservations] = useState<{ reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string, date: string }[]>([]);
+    const [filteredReservations, setFilteredReservations] = useState<{ reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string, date: string }[]>([]);
+    const capitalizeWords = (str: string) => {
+        return str.replace(/\b\w/g, char => char.toUpperCase());
+    };
 
-    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const [currentDate] = useState(capitalizeWords(new Date().toLocaleDateString("fr-FR", { timeZone: "Europe/Brussels", weekday: "long", month: "long", day: "numeric" })));
 
-    // const handleMouseEnter = (hour: string) => {
-    //     if (!isMobile) {
-    //         setHoveredHour(hour);
-    //         setFilteredReservations(reservations[hour] || []);
-    //     }
-    // };
-
-    // const handleMouseLeave = () => {
-    //     if (!isMobile) {
-    //         setHoveredHour(null);
-    //         setFilteredReservations([]);
-    //     }
-    // };
+    function filterReservations(hour: string) {
+        return reservations.filter((res) => {
+            const resHour = format(parseISO(res.date), "HH:mm");
+            return resHour === hour;
+        });
+    }
 
     const handleMouseClick = (hour: string) => {
         if (clickHours === hour) {
             setClickHours(null);
             setFilteredReservations([]);
         } else {
+            console.log(currentDate);
             setClickHours(hour);
-            setFilteredReservations(reservations[hour] || []);
+            setFilteredReservations(filterReservations(hour));
         }
     };
 
     const gridCols = () => {
-        switch (hours.length) {
+        switch (Object.keys(hours).length) {
             case 1: return "grid-cols-1";
             case 2: return "grid-cols-2";
             case 3: return "grid-cols-3";
@@ -65,24 +58,17 @@ const DayRes = () => {
                 return response.json();
             })
             .then(data => {
-                const groupedReservations = data.reduce((acc: { [key: string]: { reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string, date: string }[] }, reservation: {
+                const reservations = data.map((reservation: {
                     reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string; date: string
-                }) => {
-                    const hour = format(parseISO(reservation.date), "HH:mm");
-                    if (!acc[hour]) {
-                        acc[hour] = [];
-                    }
-                    acc[hour].push({
-                        reservation_id: reservation.reservation_id,
-                        firstname: reservation.firstname,
-                        lastname: reservation.lastname,
-                        nbr_pers: reservation.nbr_pers,
-                        group_type: reservation.group_type,
-                        date: reservation.date
-                    });
-                    return acc;
-                }, {});
-                setReservations(groupedReservations);
+                }) => ({
+                    reservation_id: reservation.reservation_id,
+                    firstname: reservation.firstname,
+                    lastname: reservation.lastname,
+                    nbr_pers: reservation.nbr_pers,
+                    group_type: reservation.group_type,
+                    date: reservation.date
+                }));
+                setReservations(reservations);
             })
             .catch(error => console.error('Erreur:', error));
     }, []);
@@ -96,7 +82,11 @@ const DayRes = () => {
                 return response.json();
             })
             .then(data => {
-                const formattedHours = data.map((item: { date: string }) => format(parseISO(item.date), "HH:mm"));
+                const formattedHours = data.reduce((acc: { [key: string]: number }, curr: { date: string, nbr_pers: number }) => {
+                    const date = format(parseISO(curr.date), 'HH:mm');
+                    acc[date] = curr.nbr_pers;
+                    return acc;
+                }, {} as { [key: string]: number });
                 setHours(formattedHours);
             })
             .catch(error => console.error('Erreur:', error));
@@ -173,7 +163,7 @@ const DayRes = () => {
                                     key="calendar"
                                     layout
                                 >
-                                    {hours.map((hour) => (
+                                    {Object.keys(hours).map((hour) => (
                                         <motion.div
                                             layout
                                             key={hour}
@@ -184,78 +174,16 @@ const DayRes = () => {
                                             </span>
                                         </motion.div>
                                     ))}
-                                    {hours.map((hour) => (
+                                    {Object.keys(hours).map((hour) => (
                                         <motion.div layout className="w-full relative" key={hour}>
                                             <motion.button
                                                 className="flex items-center justify-center w-full h-[59px] rounded-lg bg-zinc-700/30 cursor-pointer duration-300 transition-opacity"
-                                                // onMouseEnter={() => handleMouseEnter(hour)}
-                                                // onMouseLeave={handleMouseLeave}
                                                 onClick={() => handleMouseClick(hour)}
-                                            // style={{
-                                            //     opacity:
-                                            //         hoveredHour &&
-                                            //             format(hoveredHour, "HH:mm") !== hour
-                                            //             ? 0.3
-                                            //             : "",
-                                            // }}
                                             >
                                                 <span className="font-semibold text-lg text-white">
-                                                    {reservations[hour]?.length || 0}
+                                                    {hours[hour]}
                                                 </span>
                                             </motion.button>
-                                            {/* <AnimatePresence>
-                                                {hoveredHour && (
-                                                    <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-2 w-96 flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
-                                                        <div className="w-full flex items-center justify-between mb-2">
-                                                            <div className="flex items-center gap-2">
-                                                                <div
-                                                                    className="flex items-center justify-center size-7 rounded bg-zinc-700/30"
-                                                                >
-                                                                    <span className="font-medium text-sm text-white">
-                                                                        {format(currentDate, "d")}
-                                                                    </span>
-                                                                </div>
-                                                                <span className="font-medium text-sm text-white">
-                                                                    {format(currentDate, "iiii")}
-                                                                </span>
-                                                                <span className="font-medium text-xs text-white/70 block mt-0.5">
-                                                                    {format(currentDate, "MMMM d")}
-                                                                </span>
-                                                            </div>
-                                                            <span className="text-white/40 text-sm">
-                                                                {filteredReservations.length} réservation
-                                                                {filteredReservations.length > 1 && "s"}
-                                                            </span>
-                                                        </div>
-                                                        {filteredReservations.map((res, index) => (
-                                                            <motion.div
-                                                                key={res.reservation_id}
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                animate={{
-                                                                    opacity: 1,
-                                                                    y: 0,
-                                                                    transition: { delay: index * 0.05 },
-                                                                }}
-                                                                exit={{ opacity: 0, y: 10 }}
-                                                                transition={{ duration: 0.2 }}
-                                                                className="w-full flex items-center justify-between gap-2"
-                                                            >
-                                                                <p className="text-white font-semibold text-xl">
-                                                                    {res.firstname}
-                                                                </p>
-                                                                <button
-                                                                    className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-20 text-center"
-                                                                    style={{
-                                                                        backgroundColor: "20",
-                                                                    }}
-                                                                >
-                                                                    activité
-                                                                </button>
-                                                            </motion.div>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </AnimatePresence> */}
                                         </motion.div>
                                     ))}
                                     <AnimatePresence>
@@ -267,14 +195,14 @@ const DayRes = () => {
                                                             className="flex items-center justify-center size-7 rounded bg-zinc-700/30"
                                                         >
                                                             <span className="font-medium text-sm text-white">
-                                                                {format(currentDate, "d")}
+                                                                {currentDate.split(" ")[1]}
                                                             </span>
                                                         </div>
                                                         <span className="font-medium text-sm text-white">
-                                                            {format(currentDate, "iiii")}
+                                                            {currentDate.split(" ")[0]}
                                                         </span>
                                                         <span className="font-medium text-xs text-white/70 block mt-0.5">
-                                                            {format(currentDate, "MMMM d")}
+                                                            {currentDate.split(" ")[1] + " " + currentDate.split(" ")[2]}
                                                         </span>
                                                     </div>
                                                     <span className="text-white/40 text-sm">
@@ -318,6 +246,17 @@ const DayRes = () => {
                             )}
                         </AnimatePresence>
                     </motion.div>
+                    <AnimatePresence>
+                        {view === "flash" && (
+                            reservations.map((res, index) => (
+                                <motion.div key={index}>
+                                    <p className="text-white font-semibold text-xl">
+                                        {res.firstname}
+                                    </p>
+                                    <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
+                                </motion.div>
+                            )))}
+                    </AnimatePresence>
                 </motion.div>
             </LayoutGroup>
         </main>
