@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { Grid, List } from "lucide-react";
+import { Calendar, Grid, List } from "lucide-react";
 
 interface HeaderButtonProps {
-    view: "calendar" | "flash";
-    setView: React.Dispatch<React.SetStateAction<"calendar" | "flash">>;
-    onClick: "calendar" | "flash";
+    view: "grid" | "list" | "calendar";
+    setView: React.Dispatch<React.SetStateAction<"grid" | "list" | "calendar">>;
+    onClick: "grid" | "list" | "calendar";
 }
 
 const HeaderButton = ({ view, setView, onClick }: HeaderButtonProps) => {
@@ -13,17 +13,23 @@ const HeaderButton = ({ view, setView, onClick }: HeaderButtonProps) => {
             className="relative rounded-lg p-1 cursor-pointer"
             onClick={() => setView(onClick)}
         >
-            {onClick === "calendar" ? (
+            {onClick === "grid" ? (
                 <Grid
                     className="z-[2] relative transition-colors duration-300"
                     size={22}
                     color={view === onClick ? "#fff" : "currentColor"}
                 />
-            ) : (
+            ) : onClick === "list" ? (
                 <List
                     className="z-[2] relative transition-colors duration-300"
                     size={22}
-                    color={view === "flash" ? "#fff" : "currentColor"}
+                    color={view === onClick ? "#fff" : "currentColor"}
+                />
+            ) : (
+                <Calendar
+                    className="z-[2] relative transition-colors duration-300"
+                    size={22}
+                    color={view === onClick ? "#fff" : "currentColor"}
                 />
             )}
             {view === onClick && (

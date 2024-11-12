@@ -3,8 +3,8 @@ import HeaderMenu from "./HeaderMenu";
 
 interface HeaderProps {
     currentDate: string;
-    view: "calendar" | "flash";
-    setView: React.Dispatch<React.SetStateAction<"calendar" | "flash">>;
+    view: "grid" | "list" | "calendar";
+    setView: React.Dispatch<React.SetStateAction<"grid" | "list" | "calendar">>;
 }
 
 const Header = ({ currentDate, view, setView }: HeaderProps) => {
@@ -21,10 +21,10 @@ const Header = ({ currentDate, view, setView }: HeaderProps) => {
                     </span>
                 </h1>
                 <p className="text-white/50 text-sm">
-                    Toutes les réservations sont regroupées {view === "calendar" ? "par tranche horaire" : "ci-dessous"}.
+                    Toutes les réservations sont regroupées {view === "grid" ? "par tranche horaire" : "ci-dessous"}.
                 </p>
             </div>
-            <HeaderMenu view={view} setView={setView}/>
+            <HeaderMenu view={view} setView={setView} />
         </motion.div>
     )
 };

@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { format, parseISO } from "date-fns";
 import Header from "./Header";
 import ResList from "./ResList";
+import gridCols from "./gridCols";
+
 
 const DayRes = () => {
-    const [view, setView] = useState<"calendar" | "flash">("calendar");
+    const [view, setView] = useState<"grid" | "list" | "calendar">("grid");
     const [clickHours, setClickHours] = useState<string | null>(null);
     const [hours, setHours] = useState<{ [key: string]: number }>({});
     const [reservations, setReservations] = useState<{ reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string, date: string }[]>([]);
@@ -33,22 +35,6 @@ const DayRes = () => {
             setFilteredReservations(filterReservations(hour));
         }
     };
-
-    const gridCols = () => {
-        switch (Object.keys(hours).length) {
-            case 1: return "grid-cols-1";
-            case 2: return "grid-cols-2";
-            case 3: return "grid-cols-3";
-            case 4: return "grid-cols-4";
-            case 5: return "grid-cols-5";
-            case 6: return "grid-cols-6";
-            case 7: return "grid-cols-7";
-            case 8: return "grid-cols-8";
-            case 9: return "grid-cols-9";
-            case 10: return "grid-cols-10";
-            default: return "";
-        }
-    }
 
     useEffect(() => {
         fetch('http://localhost:3010/reservations/today')
@@ -107,14 +93,14 @@ const DayRes = () => {
                     layout
                     className="w-full flex flex-col items-center justify-center"
                 >
-                    {view === "calendar" && (
+                    {view === "grid" && (
                         <AnimatePresence mode="wait" initial={false}>
                             <motion.div
-                                className={`grid ${gridCols()} gap-2 w-full`}
+                                className={`grid ${gridCols(Object.keys(hours).length)} gap-2 w-full`}
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 exit={{ y: -10, opacity: 0 }}
-                                key="calendar"
+                                key="grid"
                                 layout
                             >
                                 {Object.keys(hours).map((hour) => (
@@ -141,7 +127,7 @@ const DayRes = () => {
                                     </motion.div>
                                 ))}
                             </motion.div>
-                            <ResList view={view} clickHours={clickHours} reservations={filteredReservations} setReservations={setReservations}/>
+                            <ResList view={view} clickHours={clickHours} reservations={filteredReservations} setReservations={setReservations} />
                         </AnimatePresence>
                     )}
                 </motion.div>
