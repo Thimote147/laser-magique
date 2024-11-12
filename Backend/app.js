@@ -17,6 +17,14 @@ const db = new Database(path.resolve(__dirname, 'data', 'gestion.db'), {
   verbose: console.log, // Log des requêtes pour le débogage (optionnel)
 });
 
+//To DELETE when adding more reservations
+function updateReservationDates () {
+  const stmt = db.prepare("UPDATE reservations SET date = ? || substr(date, 11)");
+  stmt.run(new Date().toISOString().slice(0, 10));
+  console.log("Date de réservation mise à jour");
+};
+updateReservationDates();
+
 app.use('/users', usersRouter(db));
 app.use('/reservations', reservationsRouter(db));
 
