@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { Calendar, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { format, parseISO } from "date-fns";
+import Header from "./Header";
+import ResButton from "./ResButton";
 
 const DayRes = () => {
     const [view, setView] = useState<"calendar" | "flash">("calendar");
@@ -15,7 +16,7 @@ const DayRes = () => {
 
     const [currentDate] = useState(capitalizeWords(new Date().toLocaleDateString("fr-FR", { timeZone: "Europe/Brussels", weekday: "long", month: "long", day: "numeric" })));
 
-    function filterReservations(hour: string) {
+    const filterReservations = (hour: string) => {
         return reservations.filter((res) => {
             const resHour = format(parseISO(res.date), "HH:mm");
             return resHour === hour;
@@ -104,225 +105,143 @@ const DayRes = () => {
 
     return (
         <main className="relative w-full h-full flex items-start md:items-center justify-center px-4 py-10 bg-[#242424]">
-            <LayoutGroup>
+            <motion.div
+                layout
+                className="border border-[#1e1e1e] p-6 max-w-lg min-w-full flex flex-col items-center gap-2"
+                style={{
+                    borderRadius: 24,
+                }}
+            >
+                <Header currentDate={currentDate} view={view} setView={setView}/>
                 <motion.div
                     layout
-                    className="border border-[#1e1e1e] p-6 max-w-lg min-w-full flex flex-col items-center gap-2"
-                    style={{
-                        borderRadius: 24,
-                    }}
+                    className="w-full flex items-center justify-center"
                 >
-                    <motion.div
-                        layout
-                        className="flex w-full items-center justify-between gap-2"
-                    >
-                        <div className="flex flex-col items-start gap-1">
-                            <h1 className="text-white font-semibold text-xl">
-                                Réservation du jour ({currentDate})
-                            </h1>
-                            <p className="text-white/50 text-sm">
-                                Toutes les réservations sont regroupées par tranche horaire
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-1 border border-zinc-700/50 rounded-xl p-1">
-                            <motion.button
-                                className="relative rounded-lg p-1 cursor-pointer"
-                                onClick={() => setView("calendar")}
+                    <AnimatePresence mode="wait" initial={false}>
+                        {view === "calendar" && (
+                            <motion.div
+                                className={`grid ${gridCols()} gap-2 w-full`}
+                                initial={{ y: -10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -10, opacity: 0 }}
+                                key="calendar"
+                                layout
                             >
-                                <Calendar
-                                    className="z-[2] relative transition-colors duration-300"
-                                    size={22}
-                                    color={view === "calendar" ? "#fff" : "currentColor"}
-                                />
-                                {view === "calendar" && (
+                                {Object.keys(hours).map((hour) => (
                                     <motion.div
-                                        layoutId="view-indicator"
-                                        className="bg-zinc-700/30 absolute rounded-lg size-full inset-0"
-                                    ></motion.div>
-                                )}
-                            </motion.button>
-                            <motion.button
-                                className="relative rounded-lg p-1 cursor-pointer"
-                                onClick={() => setView("flash")}
-                            >
-                                <Zap
-                                    className="z-[2] relative transition-colors duration-300"
-                                    size={22}
-                                    color={view === "flash" ? "#fff" : "currentColor"}
-                                />
-                                {view === "flash" && (
-                                    <motion.div
-                                        layoutId="view-indicator"
-                                        className="bg-zinc-700/30 absolute rounded-lg size-full inset-0"
-                                    ></motion.div>
-                                )}
-                            </motion.button>
-                        </div>
-                    </motion.div>
-                    <motion.div
-                        layout
-                        className="w-full flex items-center justify-center"
-                    >
-                        <AnimatePresence mode="wait" initial={false}>
-                            {view === "calendar" && (
-                                <motion.div
-                                    className={`grid ${gridCols()} gap-2 w-full`}
-                                    initial={{ y: -10, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    exit={{ y: -10, opacity: 0 }}
-                                    key="calendar"
-                                    layout
-                                >
-                                    {Object.keys(hours).map((hour) => (
-                                        <motion.div
-                                            layout
-                                            key={hour}
-                                            className="flex items-center justify-center w-full"
+                                        layout
+                                        key={hour}
+                                        className="flex items-center justify-center w-full"
+                                    >
+                                        <span className="font-medium text-sm text-white/70">
+                                            {hour}
+                                        </span>
+                                    </motion.div>
+                                ))}
+                                {Object.keys(hours).map((hour) => (
+                                    <motion.div layout className="w-full relative" key={hour}>
+                                        <motion.button
+                                            className="flex items-center justify-center w-full h-[59px] rounded-lg bg-zinc-700/30 cursor-pointer duration-300 transition-opacity"
+                                            onClick={() => handleMouseClick(hour)}
                                         >
-                                            <span className="font-medium text-sm text-white/70">
-                                                {hour}
+                                            <span className="font-semibold text-lg text-white">
+                                                {hours[hour]}
                                             </span>
-                                        </motion.div>
-                                    ))}
-                                    {Object.keys(hours).map((hour) => (
-                                        <motion.div layout className="w-full relative" key={hour}>
-                                            <motion.button
-                                                className="flex items-center justify-center w-full h-[59px] rounded-lg bg-zinc-700/30 cursor-pointer duration-300 transition-opacity"
-                                                onClick={() => handleMouseClick(hour)}
-                                            >
-                                                <span className="font-semibold text-lg text-white">
-                                                    {hours[hour]}
-                                                </span>
-                                            </motion.button>
-                                        </motion.div>
-                                    ))}
-                                    <AnimatePresence>
-                                        {clickHours && (
-                                            <div className="ml-[50%] top-full mt-2 w-[410px] flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
-                                                <div className="w-full flex items-center justify-between mb-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div
-                                                            className="flex items-center justify-center size-7 rounded bg-zinc-700/30"
-                                                        >
-                                                            <span className="font-medium text-sm text-white">
-                                                                {currentDate.split(" ")[1]}
-                                                            </span>
-                                                        </div>
+                                        </motion.button>
+                                    </motion.div>
+                                ))}
+                                <AnimatePresence>
+                                    {clickHours && (
+                                        <div className="ml-[50%] top-full mt-2 w-[410px] flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
+                                            <div className="w-full flex items-center justify-between mb-2">
+                                                <div className="flex items-center gap-2">
+                                                    <div
+                                                        className="flex items-center justify-center size-7 rounded bg-zinc-700/30"
+                                                    >
                                                         <span className="font-medium text-sm text-white">
-                                                            {currentDate.split(" ")[0]}
-                                                        </span>
-                                                        <span className="font-medium text-xs text-white/70 block mt-0.5">
-                                                            {currentDate.split(" ")[1] + " " + currentDate.split(" ")[2]}
+                                                            {currentDate.split(" ")[1]}
                                                         </span>
                                                     </div>
-                                                    <span className="text-white/40 text-sm">
-                                                        {filteredReservations.length} réservation
-                                                        {filteredReservations.length > 1 && "s"}
+                                                    <span className="font-medium text-sm text-white">
+                                                        {currentDate.split(" ")[0]}
+                                                    </span>
+                                                    <span className="font-medium text-xs text-white/70 block mt-0.5">
+                                                        {currentDate.split(" ")[1] + " " + currentDate.split(" ")[2]}
                                                     </span>
                                                 </div>
-                                                {filteredReservations.map((res, index) => (
-                                                    <motion.div
-                                                        key={res.reservation_id}
-                                                        initial={{ opacity: 0, y: 10 }}
-                                                        animate={{
-                                                            opacity: 1,
-                                                            y: 0,
-                                                            transition: { delay: index * 0.05 },
-                                                        }}
-                                                        exit={{ opacity: 0, y: 10 }}
-                                                        transition={{ duration: 0.2 }}
-                                                        className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
-                                                    >
-                                                        <div className="min-w-36">
-                                                            <p className="text-white font-semibold text-xl">
-                                                                {res.firstname}
-                                                            </p>
-                                                            <span className="text-xs">{res.group_type} <br /> de {res.nbr_pers} personnes</span>
-                                                        </div>
-                                                        <div className="w-full flex flex-col items-end">
-                                                            <button
-                                                                className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 min-w-25 text-center mb-2 cursor-default"
-                                                                style={{
-                                                                    backgroundColor: "20",
-                                                                }}
-                                                            >
-                                                                activité
-                                                            </button>
-                                                            <section className="flex">
-                                                                <button
-                                                                    className="hover:bg-zinc-600 flex font-medium items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-25 text-center mr-1"
-                                                                    onClick={() => handleEditReservation(res.reservation_id)}
-                                                                >
-                                                                    Modifier
-                                                                </button>
-                                                                <button
-                                                                    className="text-red-500 hover:bg-red-700 flex font-medium capitalize items-center justify-center text-sm border-2 border-red-500 rounded-lg py-1.5 px-3 w-25 text-center ml-1"
-                                                                    onClick={() => handleDeleteReservation(res.reservation_id)}
-                                                                >
-                                                                    Supprimer
-                                                                </button>
-                                                            </section>
-                                                        </div>
-                                                    </motion.div>
-                                                ))}
+                                                <span className="text-white/40 text-sm">
+                                                    {filteredReservations.length} réservation
+                                                    {filteredReservations.length > 1 && "s"}
+                                                </span>
                                             </div>
-                                        )}
-                                    </AnimatePresence>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </motion.div>
-                    <AnimatePresence>
-                        {view === "flash" && (
-                            reservations.map((res, index) => (
-                                <motion.div
-                                    key={res.reservation_id}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{
-                                        opacity: 1,
-                                        y: 0,
-                                        transition: { delay: index * 0.05 },
-                                    }}
-                                    exit={{ opacity: 0, y: 10 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
-                                >
-                                    <div className="w-full flex flex-col">
-                                        <p className="text-white font-semibold text-xl">
-                                            {res.firstname}
-                                        </p>
-                                        <span className="text-xs">{format(parseISO(res.date), "HH:mm")}</span>
-                                        <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
-                                    </div>
-                                    <div className="w-full flex flex-col items-end">
-                                        <button
-                                            className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 min-w-25 text-center mb-2 cursor-default"
-                                            style={{
-                                                backgroundColor: "20",
-                                            }}
-                                        >
-                                            activité
-                                        </button>
-                                        <section className="flex">
-                                            <button
-                                                className="hover:bg-zinc-600 flex font-medium items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-25 text-center mr-1"
-                                                onClick={() => handleEditReservation(res.reservation_id)}
-                                            >
-                                                Modifier
-                                            </button>
-                                            <button
-                                                className="text-red-500 hover:bg-red-700 flex font-medium capitalize items-center justify-center text-sm border-2 border-red-500 rounded-lg py-1.5 px-3 w-25 text-center ml-1"
-                                                onClick={() => handleDeleteReservation(res.reservation_id)}
-                                            >
-                                                Supprimer
-                                            </button>
-                                        </section>
-                                    </div>
-                                </motion.div>
-                            )))}
+                                            {filteredReservations.map((res, index) => (
+                                                <motion.div
+                                                    key={res.reservation_id}
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        y: 0,
+                                                        transition: { delay: index * 0.05 },
+                                                    }}
+                                                    exit={{ opacity: 0, y: 10 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
+                                                >
+                                                    <div className="min-w-36">
+                                                        <p className="text-white font-semibold text-xl">
+                                                            {res.firstname}
+                                                        </p>
+                                                        <span className="text-xs">{res.group_type} <br /> de {res.nbr_pers} personnes</span>
+                                                    </div>
+                                                    <div className="w-full flex flex-col items-end">
+                                                        <ResButton res_id={res.reservation_id} name="Activité" style="text-white/50 border-white" />
+                                                        <section className="flex">
+                                                            <ResButton res_id={res.reservation_id} name="Modifier" style="text-white hover:bg-zinc-600 border-white" handle={handleEditReservation} />
+                                                            <ResButton res_id={res.reservation_id} name="Supprimer" style="text-red-500 hover:bg-red-700 border-red-500" handle={handleDeleteReservation} />
+                                                        </section>
+                                                    </div>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        )}
                     </AnimatePresence>
                 </motion.div>
-            </LayoutGroup>
+                <AnimatePresence>
+                    {view === "flash" && (
+                        reservations.map((res, index) => (
+                            <motion.div
+                                key={res.reservation_id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: { delay: index * 0.05 },
+                                }}
+                                exit={{ opacity: 0, y: 10 }}
+                                transition={{ duration: 0.2 }}
+                                className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
+                            >
+                                <div className="w-full flex flex-col">
+                                    <p className="text-white font-semibold text-xl">
+                                        {res.firstname}
+                                    </p>
+                                    <span className="text-xs">{format(parseISO(res.date), "HH:mm")}</span>
+                                    <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
+                                </div>
+                                <div className="w-full flex flex-col items-end">
+                                    <ResButton res_id={res.reservation_id} name="Activité" style="text-white/50 border-white" />
+                                    <section className="flex">
+                                        <ResButton res_id={res.reservation_id} name="Modifier" style="text-white hover:bg-zinc-600 border-white" handle={handleEditReservation}/>
+                                        <ResButton res_id={res.reservation_id} name="Supprimer" style="text-red-500 hover:bg-red-700 border-red-500" handle={handleDeleteReservation}/>
+                                    </section>
+                                </div>
+                            </motion.div>
+                        )))}
+                </AnimatePresence>
+            </motion.div>
         </main>
     );
 }
