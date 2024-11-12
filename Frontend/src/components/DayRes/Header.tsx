@@ -14,8 +14,11 @@ const Header = ({ currentDate, view, setView }: HeaderProps) => {
             className="flex w-full items-center justify-between gap-2"
         >
             <div className="flex flex-col items-start gap-1">
-                <h1 className="text-white font-semibold text-xl">
-                    Réservation du jour ({currentDate})
+                <h1 className="text-white font-semibold text-xl flex">
+                    Réservation du jour -
+                    <span className="flex items-center font-medium text-sm text-white/70 ml-1">
+                        {currentDate}
+                    </span>
                 </h1>
                 <p className="text-white/50 text-sm">
                     Toutes les réservations sont regroupées par tranche horaire

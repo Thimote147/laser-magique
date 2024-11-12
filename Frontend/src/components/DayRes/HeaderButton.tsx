@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Calendar, Zap } from "lucide-react";
+import { Grid, List } from "lucide-react";
 
 interface HeaderButtonProps {
     view: "calendar" | "flash";
@@ -14,13 +14,13 @@ const HeaderButton = ({ view, setView, onClick }: HeaderButtonProps) => {
             onClick={() => setView(onClick)}
         >
             {onClick === "calendar" ? (
-                <Calendar
+                <Grid
                     className="z-[2] relative transition-colors duration-300"
                     size={22}
                     color={view === onClick ? "#fff" : "currentColor"}
                 />
             ) : (
-                <Zap
+                <List
                     className="z-[2] relative transition-colors duration-300"
                     size={22}
                     color={view === "flash" ? "#fff" : "currentColor"}
