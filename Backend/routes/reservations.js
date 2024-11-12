@@ -23,5 +23,14 @@ module.exports = (db) => {
         }
     });
 
+    router.get('/:id', (req, res) => {
+        try {
+            const resDetails = db.prepare('SELECT * FROM reservations WHERE reservation_id = ?').get(req.params.id);
+            res.json(resDetails);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     return router;
 };
