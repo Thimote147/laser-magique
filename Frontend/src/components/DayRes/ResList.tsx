@@ -35,10 +35,8 @@ const ResList = ({ view, reservations, setReservations }: ResListProps) => {
                         transition={{ duration: 0.2 }}
                         className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
                     >
-                        <div className="w-full flex flex-col">
-                            <p className="text-white font-semibold text-xl">
-                                {res.firstname}
-                            </p>
+                        <div className="w-full flex flex-col gap-3 ml-1">
+                            <p className="text-white font-semibold text-xl">{res.firstname}</p>
                             <span className="text-xs">{format(parseISO(res.date), "HH:mm")}</span>
                             <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
                         </div>

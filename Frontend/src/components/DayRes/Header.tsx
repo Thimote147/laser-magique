@@ -21,7 +21,7 @@ const Header = ({ currentDate, view, setView }: HeaderProps) => {
                     </span>
                 </h1>
                 <p className="text-white/50 text-sm">
-                    Toutes les réservations sont regroupées par tranche horaire
+                    Toutes les réservations sont regroupées {view === "calendar" ? "par tranche horaire" : "ci-dessous"}.
                 </p>
             </div>
             <HeaderMenu view={view} setView={setView}/>
