@@ -15,7 +15,7 @@ const ResList = ({ view, clickHours, reservations, setReservations }: ResListPro
         setReservations((prev) => prev.filter((res) => res.reservation_id !== id));
     };
 
-    const handleEditReservation = (id: number) => {
+    const handleCancelReservation = (id: number) => {
         // Implement edit functionality
         console.log("Edit reservation with ID:", id);
     };
@@ -43,6 +43,7 @@ const ResList = ({ view, clickHours, reservations, setReservations }: ResListPro
                                 exit={{ opacity: 0, y: 10 }}
                                 transition={{ duration: 0.2 }}
                                 className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
+                                onClick={() => window.location.href = `/reservation/${res.reservation_id}`}
                             >
                                 <div className="w-full flex flex-col gap-3 ml-1">
                                     <p className="text-white font-semibold text-xl">{res.firstname}</p>
@@ -52,7 +53,7 @@ const ResList = ({ view, clickHours, reservations, setReservations }: ResListPro
                                 <div className="w-full flex flex-col items-end">
                                     <ResButton res_id={res.reservation_id} name="Activité" style="text-white/50 border-white" />
                                     <section className="flex">
-                                        <ResButton res_id={res.reservation_id} name="Modifier" style="text-white hover:bg-zinc-600 border-white" handle={handleEditReservation} />
+                                        <ResButton res_id={res.reservation_id} name="Annuler" style="text-white/50 hover:bg-zinc-700 border-white/50" handle={handleCancelReservation} />
                                         <ResButton res_id={res.reservation_id} name="Supprimer" style="text-red-500 hover:bg-red-700 border-red-500" handle={handleDeleteReservation} />
                                     </section>
                                 </div>
@@ -63,7 +64,14 @@ const ResList = ({ view, clickHours, reservations, setReservations }: ResListPro
                 <AnimatePresence>
                     {clickHours && (
                         <>
-                            <div className="w-full flex items-center justify-between my-2">
+                            <motion.div className="w-full flex items-center justify-between my-2"
+                                animate={{
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: { delay: 0.05 },
+                                }}
+                                exit={{ opacity: 0, y: 10 }}
+                                transition={{ duration: 0.2 }}>
                                 <div className="flex items-center">
                                     <div
                                         className="flex items-center justify-center p-2 rounded bg-zinc-700/30"
@@ -77,7 +85,7 @@ const ResList = ({ view, clickHours, reservations, setReservations }: ResListPro
                                     {reservations.length} réservation
                                     {reservations.length > 1 && "s"}
                                 </span>
-                            </div>
+                            </motion.div>
                             {reservations.map((res, index) => (
                                 <motion.div
                                     key={res.reservation_id}
@@ -89,18 +97,17 @@ const ResList = ({ view, clickHours, reservations, setReservations }: ResListPro
                                     }}
                                     exit={{ opacity: 0, y: 10 }}
                                     transition={{ duration: 0.2 }}
-                                    className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
+                                    className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2 mt-2"
+                                    onClick={() => window.location.href = `/reservation/${res.reservation_id}`}
                                 >
-                                    <div className="min-w-36">
-                                        <p className="text-white font-semibold text-xl">
-                                            {res.firstname}
-                                        </p>
-                                        <span className="text-xs">{res.group_type} <br /> de {res.nbr_pers} personnes</span>
+                                    <div className="w-full flex flex-col gap-3 ml-1">
+                                        <p className="text-white font-semibold text-xl">{res.firstname}</p>
+                                        <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
                                     </div>
                                     <div className="w-full flex flex-col items-end">
                                         <ResButton res_id={res.reservation_id} name="Activité" style="text-white/50 border-white" />
                                         <section className="flex">
-                                            <ResButton res_id={res.reservation_id} name="Modifier" style="text-white hover:bg-zinc-600 border-white" handle={handleEditReservation} />
+                                            <ResButton res_id={res.reservation_id} name="Annuler" style="text-white/50 hover:bg-zinc-700 border-white/50" handle={handleCancelReservation} />
                                             <ResButton res_id={res.reservation_id} name="Supprimer" style="text-red-500 hover:bg-red-700 border-red-500" handle={handleDeleteReservation} />
                                         </section>
                                     </div>

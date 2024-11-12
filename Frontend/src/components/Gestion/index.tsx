@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import DayRes from '../DayRes';
+// import NewRes from './NewRes';
 
 const Home = () => {
     const [firstname, setFirstname] = useState('');
@@ -20,6 +21,7 @@ const Home = () => {
         <div>
             <h1>Bonjour {firstname}</h1>
             <DayRes />
+            {/* <NewRes /> */}
         </div>
     );
 }
