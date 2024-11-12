@@ -107,7 +107,7 @@ const DayRes = () => {
             <LayoutGroup>
                 <motion.div
                     layout
-                    className="border border-[#1e1e1e] p-6 max-w-lg min-w-full flex flex-col items-center gap-6"
+                    className="border border-[#1e1e1e] p-6 max-w-lg min-w-full flex flex-col items-center gap-2"
                     style={{
                         borderRadius: 24,
                     }}
@@ -231,13 +231,13 @@ const DayRes = () => {
                                                         }}
                                                         exit={{ opacity: 0, y: 10 }}
                                                         transition={{ duration: 0.2 }}
-                                                        className="w-full flex items-center justify-between gap-2 border border-[#454545] rounded-lg p-2"
+                                                        className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
                                                     >
                                                         <div className="min-w-36">
                                                             <p className="text-white font-semibold text-xl">
                                                                 {res.firstname}
                                                             </p>
-                                                            <span className="text-xs">{res.group_type} <br/> de {res.nbr_pers} personnes</span>
+                                                            <span className="text-xs">{res.group_type} <br /> de {res.nbr_pers} personnes</span>
                                                         </div>
                                                         <div className="w-full flex flex-col items-end">
                                                             <button
@@ -275,11 +275,49 @@ const DayRes = () => {
                     <AnimatePresence>
                         {view === "flash" && (
                             reservations.map((res, index) => (
-                                <motion.div key={index}>
-                                    <p className="text-white font-semibold text-xl">
-                                        {res.firstname}
-                                    </p>
-                                    <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
+                                <motion.div
+                                    key={res.reservation_id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: { delay: index * 0.05 },
+                                    }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="w-full flex items-center justify-between border border-[#454545] rounded-lg p-2"
+                                >
+                                    <div className="w-full flex flex-col">
+                                        <p className="text-white font-semibold text-xl">
+                                            {res.firstname}
+                                        </p>
+                                        <span className="text-xs">{format(parseISO(res.date), "HH:mm")}</span>
+                                        <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
+                                    </div>
+                                    <div className="w-full flex flex-col items-end">
+                                        <button
+                                            className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 min-w-25 text-center mb-2 cursor-default"
+                                            style={{
+                                                backgroundColor: "20",
+                                            }}
+                                        >
+                                            activité
+                                        </button>
+                                        <section className="flex">
+                                            <button
+                                                className="hover:bg-zinc-600 flex font-medium items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-25 text-center mr-1"
+                                                onClick={() => handleEditReservation(res.reservation_id)}
+                                            >
+                                                Modifier
+                                            </button>
+                                            <button
+                                                className="text-red-500 hover:bg-red-700 flex font-medium capitalize items-center justify-center text-sm border-2 border-red-500 rounded-lg py-1.5 px-3 w-25 text-center ml-1"
+                                                onClick={() => handleDeleteReservation(res.reservation_id)}
+                                            >
+                                                Supprimer
+                                            </button>
+                                        </section>
+                                    </div>
                                 </motion.div>
                             )))}
                     </AnimatePresence>
