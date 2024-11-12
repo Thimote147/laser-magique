@@ -198,7 +198,7 @@ const DayRes = () => {
                                     ))}
                                     <AnimatePresence>
                                         {clickHours && (
-                                            <div className="absolute top-[125%] mt-2 left-1/2 -translate-x-1/2 z-2 w-100 flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
+                                            <div className="ml-[50%] top-full mt-2 w-[410px] flex flex-col items-center justify-center gap-2 border border-[#1e1e1e] rounded-xl p-4 bg-[#242424]">
                                                 <div className="w-full flex items-center justify-between mb-2">
                                                     <div className="flex items-center gap-2">
                                                         <div
@@ -231,35 +231,37 @@ const DayRes = () => {
                                                         }}
                                                         exit={{ opacity: 0, y: 10 }}
                                                         transition={{ duration: 0.2 }}
-                                                        className="w-full flex items-center justify-between gap-2"
+                                                        className="w-full flex items-center justify-between gap-2 border border-[#454545] rounded-lg p-2"
                                                     >
-                                                        <div>
+                                                        <div className="min-w-36">
                                                             <p className="text-white font-semibold text-xl">
                                                                 {res.firstname}
                                                             </p>
-                                                            <span className="text-xs">{res.group_type} de {res.nbr_pers} personnes</span>
+                                                            <span className="text-xs">{res.group_type} <br/> de {res.nbr_pers} personnes</span>
                                                         </div>
-                                                        <div className="w-full flex items-center justify-end gap-2">
+                                                        <div className="w-full flex flex-col items-end">
                                                             <button
-                                                                className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-20 text-center"
+                                                                className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 min-w-25 text-center mb-2 cursor-default"
                                                                 style={{
                                                                     backgroundColor: "20",
                                                                 }}
                                                             >
                                                                 activité
                                                             </button>
-                                                            <button
-                                                                className="text-white/50 flex font-medium capitalize items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-20 text-center"
-                                                                onClick={() => handleEditReservation(res.reservation_id)}
-                                                            >
-                                                                Edit
-                                                            </button>
-                                                            <button
-                                                                className="text-red-500 flex font-medium capitalize items-center justify-center text-sm border-2 border-red-500 rounded-lg py-1.5 px-3 w-20 text-center"
-                                                                onClick={() => handleDeleteReservation(res.reservation_id)}
-                                                            >
-                                                                Delete
-                                                            </button>
+                                                            <section className="flex">
+                                                                <button
+                                                                    className="hover:bg-zinc-600 flex font-medium items-center justify-center text-sm border-2 rounded-lg py-1.5 px-3 w-25 text-center mr-1"
+                                                                    onClick={() => handleEditReservation(res.reservation_id)}
+                                                                >
+                                                                    Modifier
+                                                                </button>
+                                                                <button
+                                                                    className="text-red-500 hover:bg-red-700 flex font-medium capitalize items-center justify-center text-sm border-2 border-red-500 rounded-lg py-1.5 px-3 w-25 text-center ml-1"
+                                                                    onClick={() => handleDeleteReservation(res.reservation_id)}
+                                                                >
+                                                                    Supprimer
+                                                                </button>
+                                                            </section>
                                                         </div>
                                                     </motion.div>
                                                 ))}
