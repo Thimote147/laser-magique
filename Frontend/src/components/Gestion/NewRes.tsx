@@ -8,9 +8,11 @@ import {
     X,
 } from "lucide-react";
 import { useState } from "react";
+import Pricing from "./Pricing";
 
 const NewRes = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isGameChosen, setIsGameChosen] = useState(false);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     return (
@@ -36,7 +38,6 @@ const NewRes = () => {
                 {isModalOpen && (
                     <motion.div
                         className="absolute flex items-center justify-center right-0 bottom-0"
-                        onClick={() => setIsModalOpen(false)}
                     >
                         <motion.div
                             className="bg-[#fbfbf9] w-[400px] border-2 border-[#efefef] text-[#666664] flex flex-col items-center justify-center gap-2 overflow-hidden"
@@ -60,6 +61,7 @@ const NewRes = () => {
                                     className="flex items-center justify-center bg-[#c0bfba] text-white p-1 size-7 rounded-full"
                                     onClick={(e) => {
                                         e.stopPropagation();
+                                        setIsGameChosen(false)
                                         setIsModalOpen(false);
                                     }}
                                     initial={{ opacity: 0 }}
@@ -83,26 +85,41 @@ const NewRes = () => {
                                     <div key={itemIndex} className="w-full">
                                         <h3 className="font-bold text-lg mb-4">{item.type}</h3>
                                         <div className="flex gap-2">
-                                        {item.elements.map(({ title, Icon }, index) => (
-                                            <motion.button
-                                                key={index}
-                                                className="w-full flex flex-col items-center justify-between py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setIsModalOpen(false);
-                                                }}
-                                            >
-                                                <Icon />
-                                                <span className="font-medium text-[#63615a]">
-                                                    {title}
-                                                </span>
-                                            </motion.button>
-                                        ))}
+                                            {item.elements.map(({ title, Icon }, index) => (
+                                                <motion.button
+                                                    key={index}
+                                                    className="w-full flex flex-col items-center justify-between py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
+                                                    onClick={() => {
+                                                        setIsGameChosen(true);
+                                                    }}
+                                                >
+                                                    <Icon />
+                                                    <span className="font-medium text-[#63615a]">
+                                                        {title}
+                                                    </span>
+                                                </motion.button>
+                                            ))}
                                         </div>
                                     </div>
                                 ))}
                             </motion.div>
                         </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {isGameChosen && (
+                    <motion.div
+                        className="w-full px-6 py-6 flex flex-col gap-4 border-t"
+                        style={{
+                            borderTopLeftRadius: 24,
+                            borderTopRightRadius: 24,
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                    >
+                        <Pricing />
                     </motion.div>
                 )}
             </AnimatePresence>
