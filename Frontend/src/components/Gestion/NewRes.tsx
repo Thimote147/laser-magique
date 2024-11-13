@@ -1,19 +1,43 @@
 import { AnimatePresence, motion } from "framer-motion";
-import {
-    Gamepad2,
-    Goal,
-    LandPlot,
-    NotebookPen,
-    Plus,
-    X,
-} from "lucide-react";
-import { useState } from "react";
+import { Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import Pricing from "./Pricing";
+import InfosRes from "./infosRes";
+
+interface Activity {
+    map(arg0: ({ name }: Activity, index: number) => import("react/jsx-runtime").JSX.Element): import("react").ReactNode;
+    name: string;
+    type: string;
+    first_price: number;
+    second_price?: number;
+    third_price?: number;
+    is_social_seal: boolean;
+    min_player: number;
+    max_player: number;
+}
 
 const NewRes = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGameChosen, setIsGameChosen] = useState(false);
+    const [gameChosen, setGameChosen] = useState<Activity>();
+    const [isDataNeeded, setIsDataNeeded] = useState(false);
+    const [activities, setActivities] = useState<Activity[]>([]);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    useEffect(() => {
+        fetch('http://localhost:3010/activities')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur réseau lors de la récupération des activités');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setActivities(data);
+            })
+            .catch(error => console.error('Erreur:', error));
+    }
+        , []);
 
     return (
         <div className="absolute right-3 bottom-3">
@@ -61,8 +85,9 @@ const NewRes = () => {
                                     className="flex items-center justify-center bg-[#c0bfba] text-white p-1 size-7 rounded-full"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setIsGameChosen(false)
                                         setIsModalOpen(false);
+                                        setIsGameChosen(false);
+                                        setIsDataNeeded(false);
                                     }}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
@@ -71,7 +96,7 @@ const NewRes = () => {
                                     <X size={24} />
                                 </motion.button>
                             </div>
-                            {(isModalOpen && !isGameChosen) ? (
+                            {(isModalOpen && !isGameChosen && !isDataNeeded) ? (
                                 <motion.div
                                     className="w-full bg-white px-6 py-6 flex flex-col gap-4 border-t"
                                     style={{
@@ -82,21 +107,22 @@ const NewRes = () => {
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0, transition: { duration: 0.05 } }}
                                 >
-                                    {ITEMS.map((item, itemIndex) => (
-                                        <div key={itemIndex} className="w-full">
-                                            <h3 className="font-bold text-lg mb-4">{item.type}</h3>
+                                    {Object.entries(activities).map(([key, activity]) => (
+                                        <div key={key} className="w-full">
+                                            <h3 className="font-bold text-lg mb-4">{key}</h3>
                                             <div className="flex gap-2">
-                                                {item.elements.map(({ title, Icon }, index) => (
+                                                {activity.map(({ name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player }: Activity, index: number) => (
                                                     <motion.button
                                                         key={index}
-                                                        className="w-full flex flex-col items-center justify-between py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
+                                                        className="w-full flex flex-col items-center justify-center py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
                                                         onClick={() => {
                                                             setIsGameChosen(true);
+                                                            setGameChosen({ name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player } as Activity);
                                                         }}
                                                     >
-                                                        <Icon />
+                                                        {/* <Icon /> */}
                                                         <span className="font-medium text-[#63615a]">
-                                                            {title}
+                                                            {name}
                                                         </span>
                                                     </motion.button>
                                                 ))}
@@ -104,23 +130,25 @@ const NewRes = () => {
                                         </div>
                                     ))}
                                 </motion.div>
-                            ) : (
+                            ) : (isGameChosen && !isDataNeeded) ? (
                                 <AnimatePresence>
-                                    {isGameChosen && (
-                                        <motion.div
-                                            className="w-full p-2 flex flex-col gap-4 border-t"
-                                            style={{
-                                                borderTopLeftRadius: 24,
-                                                borderTopRightRadius: 24,
-                                            }}
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                                        >
-                                            <Pricing />
-                                        </motion.div>
-                                    )}
+                                    <motion.div
+                                        className="w-full p-2 flex flex-col gap-4 border-t"
+                                        style={{
+                                            borderTopLeftRadius: 24,
+                                            borderTopRightRadius: 24,
+                                        }}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                                    >
+                                        {gameChosen && (
+                                            <Pricing setGameChosen={setIsGameChosen} gameChosen={gameChosen} setIsDataNeeded={setIsDataNeeded} />
+                                        )}
+                                    </motion.div>
                                 </AnimatePresence>
+                            ) : (
+                                <InfosRes />
                             )}
                         </motion.div>
                     </motion.div>
@@ -128,53 +156,7 @@ const NewRes = () => {
             </AnimatePresence>
         </div>
     );
-}
-
-interface ItemProps {
-    type: string;
-    elements: {
-        title: string;
-        Icon: React.FC<React.SVGProps<SVGSVGElement>>;
-    }[];
-}
-
-const ITEMS: ItemProps[] = [
-    {
-        type: "Groupe",
-        elements: [
-            {
-                title: "Laser Game",
-                Icon: Goal,
-            },
-            {
-                title: "Réalité Virtuelle",
-                Icon: Gamepad2,
-            },
-            {
-                title: "Cyber Trike",
-                Icon: NotebookPen,
-            }],
-    },
-    {
-        type: "Anniversaire",
-        elements: [
-            {
-                title: "Laser Game",
-                Icon: Goal,
-            },
-            {
-                title: "Trio Pack",
-                Icon: LandPlot,
-            }],
-    },
-    {
-        type: "Famille",
-        elements: [
-            {
-                title: "Trio Pack",
-                Icon: LandPlot,
-            }],
-    }
-];
+};
 
 export default NewRes;
+export type { Activity };

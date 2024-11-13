@@ -30,7 +30,6 @@ const DayRes = () => {
             setClickHours(null);
             setFilteredReservations([]);
         } else {
-            console.log(currentDate);
             setClickHours(hour);
             setFilteredReservations(filterReservations(hour));
         }

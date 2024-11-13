@@ -1,13 +1,20 @@
 import AnimatedNumbers from 'react-animated-numbers'
 import React from 'react'
 import Counter from './Counter'
+import { Activity } from './NewRes'
 
-const Pricing = () => {
+interface PricingProps {
+    setGameChosen: React.Dispatch<React.SetStateAction<boolean>>
+    gameChosen: Activity
+    setIsDataNeeded: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) => {
     const [active, setActive] = React.useState(0)
     const [period, setPeriod] = React.useState(0)
-    const [first, setFirst] = React.useState(8.00)
-    const [second, setSecond] = React.useState(16.00)
-    const [third, setThird] = React.useState(24.00)
+    const [first, setFirst] = React.useState(gameChosen.first_price)
+    const [second, setSecond] = React.useState(gameChosen.second_price ? gameChosen.first_price + gameChosen.second_price : gameChosen.first_price * 2)
+    const [third, setThird] = React.useState(gameChosen.second_price && gameChosen.third_price ? gameChosen.first_price + gameChosen.second_price + gameChosen.third_price : gameChosen.first_price * 3)
 
     const handleChangePlan = (index: number) => {
         setActive(index)
@@ -15,9 +22,10 @@ const Pricing = () => {
     const handleChangePeriod = (index: number) => {
         setPeriod(index)
         if (index === 0) {
-            setFirst(8)
-            setSecond(16)
-            setThird(24)
+            console.log(gameChosen)
+            setFirst(gameChosen.first_price)
+            setSecond(gameChosen.second_price ? gameChosen.first_price + gameChosen.second_price : gameChosen.first_price * 2)
+            setThird(gameChosen.second_price && gameChosen.third_price ? gameChosen.first_price + gameChosen.second_price + gameChosen.third_price : gameChosen.first_price * 3)
         } else {
             setFirst(0)
             setSecond(0)
@@ -51,7 +59,7 @@ const Pricing = () => {
                         <div className="h-full w-full rounded-full bg-white shadow-sm"></div>
                     </div>
                 </div>
-                <Counter />
+                <Counter min_player={gameChosen.min_player} max_player={gameChosen.max_player}/>
                 <div className="relative flex w-full flex-col items-center justify-center gap-3">
                     <div
                         className="flex w-full cursor-pointer justify-between rounded-2xl border-2 p-4"
@@ -177,8 +185,9 @@ const Pricing = () => {
                         }}
                     ></div>
                 </div>
-                <button className="w-full rounded-full bg-black p-3 text-lg text-white transition-transform duration-300 active:scale-95">
-                    Réserver
+                <button className="w-full rounded-full bg-black p-3 text-lg text-white transition-transform duration-300 active:scale-95"
+                    onClick={() => { setGameChosen(false); setIsDataNeeded(true) }}>
+                    Choisir
                 </button>
             </div>
         </div>

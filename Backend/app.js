@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const usersRouter = require('./routes/users');
 const reservationsRouter = require('./routes/reservations');
+const activitiesRouter = require('./routes/activities');
 
 const app = express();
 const PORT = 3010;
@@ -27,6 +28,7 @@ updateReservationDates();
 
 app.use('/users', usersRouter(db));
 app.use('/reservations', reservationsRouter(db));
+app.use('/activities', activitiesRouter(db));
 
 app.listen(PORT, () => {
   console.log(`Serveur backend en écoute sur http://localhost:${PORT}`);

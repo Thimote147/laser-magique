@@ -1,8 +1,13 @@
 import { Minus, Plus } from "lucide-react";
 import React from "react";
 
-const Counter = () => {
-    const [count, setCount] = React.useState(0);
+interface CounterProps {
+    min_player: number;
+    max_player: number;
+}
+
+const Counter = ({ min_player, max_player }: CounterProps) => {
+    const [count, setCount] = React.useState(min_player);
 
     return (
         <div className="relative flex items-center justify-center">
@@ -10,7 +15,7 @@ const Counter = () => {
                 <div className="flex flex-col gap-2 justify-center items-center">
                     <div className="flex items-center justify-center">
                         <button className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center active:scale-90">
-                            <Minus className="w-5" onClick={() => { if (count > 0) setCount(count - 1) }} />
+                            <Minus className="w-5" onClick={() => { if (count > min_player) setCount(count - 1) }} />
                         </button>
                         <div className="flex items-center justify-center mx-8 mt-1">
                             <h3 className="w-16 text-center flex items-center justify-center text-black shrink-0">
@@ -18,11 +23,11 @@ const Counter = () => {
                             </h3>
                         </div>
                         <button className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center active:scale-90">
-                            <Plus className="w-5" onClick={() => { if (count < 20) setCount(count + 1) }} />
+                            <Plus className="w-5" onClick={() => { if (count < max_player) setCount(count + 1) }} />
                         </button>
                     </div>
                     <p className="text-black/50">
-                        Le maximum est de 20 personnes
+                        Le maximum est de {max_player} personnes
                     </p>
                 </div>
             </div>
