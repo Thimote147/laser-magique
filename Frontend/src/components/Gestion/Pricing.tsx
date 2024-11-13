@@ -1,26 +1,32 @@
 import AnimatedNumbers from 'react-animated-numbers'
 import React from 'react'
+import Counter from './Counter'
 
 const Pricing = () => {
     const [active, setActive] = React.useState(0)
     const [period, setPeriod] = React.useState(0)
+    const [first, setFirst] = React.useState(8.00)
+    const [second, setSecond] = React.useState(16.00)
+    const [third, setThird] = React.useState(24.00)
+
     const handleChangePlan = (index: number) => {
         setActive(index)
     }
     const handleChangePeriod = (index: number) => {
         setPeriod(index)
         if (index === 0) {
-            setStarter(9.99)
-            setPro(19.99)
+            setFirst(8)
+            setSecond(16)
+            setThird(24)
         } else {
-            setStarter(7.49)
-            setPro(17.49)
+            setFirst(0)
+            setSecond(0)
+            setThird(0)
         }
     }
-    const [starter, setStarter] = React.useState(9.99)
-    const [pro, setPro] = React.useState(19.99)
+
     return (
-        <div className="absolute min-w-96 right-3 bottom-3 bg-white">
+        <div className="relative min-w-96 bg-white rounded-[32px]">
             <div className="flex w-full max-w-sm flex-col items-center gap-3 rounded-[32px] border-2 p-3 shadow-md">
                 <div className="relative flex w-full items-center rounded-full bg-slate-100 p-1.5">
                     <button
@@ -45,15 +51,28 @@ const Pricing = () => {
                         <div className="h-full w-full rounded-full bg-white shadow-sm"></div>
                     </div>
                 </div>
+                <Counter />
                 <div className="relative flex w-full flex-col items-center justify-center gap-3">
                     <div
                         className="flex w-full cursor-pointer justify-between rounded-2xl border-2 p-4"
                         onClick={() => handleChangePlan(0)}
                     >
                         <div className="flex flex-col items-start">
-                            <p className="text-xl font-semibold">1 partie</p>
-                            <p className="text-md text-slate-500">
-                                <span className="font-medium text-white">0.00€</span>/personnes
+                            <p className="text-xl font-semibold text-black">1 partie</p>
+                            <p className="text-md flex text-slate-500">
+                                <span className="flex font-medium text-black">
+                                    <AnimatedNumbers
+                                        includeComma
+                                        className="font-medium text-black"
+                                        transitions={() => ({
+                                            type: 'spring',
+                                            duration: 0.3,
+                                        })}
+                                        animateToNumber={first}
+                                    />
+                                    €
+                                </span>
+                                /personnes
                             </p>
                         </div>
                         <div
@@ -77,11 +96,11 @@ const Pricing = () => {
                         onClick={() => handleChangePlan(1)}
                     >
                         <div className="flex flex-col items-start">
-                            <p className="flex items-center gap-2 text-xl font-semibold">
+                            <p className="flex items-center gap-2 text-xl font-semibold text-black">
                                 2 parties
                             </p>
                             <p className="text-md flex text-slate-500">
-                                <span className="flex items-center font-medium text-black">
+                                <span className="flex font-medium text-black">
                                     <AnimatedNumbers
                                         includeComma
                                         className="font-medium text-black"
@@ -89,9 +108,9 @@ const Pricing = () => {
                                             type: 'spring',
                                             duration: 0.3,
                                         })}
-                                        animateToNumber={starter}
-                                        />
-                                        €
+                                        animateToNumber={second}
+                                    />
+                                    €
                                 </span>
                                 /personnes
                             </p>
@@ -117,17 +136,17 @@ const Pricing = () => {
                         onClick={() => handleChangePlan(2)}
                     >
                         <div className="flex flex-col items-start">
-                            <p className="text-xl font-semibold">3 parties</p>
+                            <p className="text-xl font-semibold text-black">3 parties</p>
                             <p className="text-md flex text-slate-500">
-                                <span className="flex items-center font-medium text-white">
+                                <span className="flex font-medium text-black">
                                     <AnimatedNumbers
                                         includeComma
-                                        className="font-medium text-white"
+                                        className="font-medium text-black"
                                         transitions={() => ({
                                             type: 'spring',
                                             duration: 0.3,
                                         })}
-                                        animateToNumber={pro}
+                                        animateToNumber={third}
                                     />
                                     €
                                 </span>

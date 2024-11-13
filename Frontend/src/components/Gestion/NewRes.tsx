@@ -37,7 +37,7 @@ const NewRes = () => {
             <AnimatePresence>
                 {isModalOpen && (
                     <motion.div
-                        className="absolute flex items-center justify-center right-0 bottom-0"
+                        className="absolute flex right-0 bottom-0"
                     >
                         <motion.div
                             className="bg-[#fbfbf9] w-[400px] border-2 border-[#efefef] text-[#666664] flex flex-col items-center justify-center gap-2 overflow-hidden"
@@ -71,55 +71,58 @@ const NewRes = () => {
                                     <X size={24} />
                                 </motion.button>
                             </div>
-                            <motion.div
-                                className="w-full bg-white px-6 py-6 flex flex-col gap-4 border-t"
-                                style={{
-                                    borderTopLeftRadius: 24,
-                                    borderTopRightRadius: 24,
-                                }}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                            >
-                                {ITEMS.map((item, itemIndex) => (
-                                    <div key={itemIndex} className="w-full">
-                                        <h3 className="font-bold text-lg mb-4">{item.type}</h3>
-                                        <div className="flex gap-2">
-                                            {item.elements.map(({ title, Icon }, index) => (
-                                                <motion.button
-                                                    key={index}
-                                                    className="w-full flex flex-col items-center justify-between py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
-                                                    onClick={() => {
-                                                        setIsGameChosen(true);
-                                                    }}
-                                                >
-                                                    <Icon />
-                                                    <span className="font-medium text-[#63615a]">
-                                                        {title}
-                                                    </span>
-                                                </motion.button>
-                                            ))}
+                            {(isModalOpen && !isGameChosen) ? (
+                                <motion.div
+                                    className="w-full bg-white px-6 py-6 flex flex-col gap-4 border-t"
+                                    style={{
+                                        borderTopLeftRadius: 24,
+                                        borderTopRightRadius: 24,
+                                    }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                                >
+                                    {ITEMS.map((item, itemIndex) => (
+                                        <div key={itemIndex} className="w-full">
+                                            <h3 className="font-bold text-lg mb-4">{item.type}</h3>
+                                            <div className="flex gap-2">
+                                                {item.elements.map(({ title, Icon }, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        className="w-full flex flex-col items-center justify-between py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
+                                                        onClick={() => {
+                                                            setIsGameChosen(true);
+                                                        }}
+                                                    >
+                                                        <Icon />
+                                                        <span className="font-medium text-[#63615a]">
+                                                            {title}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </motion.div>
+                                    ))}
+                                </motion.div>
+                            ) : (
+                                <AnimatePresence>
+                                    {isGameChosen && (
+                                        <motion.div
+                                            className="w-full p-2 flex flex-col gap-4 border-t"
+                                            style={{
+                                                borderTopLeftRadius: 24,
+                                                borderTopRightRadius: 24,
+                                            }}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                                        >
+                                            <Pricing />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            )}
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-            <AnimatePresence>
-                {isGameChosen && (
-                    <motion.div
-                        className="w-full px-6 py-6 flex flex-col gap-4 border-t"
-                        style={{
-                            borderTopLeftRadius: 24,
-                            borderTopRightRadius: 24,
-                        }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                    >
-                        <Pricing />
                     </motion.div>
                 )}
             </AnimatePresence>
