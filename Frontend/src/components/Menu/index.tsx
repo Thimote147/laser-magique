@@ -3,14 +3,13 @@ import menuItems from "../Menu/MenuItems";
 import { handleMouseEnter, handleMouseLeave } from "../EventHandlers";
 import { useActiveIndex, useShowInfo } from "../useCustomHooks";
 import menuItemsContent from "./MenuItemsContent";
-// import { X } from "lucide-react";
 
 const Menu = () => {
   const { setShowInfo } = useShowInfo();
   const { activeIndex, setActiveIndex, menuRef } = useActiveIndex();
 
   return (
-    <>
+    <div className="fixed bottom-0">
       <motion.div
         className="flex items-center justify-center gap-2 bg-transparent w-[960px] absolute -translate-x-1/2 left-1/2 bottom-5 z-[2] overflow-scroll"
         style={{
@@ -111,88 +110,7 @@ const Menu = () => {
           </AnimatePresence>
         </motion.div>
       </div>
-      {/* <AnimatePresence>
-        {showInfo ? (
-          <div className="absolute inset-0 z-10">
-            <div className="absolute -translate-x-1/2 left-1/2 bottom-14">
-              <motion.div
-                className="bg-white/50 backdrop-blur-2xl overflow-hidden w-[600px] h-[400px] p-4"
-                style={{
-                  borderRadius: 18,
-                }}
-                ref={ref}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                }}
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                transition={{ duration: 0.3, type: "spring" }}
-              >
-                <motion.button
-                  layout
-                  onClick={() => setShowInfo(false)}
-                  className="absolute top-4 right-4"
-                >
-                  <X size={24} />
-                </motion.button>
-                <motion.img
-                  src="/ln.jpg"
-                  alt="Gather"
-                  className="w-32 h-32 object-cover"
-                  style={{
-                    borderRadius: 12,
-                  }}
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                  }}
-                  initial={{ y: 20, opacity: 0 }}
-                />
-                <motion.p
-                  className="block mb-2 mt-5"
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                  }}
-                  initial={{ y: 20, opacity: 0 }}
-                >
-                  I am a FrontEnd Developer and Awwwards Young Jury from
-                  Cameroon, I’m passionate about creating beautiful, intuitive
-                  and responsive websites
-                </motion.p>
-                <motion.p
-                  className="block mt-2 mb-5"
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                  }}
-                  initial={{ y: 20, opacity: 0 }}
-                >
-                  I’m passionate about photography and I enjoy capturing the
-                  world around me. I’m always looking for new ways to express
-                  my creativity and share my perspective with others.
-                </motion.p>
-                <div className="w-full flex items-center justify-end">
-                  <motion.a
-                    href="https://lndev.me"
-                    className="bg-white rounded-xl py-2.5 px-7 block w-fit font-medium"
-                    animate={{
-                      y: 0,
-                      opacity: 1,
-                    }}
-                    initial={{ y: 20, opacity: 0 }}
-                  >
-                    View Portfolio
-                  </motion.a>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        ) : null}
-      </AnimatePresence> */}
-    </>
+    </div>
   );
 };
 

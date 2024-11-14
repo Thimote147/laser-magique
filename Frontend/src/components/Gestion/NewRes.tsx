@@ -42,7 +42,7 @@ const NewRes = () => {
         , []);
 
     return (
-        <div className="absolute right-3 bottom-3">
+        <div className="fixed right-3 bottom-3">
             <motion.button
                 className="bg-[#fbfbf9] relative border border-[#efefef] text-[#666664] flex items-center justify-center gap-2 py-4 px-8"
                 style={{
