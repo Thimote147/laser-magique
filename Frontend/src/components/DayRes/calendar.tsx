@@ -23,6 +23,7 @@ interface Booking {
 const Calendar = () => {
 	const [bookings, setBookings] = useState<Booking[]>([]);
 	const [startDate, setStartDate] = useState(new Date());
+	
 
 	// Remplacez l'initialisation par des données locales par un appel à l'API
 	useEffect(() => {
@@ -83,6 +84,7 @@ const Calendar = () => {
 	const weekDates = getWeekDates(startDate);
 	const today = new Date();
 
+
 	return (
 		<DndProvider backend={HTML5Backend}>
 			<div className="p-4">
@@ -98,11 +100,14 @@ const Calendar = () => {
 				<div className={`grid ${gridCols(8)} gap-0`} style={{ height: "650px", overflow: "auto" }}>
 					{/* En-têtes des jours avec dates */}
 					<div></div>
-					{weekDates.map((date, index) => (
-						<div key={index} className="text-center font-bold">
-							{date.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "numeric" })}
-						</div>
-					))}
+					{weekDates.map((date, index) => {
+						const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+						return (
+							<div key={index} className={`text-center font-bold rounded m-2 ${isToday ? "bg-red-500" : ""}`}>
+								{date.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "numeric" })}
+							</div>
+						);
+					})}
 
 					{/* Créneaux horaires */}
 					{hours.map((hour) => (
@@ -112,7 +117,6 @@ const Calendar = () => {
 								{hour}:00
 							</div>
 							{weekDates.map((date, dayIndex) => {
-								const isCurrentHour = today.toDateString() === date.toDateString() && today.getHours() === hour;
 								const timeSlotBookings = bookings.filter((booking) => {
 									const bookingDate = new Date(booking.date);
 									return bookingDate.getDate() === date.getDate() && bookingDate.getHours() === hour;
@@ -124,7 +128,6 @@ const Calendar = () => {
 										day={dayIndex + 1}
 										bookings={timeSlotBookings}
 										moveBooking={moveBooking}
-										isCurrentHour={isCurrentHour}
 									/>
 								);
 							})}
@@ -141,10 +144,9 @@ interface TimeSlotProps {
 	day: number;
 	bookings: Booking[];
 	moveBooking: (id: number, newDay: number, newStartHour: number) => void;
-	isCurrentHour: boolean;
 }
 
-function TimeSlot({ hour, day, bookings, moveBooking, isCurrentHour }: TimeSlotProps) {
+function TimeSlot({ hour, day, bookings, moveBooking }: TimeSlotProps) {
 	const [, drop] = useDrop({
 		accept: ItemTypes.BOOKING,
 		drop: (item: { id: number }) => moveBooking(item.id, day, hour),
@@ -155,7 +157,7 @@ function TimeSlot({ hour, day, bookings, moveBooking, isCurrentHour }: TimeSlotP
 	return (
 		<div
 			ref={drop}
-			className={`relative border p-2 ${isCurrentHour ? "bg-yellow-100" : ""}`}
+			className={`relative border p-2`}
 			style={{ height: "90px", width: "150px", position: "relative" }}
 		>
 			{bookings.map((booking, index) => (
@@ -180,17 +182,21 @@ function Booking({ booking, width, left }: { booking: Booking; width: string; le
 	});
 
 	const bookingHeight = `${booking.duration * 88}px`;
+	
+	const [isHovered, setIsHovered] = useState(false);
 
 	return (
 		<div
 			ref={drag}
-			className={`absolute p-2 rounded ${isDragging ? "opacity-50" : "opacity-100"} bg-red-300`}
+			className={`absolute p-2 rounded ${isDragging ? "opacity-50" : "opacity-100"} shadow-lg border border-black bg-red-300`}
 			style={{
-				width: width,
+				width: isHovered ? "100%" : width,
 				height: bookingHeight,
 				top: 0,
-				left: left,
+				left: isHovered ? 0 : left,
 			}}
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
 		>
 			<span className="block font-bold">{booking.firstname} {booking.lastname}</span>
 			<span>{booking.price} €</span>
