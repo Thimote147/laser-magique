@@ -120,6 +120,7 @@ const NewRes = () => {
                                                         onClick={() => {
                                                             setIsGameChosen(true);
                                                             setGameChosen({ name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player } as Activity);
+                                                            setCount(min_player);
                                                             setType(type);
                                                         }}
                                                     >

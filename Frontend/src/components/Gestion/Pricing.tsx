@@ -17,7 +17,6 @@ const Pricing = ({ count, setCount, setGameChosen, gameChosen, setIsDataNeeded }
     const [first, setFirst] = React.useState(gameChosen.first_price)
     const [second, setSecond] = React.useState(gameChosen.second_price ? gameChosen.first_price + gameChosen.second_price : gameChosen.first_price * 2)
     const [third, setThird] = React.useState(gameChosen.second_price && gameChosen.third_price ? gameChosen.first_price + gameChosen.second_price + gameChosen.third_price : gameChosen.first_price * 3)
-    setCount(gameChosen.min_player)
 
     const handleChangePlan = (index: number) => {
         setActive(index)
