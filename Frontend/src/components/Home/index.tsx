@@ -1,11 +1,15 @@
 import Activities from "../Activities";
+import LaserGame from "../LaserGame";
 import Menu from "../Menu";
+import Welcome from "../Welcome";
 
 const Home = () => {
     return (
-        <main className="relative w-full h-screen flex items-start justify-center px-4 py-10">
-            <Activities />
+        <main className="relative w-full min-h-screen flex flex-col items-center justify-start md:pt-9 pb-20">
             <Menu />
+            <Activities />
+            <Welcome/>
+            <LaserGame />
         </main>
     )
 };
