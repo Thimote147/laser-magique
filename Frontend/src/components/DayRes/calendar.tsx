@@ -24,15 +24,31 @@ const Calendar = () => {
 	const [bookings, setBookings] = useState<Booking[]>([]);
 	const [startDate, setStartDate] = useState(new Date());
 
+	// Remplacez l'initialisation par des données locales par un appel à l'API
 	useEffect(() => {
-		const sampleBookings = [
-			{ reservation_id: 1, firstname: "Thimoté", lastname: "Fétu", nbr_pers: 4, group_type: "Groupe", date: "2024-11-13T17:00", duration: 1, price: 140.0 },
-			{ reservation_id: 2, firstname: "Joëlle", lastname: "Pichel", nbr_pers: 2, group_type: "Groupe", date: "2024-11-13T14:00", duration: 2, price: 60.0 },
-			{ reservation_id: 3, firstname: "Raphaël", lastname: "Fétu", nbr_pers: 7, group_type: "Formule Anniversaire", date: "2024-11-13T17:00", duration: 2, price: 90.0 },
-			{ reservation_id: 4, firstname: "Elodie", lastname: "Vincx", nbr_pers: 4, group_type: "Groupe", date: "2024-11-13T19:00", duration: 1, price: 220.0 },
-			{ reservation_id: 5, firstname: "Arthur", lastname: "Lonfils", nbr_pers: 12, group_type: "Groupe", date: "2024-11-13T10:00", duration: 2, price: 560.0 },
-		];
-		setBookings(sampleBookings);
+		fetch('http://localhost:3010/reservations/today') // Remplacez par l'URL de votre API
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Erreur réseau lors de la récupération des réservations');
+				}
+				return response.json();
+			})
+			.then(data => {
+				const fetchedBookings = data.map((reservation: {
+					reservation_id: number, firstname: string, lastname: string | null, nbr_pers: number, group_type: string; date: string; duration: number, price: number
+				}) => ({
+					reservation_id: reservation.reservation_id,
+					firstname: reservation.firstname,
+					lastname: reservation.lastname,
+					nbr_pers: reservation.nbr_pers,
+					group_type: reservation.group_type,
+					date: reservation.date,
+					duration: reservation.duration,
+					price: reservation.price
+				}));
+				setBookings(fetchedBookings);
+			})
+			.catch(error => console.error('Erreur:', error));
 	}, []);
 
 	const changeWeek = (offset: number) => {
@@ -134,10 +150,8 @@ function TimeSlot({ hour, day, bookings, moveBooking, isCurrentHour }: TimeSlotP
 		drop: (item: { id: number }) => moveBooking(item.id, day, hour),
 	});
 
-	// Déterminer la largeur de chaque réservation en fonction du nombre de réservations présentes
 	const bookingWidth = `${90 / (bookings.length || 1)}%`;
 
-	// Calculer la position gauche en fonction de l'index de la réservation dans un créneau horaire
 	return (
 		<div
 			ref={drop}
@@ -149,7 +163,7 @@ function TimeSlot({ hour, day, bookings, moveBooking, isCurrentHour }: TimeSlotP
 					key={booking.reservation_id}
 					booking={booking}
 					width={bookingWidth}
-					left={`${(90 / bookings.length) * index}%`} // Positionner chaque réservation côte à côte
+					left={`${(90 / bookings.length) * index}%`}
 				/>
 			))}
 		</div>
@@ -165,7 +179,6 @@ function Booking({ booking, width, left }: { booking: Booking; width: string; le
 		}),
 	});
 
-	// Calculer la hauteur de la réservation en fonction de sa durée
 	const bookingHeight = `${booking.duration * 88}px`;
 
 	return (
@@ -173,10 +186,10 @@ function Booking({ booking, width, left }: { booking: Booking; width: string; le
 			ref={drag}
 			className={`absolute p-2 rounded ${isDragging ? "opacity-50" : "opacity-100"} bg-red-300`}
 			style={{
-				width: width, // Ajustement de la largeur de la réservation
-				height: bookingHeight, // Ajustement de la hauteur en fonction de la durée
+				width: width,
+				height: bookingHeight,
 				top: 0,
-				left: left, // Positionner horizontalement chaque réservation
+				left: left,
 			}}
 		>
 			<span className="block font-bold">{booking.firstname} {booking.lastname}</span>
