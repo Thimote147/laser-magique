@@ -1,14 +1,14 @@
 import { Minus, Plus } from "lucide-react";
-import React from "react";
+import AnimatedNumbers from "react-animated-numbers";
 
 interface CounterProps {
+    count: number;
+    setCount: React.Dispatch<React.SetStateAction<number>>;
     min_player: number;
     max_player: number;
 }
 
-const Counter = ({ min_player, max_player }: CounterProps) => {
-    const [count, setCount] = React.useState(min_player);
-
+const Counter = ({ count, setCount, min_player, max_player }: CounterProps) => {
     return (
         <div className="relative flex items-center justify-center">
             <div className="flex flex-col items-center z-10">
@@ -19,7 +19,16 @@ const Counter = ({ min_player, max_player }: CounterProps) => {
                         </button>
                         <div className="flex items-center justify-center mx-8 mt-1">
                             <h3 className="w-16 text-center flex items-center justify-center text-black shrink-0">
-                                <span className="text-4xl font-medium w-7">{count}</span>
+                                <span className={`text-4xl font-medium ${count < 10 ? 'w-7' : 'w-12'}`}>
+                                    <AnimatedNumbers
+                                        includeComma
+                                        className="font-medium text-black"
+                                        transitions={() => ({
+                                            type: 'spring',
+                                            duration: 0.3,
+                                        })}
+                                        animateToNumber={count} />
+                                </span>
                             </h3>
                         </div>
                         <button className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center active:scale-90">
@@ -27,7 +36,7 @@ const Counter = ({ min_player, max_player }: CounterProps) => {
                         </button>
                     </div>
                     <p className="text-black/50">
-                        Le maximum est de {max_player} personnes
+                        Entre {min_player} et {max_player} personnes
                     </p>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Pricing from "./Pricing";
-import InfosRes from "./infosRes";
+import InfosRes from "./InfosRes";
 
 interface Activity {
     map(arg0: ({ name }: Activity, index: number) => import("react/jsx-runtime").JSX.Element): import("react").ReactNode;
@@ -22,6 +22,8 @@ const NewRes = () => {
     const [gameChosen, setGameChosen] = useState<Activity>();
     const [isDataNeeded, setIsDataNeeded] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [count, setCount] = useState(0);
+    const [type, setType] = useState('');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     useEffect(() => {
@@ -118,6 +120,7 @@ const NewRes = () => {
                                                         onClick={() => {
                                                             setIsGameChosen(true);
                                                             setGameChosen({ name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player } as Activity);
+                                                            setType(type);
                                                         }}
                                                     >
                                                         {/* <Icon /> */}
@@ -143,12 +146,12 @@ const NewRes = () => {
                                         exit={{ opacity: 0, transition: { duration: 0.05 } }}
                                     >
                                         {gameChosen && (
-                                            <Pricing setGameChosen={setIsGameChosen} gameChosen={gameChosen} setIsDataNeeded={setIsDataNeeded} />
+                                            <Pricing count={count} setCount={setCount} setGameChosen={setIsGameChosen} gameChosen={gameChosen} setIsDataNeeded={setIsDataNeeded} />
                                         )}
                                     </motion.div>
                                 </AnimatePresence>
                             ) : (
-                                <InfosRes />
+                                <InfosRes nbr_pers={count} type={type} />
                             )}
                         </motion.div>
                     </motion.div>

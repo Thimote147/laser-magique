@@ -4,17 +4,20 @@ import Counter from './Counter'
 import { Activity } from './NewRes'
 
 interface PricingProps {
+    count: number
+    setCount: React.Dispatch<React.SetStateAction<number>>
     setGameChosen: React.Dispatch<React.SetStateAction<boolean>>
     gameChosen: Activity
     setIsDataNeeded: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) => {
+const Pricing = ({ count, setCount, setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) => {
     const [active, setActive] = React.useState(0)
     const [period, setPeriod] = React.useState(0)
     const [first, setFirst] = React.useState(gameChosen.first_price)
     const [second, setSecond] = React.useState(gameChosen.second_price ? gameChosen.first_price + gameChosen.second_price : gameChosen.first_price * 2)
     const [third, setThird] = React.useState(gameChosen.second_price && gameChosen.third_price ? gameChosen.first_price + gameChosen.second_price + gameChosen.third_price : gameChosen.first_price * 3)
+    setCount(gameChosen.min_player)
 
     const handleChangePlan = (index: number) => {
         setActive(index)
@@ -22,7 +25,6 @@ const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) =
     const handleChangePeriod = (index: number) => {
         setPeriod(index)
         if (index === 0) {
-            console.log(gameChosen)
             setFirst(gameChosen.first_price)
             setSecond(gameChosen.second_price ? gameChosen.first_price + gameChosen.second_price : gameChosen.first_price * 2)
             setThird(gameChosen.second_price && gameChosen.third_price ? gameChosen.first_price + gameChosen.second_price + gameChosen.third_price : gameChosen.first_price * 3)
@@ -59,7 +61,7 @@ const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) =
                         <div className="h-full w-full rounded-full bg-white shadow-sm"></div>
                     </div>
                 </div>
-                <Counter min_player={gameChosen.min_player} max_player={gameChosen.max_player}/>
+                <Counter count={count} setCount={setCount} min_player={gameChosen.min_player} max_player={gameChosen.max_player}/>
                 <div className="relative flex w-full flex-col items-center justify-center gap-3">
                     <div
                         className="flex w-full cursor-pointer justify-between rounded-2xl border-2 p-4"
@@ -80,7 +82,19 @@ const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) =
                                     />
                                     €
                                 </span>
-                                /personnes
+                                /personnes - Total :
+                                <span className="flex font-medium text-black ps-1">
+                                    <AnimatedNumbers
+                                        includeComma
+                                        className="font-medium text-black"
+                                        transitions={() => ({
+                                            type: 'spring',
+                                            duration: 0.3,
+                                        })}
+                                        animateToNumber={first * count}
+                                    />
+                                    €
+                                </span>
                             </p>
                         </div>
                         <div
@@ -120,7 +134,19 @@ const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) =
                                     />
                                     €
                                 </span>
-                                /personnes
+                                /personnes - Total :
+                                <span className="flex font-medium text-black ps-1">
+                                    <AnimatedNumbers
+                                        includeComma
+                                        className="font-medium text-black"
+                                        transitions={() => ({
+                                            type: 'spring',
+                                            duration: 0.3,
+                                        })}
+                                        animateToNumber={second * count}
+                                    />
+                                    €
+                                </span>
                             </p>
                         </div>
                         <div
@@ -158,7 +184,19 @@ const Pricing = ({ setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) =
                                     />
                                     €
                                 </span>
-                                /personnes
+                                /personnes - Total :
+                                <span className="flex font-medium text-black ps-1">
+                                    <AnimatedNumbers
+                                        includeComma
+                                        className="font-medium text-black"
+                                        transitions={() => ({
+                                            type: 'spring',
+                                            duration: 0.3,
+                                        })}
+                                        animateToNumber={third * count}
+                                    />
+                                    €
+                                </span>
                             </p>
                         </div>
                         <div
