@@ -1,6 +1,7 @@
 import Activities from "../Activities";
 import LaserGame from "../LaserGame";
 import Menu from "../Menu";
+import VirtualReality from "../VirtualReality";
 import Welcome from "../Welcome";
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
             <Activities />
             <Welcome/>
             <LaserGame />
+            <VirtualReality />
         </main>
     )
 };

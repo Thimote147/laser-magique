@@ -2,12 +2,12 @@ import aboutLg from '../../assets/about-lg.jpg';
 
 const LaserGame = () => {
     return (
-        <div className="flex flex-col items-center bg-cover bg-fixed w-full min-h-screen pt-10" style={{ backgroundImage: `url(${aboutLg})` }}>
+        <div id="about-lg" className="flex flex-col items-center bg-cover bg-fixed w-full min-h-screen pt-10" style={{ backgroundImage: `url(${aboutLg})` }}>
             <h2 className="text-4xl font-extrabold after:content-[''] after:block after:border-b-4 after:border-[#64b357] after:w-24 after:m-auto">LE LASER GAME</h2>
             <div className="grid grid-cols-12 mx-20 mt-10">
                 <div className="flex flex-col items-center md:col-span-4 col-span-12 border border-zinc-600 border-t-0 border-l-0 border-r-0 md:border-r">
                     <h5 className="flex flex-col text-center text-2xl font-bold"><i className="fa-regular fa-face-smile p-5 text-[#64b357] text-5xl"></i>Amusant</h5>
-                    <p className="text-center text-xs px-12 py-2">Soyez rusés, évitez les tirs de l'équipe adverse et planifiez des stratégies audacieuses pour remporter la partie avec vos coéquipiers!</p>
+                    <p className="text-center text-xs px-12 py-2">Soyez rusés, évitez les tirs de l'équipe adverse et planifiez des stratégies audacieuses pour remporter la partie avec vos coéquipiers !</p>
                 </div>
                 <div className="flex flex-col items-center md:col-span-4 col-span-12 border border-zinc-600 md:border-t-0 border-t border-l-0 border-r-0 border-b md:border-b md:border-r md:border-l">
                     <h5 className="flex flex-col text-center text-2xl font-bold"><i className="fa fa-medkit p-5 text-[#64b357] text-5xl"></i>Indolore</h5>

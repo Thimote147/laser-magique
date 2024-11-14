@@ -11,11 +11,13 @@ const menuItemsContent: MenuItemContent[] = [
                 title: "Laser Game",
                 tag: "Maximum 20 personnes",
                 icon: <CodeXml size={20} />,
+                link: "/#about-lg",
             },
             {
                 title: "Réalité Virtuelle",
                 tag: "Maximum 8 personnes",
                 icon: <CodeXml size={20} />,
+                link: "/#about-vr",
             },
             {
                 title: "Cyber Trike",

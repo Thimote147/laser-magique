@@ -1,11 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import menuItems from "../Menu/MenuItems";
 import { handleMouseEnter, handleMouseLeave } from "../EventHandlers";
-import { useActiveIndex, useShowInfo } from "../useCustomHooks";
+import { useActiveIndex } from "../useCustomHooks";
 import menuItemsContent from "./MenuItemsContent";
 
 const Menu = () => {
-  const { setShowInfo } = useShowInfo();
   const { activeIndex, setActiveIndex, menuRef } = useActiveIndex();
 
   return (
@@ -70,7 +69,7 @@ const Menu = () => {
                   <div
                     key={idx}
                     className="w-[95%] flex items-center gap-1.5 cursor-pointer hover:bg-black/5 py-3 hover:px-3 duration-300"
-                    onClick={() => setShowInfo(true)}
+                    onClick={() => item.link && (window.location.href = item.link)}
                     style={{
                       borderRadius: 16,
                     }}
@@ -86,7 +85,7 @@ const Menu = () => {
                       />
                     )}
                     {item.icon && <div className="mr-1.5">{item.icon}</div>}
-                    <div className="w-full flex flex-col items-start">
+                    <div className="w-full flex flex-col items-star">
                       <p className="font-medium">{item.title}</p>
                       {item.description && (
                         <p className="opacity-80">{item.description}</p>

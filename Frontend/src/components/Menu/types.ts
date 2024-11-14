@@ -9,6 +9,7 @@ type SubMenuItem = {
     title: string;
     description?: string;
     tag?: string;
+    link?: string;
 };
 
 type MenuItemContent = {
