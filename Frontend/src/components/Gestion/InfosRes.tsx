@@ -4,13 +4,11 @@ interface InfosResProps {
 }
 
 const InfosRes = ({ nbr_pers, type }: InfosResProps) => {
-
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
-        
+
         try {
             const response = await fetch('http://localhost:3010/reservations/add', {
                 method: 'POST',
@@ -31,12 +29,14 @@ const InfosRes = ({ nbr_pers, type }: InfosResProps) => {
         }
     };
 
+    const actualDate = new Date().toISOString().slice(0, 16);
+
     return (
         <form className="flex flex-col w-full max-w-sm p-3" onSubmit={handleSubmit}>
-            <label htmlFor="firstname">Prénom :</label>
-            <input type="text" name="firstname" required />
-            <label htmlFor="date">Date :</label>
-            <input type="datetime-local" name="date" required />
+            <label htmlFor="firstname" className="text-xl">Prénom :</label>
+            <input className="w-full rounded-full bg-black p-3 text-lg text-white transition-transform duration-300 active:scale-95 mb-5" type="text" name="firstname" required />
+            <label htmlFor="date" className="text-xl">Date :</label>
+            <input className="w-full rounded-full bg-black p-3 text-lg text-white transition-transform duration-300 active:scale-95 mb-5" type="datetime-local" name="date" value={actualDate} required />
             <input type="hidden" name="nbr_pers" value={nbr_pers} />
             <input type="hidden" name="type" value={type} />
             <button className="w-full rounded-full bg-black p-3 text-lg text-white transition-transform duration-300 active:scale-95">

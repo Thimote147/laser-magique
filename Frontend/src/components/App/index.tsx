@@ -4,12 +4,14 @@ import Gestion from '../Gestion';
 import Reservation from '../Reservation';
 import Reviews from '../Reviews';
 import FindRes from '../Reviews/FindRes';
+import Login from '../Login';
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/gestion" element={<Gestion />} />
         <Route path="/reservation/:id" element={<Reservation />} />
         <Route path="/reviews" element={<FindRes />} />

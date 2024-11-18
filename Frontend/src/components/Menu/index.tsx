@@ -39,7 +39,7 @@ const Menu = () => {
           animate={{
             width:
               activeIndex !== null
-                ? "90vw"
+                ? "1000px"
                 : "960px",
             height:
               activeIndex !== null
