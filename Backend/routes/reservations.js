@@ -34,8 +34,9 @@ module.exports = (db) => {
 
     router.post('/add', (req, res) => {
         try {
-            const { firstname, nbr_pers, type, date } = req.body;
-            const insert = db.prepare('INSERT INTO reservations (firstname, nbr_pers, group_type, date) VALUES (?, ?, ?, ?)').run(firstname, nbr_pers, type, date);
+            const { firstname, nbr_pers, type, date, activity, quantity } = req.body;
+            const res_id = db.prepare('INSERT INTO reservations (firstname, nbr_pers, group_type, date) VALUES (?, ?, ?, ?)').run(firstname, nbr_pers, type, date).lastInsertRowid;
+            db.prepare('INSERT INTO activity_res (reservation_id, activity_id, quantity) VALUES (?, ?, ?)').run(res_id, activity, quantity);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
