@@ -3,6 +3,7 @@ type DetailsProps = {
     description: string;
     details: string;
     image: string;
+    link: string;
 };
 
 export type { DetailsProps };

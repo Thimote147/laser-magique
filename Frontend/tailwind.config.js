@@ -6,6 +6,9 @@ export default {
 			backgroundColor: {
 				'transparent': '#303030',
 			},
+			height: {
+				"wo-menu": "calc(100% - 50px)",
+			},
 		},
 	},
 	plugins: [],
