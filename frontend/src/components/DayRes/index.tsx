@@ -36,7 +36,7 @@ const DayRes = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:3010/reservations/today')
+        fetch('https://api.thimotefetu.fr/reservations/today')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des réservations');
@@ -60,7 +60,7 @@ const DayRes = () => {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:3010/reservations/today/hours')
+        fetch('https://api.thimotefetu.fr/reservations/today/hours')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des heures');

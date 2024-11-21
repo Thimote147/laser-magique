@@ -27,7 +27,7 @@ const Calendar = () => {
 
 	// Remplacez l'initialisation par des données locales par un appel à l'API
 	useEffect(() => {
-		fetch('http://localhost:3010/reservations/today') // Remplacez par l'URL de votre API
+		fetch('https://api.thimotefetu.fr/reservations/today') // Remplacez par l'URL de votre API
 			.then(response => {
 				if (!response.ok) {
 					throw new Error('Erreur réseau lors de la récupération des réservations');

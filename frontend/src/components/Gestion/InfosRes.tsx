@@ -12,7 +12,7 @@ const InfosRes = ({ nbr_pers, type, activity_id, quantity }: InfosResProps) => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('http://localhost:3010/reservations/add', {
+            const response = await fetch('https://api.thimotefetu.fr/reservations/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

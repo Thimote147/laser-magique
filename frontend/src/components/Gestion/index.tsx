@@ -6,7 +6,7 @@ const Home = () => {
     const [firstname, setFirstname] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:3010/users/0')
+        fetch('https://api.thimotefetu.fr/users/0')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération du prénom');

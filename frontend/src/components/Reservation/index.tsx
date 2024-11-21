@@ -25,7 +25,7 @@ const Reservation = () => {
         const url = new URL(window.location.href);
         const id = url.pathname.split('/').pop();
 
-        fetch(`http://localhost:3010/reservations/${id}`)
+        fetch(`https://api.thimotefetu.fr/reservations/${id}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des détails de la réservation');
@@ -39,7 +39,7 @@ const Reservation = () => {
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:3010/food")
+        fetch("https://api.thimotefetu.fr/food")
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des détails de la réservation');
