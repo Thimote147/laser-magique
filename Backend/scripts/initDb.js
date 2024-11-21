@@ -4,7 +4,7 @@ const path = require('path');
 
 const db = new Database(path.resolve(__dirname, '../data/gestion.db'));
 
-const initSql = fs.readFileSync(path.resolve(__dirname, '../data/init.sql'), 'utf8');
+const initSql = fs.readFileSync(path.resolve(__dirname, '../scripts/init.sql'), 'utf8');
 const statements = initSql.split(';').filter(stmt => stmt.trim());
 
 db.exec('BEGIN TRANSACTION');
