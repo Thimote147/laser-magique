@@ -91,6 +91,12 @@ const Gestion = () => {
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
+              onClick={() => setCurrentDate(new Date())}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            >
+              Aujourd'hui
+            </button>
+            <button
               onClick={handleNextWeek}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
