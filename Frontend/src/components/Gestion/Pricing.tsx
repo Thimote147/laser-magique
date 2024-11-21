@@ -1,7 +1,7 @@
 import AnimatedNumbers from 'react-animated-numbers'
 import React from 'react'
 import Counter from './Counter'
-import { Activity } from './NewRes'
+import { Activity } from '../../types'
 
 interface PricingProps {
     count: number
