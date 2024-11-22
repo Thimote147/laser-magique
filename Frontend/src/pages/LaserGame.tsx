@@ -10,6 +10,7 @@ import {
 import Button from '../components/ui/Button';
 import StrategyCard from '../components/laser-game/StrategyCard';
 import ArenaFeature from '../components/laser-game/ArenaFeature';
+import about_lg from '../assets/about_lg.jpg';
 
 const strategies = [
   {
@@ -59,11 +60,10 @@ const LaserGame = () => {
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1569086449506-404d69870dd5?auto=format&fit=crop&q=80"
+            src={about_lg}
             alt="Laser Game"
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

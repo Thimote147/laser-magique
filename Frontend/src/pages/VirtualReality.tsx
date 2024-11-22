@@ -3,6 +3,7 @@ import { Headset, Shield, Sparkles, Trophy, Users, Zap } from "lucide-react";
 import Button from "../components/ui/Button";
 import GameModeCard from "../components/cyber-trike/GameModeCard";
 import FeatureHighlight from "../components/cyber-trike/FeatureHighlight";
+import about_vr from "../assets/about_vr.jpg";
 
 const gameModes = [
     {
@@ -63,11 +64,10 @@ const VirtualReality = () => {
             <section className="relative py-20 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80"
+                        src={about_vr}
                         alt="Cyber Games"
-                        className="w-full h-full object-cover opacity-40"
+                        className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />
                 </div>
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
