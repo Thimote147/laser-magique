@@ -9,7 +9,7 @@ interface WeeklyCalendarProps {
   onBookingMove: (bookingId: number, newDate: Date) => void;
 }
 
-const timeSlots = Array.from({ length: 24 }, (_, i) => {
+const timeSlots = Array.from({ length: 27 }, (_, i) => {
   const hour = Math.floor(i / 2) + 9;
   const minutes = i % 2 === 0 ? '00' : '30';
   return `${hour}:${minutes}`;
@@ -63,9 +63,9 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
             {weekDays.map((day) => (
               <div
                 key={day.toString()}
-                className="p-4 text-center font-semibold bg-white/5 rounded-lg">
+                className={`p-4 text-center font-semibold ${day.toLocaleDateString('fr-FR') === new Date().toLocaleDateString('fr-FR') ? "bg-gradient-to-br from-purple-500 to-pink-500" : "bg-white/5"} rounded-lg`}>
                 <div>{day.toLocaleDateString('fr-FR', { weekday: 'long' }).charAt(0).toUpperCase() + day.toLocaleDateString('fr-FR', { weekday: 'long' }).slice(1)}</div>
-                <div className="text-sm text-gray-400">
+                <div className={`text-sm ${day.toLocaleDateString('fr-FR') === new Date().toLocaleDateString('fr-FR') ? "text-white" : "text-gray-400"}`}>
                   {day.toLocaleDateString('fr-FR', { day: 'numeric' })}{' '}
                   {day.toLocaleDateString('fr-FR', { month: 'long' }).charAt(0).toUpperCase() + day.toLocaleDateString('fr-FR', { month: 'short' }).slice(1)}
                 </div>

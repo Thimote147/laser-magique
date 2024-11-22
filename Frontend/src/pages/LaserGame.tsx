@@ -60,7 +60,7 @@ const LaserGame = () => {
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1569086449506-404d69870dd5?auto=format&fit=crop&q=80"
-            alt="Laser Game Arena"
+            alt="Laser Game"
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />

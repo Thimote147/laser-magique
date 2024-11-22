@@ -41,6 +41,7 @@ const Booking = () => {
   const steps = [
     {
       title: 'Sélectionner une activité',
+      shortTitle: 'Activité',
       component: <ActivitySelector 
         activities={activities} 
         selected={selectedActivity}
@@ -49,6 +50,7 @@ const Booking = () => {
     },
     {
       title: 'Nombre de participants',
+      shortTitle: 'Participants',
       component: <ParticipantsSelector
       participants={participants}
       setParticipants={setParticipants}
@@ -58,6 +60,7 @@ const Booking = () => {
     },
     {
       title: 'Choisir la date et l\'heure',
+      shortTitle: 'Date & Heure',
       component: <DateTimeSelector
         selectedDate={selectedDate}
         selectedTime={selectedTime}
@@ -68,6 +71,7 @@ const Booking = () => {
     },
     {
       title: 'Résumé',
+      shortTitle: 'Résumé',
       component: <BookingSummary
         activity={selectedActivity}
         date={selectedDate}
@@ -100,7 +104,8 @@ const Booking = () => {
                 `}>
                   {i + 1}
                 </div>
-                <span className="ml-2 hidden sm:block">{s.title}</span>
+                <span className="ml-2 hidden sm:block lg:hidden">{s.shortTitle}</span>
+                <span className="ml-2 hidden lg:block">{s.title}</span>
               </div>
             ))}
           </div>

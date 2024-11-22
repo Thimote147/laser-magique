@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Gamepad2, Zap, Users, Shield, Trophy, Sparkles } from 'lucide-react';
 import Button from '../components/ui/Button';
-import GameModeCard from '../components/cyber-games/GameModeCard';
-import FeatureHighlight from '../components/cyber-games/FeatureHighlight';
+import GameModeCard from '../components/cyber-trike/GameModeCard';
+import FeatureHighlight from '../components/cyber-trike/FeatureHighlight';
 
 const gameModes = [
   {
@@ -64,7 +64,7 @@ const CyberTrike = () => {
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80"
-            alt="Cyber Games Background"
+            alt="Cyber Games"
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />
