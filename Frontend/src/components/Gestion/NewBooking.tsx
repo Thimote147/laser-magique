@@ -136,7 +136,7 @@ const NewRes = () => {
                                         exit={{ opacity: 0, transition: { duration: 0.05 } }}
                                     >
                                         {gameChosen && (
-                                            <Pricing count={count} setCount={setCount} setGameChosen={setIsGameChosen} gameChosen={gameChosen} setIsDataNeeded={setIsDataNeeded} />
+                                            <Pricing count={count} setCount={setCount} setIsGameChosen={setIsGameChosen} gameChosen={gameChosen} setIsDataNeeded={setIsDataNeeded} />
                                         )}
                                     </motion.div>
                                 </AnimatePresence>

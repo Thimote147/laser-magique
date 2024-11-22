@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { Activity } from '../../types';
 import { loadStripe } from '@stripe/stripe-js';
+import { fr } from 'date-fns/locale';
 
 const stripePromise = loadStripe('your_publishable_key');
 
@@ -65,7 +66,7 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
         </div>
         <div className="flex justify-between">
           <span>Date</span>
-          <span className="font-semibold">{format(date, 'MMMM d, yyyy')}</span>
+            <span className="font-semibold">{format(date, 'EEEE d MMMM yyyy', { locale: fr }).replace(/\b\w/g, char => char.toUpperCase())}</span>
         </div>
         <div className="flex justify-between">
           <span>Heure</span>
@@ -77,12 +78,12 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
         </div>
         <div className="flex justify-between">
           <span>Prix par personne</span>
-          <span className="font-semibold">€{activity.first_price}</span>
+          <span className="font-semibold">{activity.first_price}€</span>
         </div>
         <div className="pt-4 border-t border-gray-600">
           <div className="flex justify-between text-xl font-bold">
             <span>Total</span>
-            <span>€{total}</span>
+            <span>{total}€</span>
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
         onClick={handlePayment}
         className="w-full py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold"
       >
-        Proceed to Payment
+        Procéder au paiement
       </button>
     </motion.div>
   );

@@ -1,18 +1,19 @@
 import { motion } from 'framer-motion';
-import { Minus, Plus, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
+import { SetStateAction, Dispatch } from 'react';
+import { Activity } from '../../types';
+import Counter from '../gestion/Counter';
 
 interface ParticipantsSelectorProps {
   participants: number;
-  setParticipants: (count: number) => void;
-  minParticipants: number;
-  maxParticipants: number;
+  setParticipants: Dispatch<SetStateAction<number>>;
+  selectedActivity: Activity;
 }
 
 const ParticipantsSelector = ({
   participants,
   setParticipants,
-  minParticipants,
-  maxParticipants,
+  selectedActivity
 }: ParticipantsSelectorProps) => {
   return (
     <div className="flex flex-col items-center">
@@ -24,7 +25,7 @@ const ParticipantsSelector = ({
         <Users className="w-12 h-12" />
       </motion.div>
 
-      <div className="flex items-center gap-6">
+      {/* <div className="flex items-center gap-6">
         <button
           onClick={() => participants > minParticipants && setParticipants(participants - 1)}
           className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center hover:bg-gray-600"
@@ -46,7 +47,9 @@ const ParticipantsSelector = ({
 
       <p className="mt-4 text-gray-400">
         Min: {minParticipants} | Max: {maxParticipants} participants
-      </p>
+      </p> */}
+
+    <Counter count={participants} setCount={setParticipants} min_player={selectedActivity.min_player} max_player={selectedActivity.max_player} />
     </div>
   );
 };

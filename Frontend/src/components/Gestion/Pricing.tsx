@@ -6,12 +6,12 @@ import { Activity } from '../../types'
 interface PricingProps {
     count: number
     setCount: React.Dispatch<React.SetStateAction<number>>
-    setGameChosen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsGameChosen?: React.Dispatch<React.SetStateAction<boolean>>
     gameChosen: Activity
-    setIsDataNeeded: React.Dispatch<React.SetStateAction<boolean>>
+    setIsDataNeeded?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Pricing = ({ count, setCount, setGameChosen, gameChosen, setIsDataNeeded }: PricingProps) => {
+const Pricing = ({ count, setCount, setIsGameChosen, gameChosen, setIsDataNeeded }: PricingProps) => {
     const [active, setActive] = React.useState(0)
     const [period, setPeriod] = React.useState(0)
     const [first, setFirst] = React.useState(gameChosen.first_price)
@@ -223,7 +223,12 @@ const Pricing = ({ count, setCount, setGameChosen, gameChosen, setIsDataNeeded }
                     ></div>
                 </div>
                 <button className="w-full rounded-full bg-black p-3 text-lg text-white transition-transform duration-300 active:scale-95"
-                    onClick={() => { setGameChosen(false); setIsDataNeeded(true) }}>
+                    onClick={() => { 
+                        if (setIsGameChosen && setIsDataNeeded) {
+                            setIsGameChosen(false); 
+                            setIsDataNeeded(true);
+                        }
+                    }}>
                     Choisir
                 </button>
             </div>
