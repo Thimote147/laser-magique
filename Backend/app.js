@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(cors({ origin: 'http://localhost:5173' }));
 
 // Run the initDB.js script to initialize the database
-const initDBScriptPath = path.resolve(__dirname, 'scripts', 'initDB.js');
-execFileSync('node', [initDBScriptPath]);
+// const initDBScriptPath = path.resolve(__dirname, 'scripts', 'initDB.js');
+// execFileSync('node', [initDBScriptPath]);
 
 // Database initialization
 const db = new Database(path.resolve(__dirname, 'data', 'gestion.db'), {  

@@ -27,10 +27,10 @@ const ActivitySelector = ({ activities, selected, onSelect }: ActivitySelectorPr
         >
           <h3 className="text-xl font-bold mb-2">{activity.name}</h3>
           <p className="text-sm opacity-80">
-            {activity.min_player}-{activity.max_player} players
+            {activity.min_player}-{activity.max_player} joueurs
           </p>
           <p className="mt-4 text-lg font-semibold">
-            From €{activity.first_price}/person
+            À partir de {activity.first_price}€/personne
           </p>
         </motion.div>
       ))}

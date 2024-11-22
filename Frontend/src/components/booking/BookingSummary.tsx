@@ -56,11 +56,11 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
       animate={{ opacity: 1 }}
       className="max-w-md mx-auto"
     >
-      <h3 className="text-2xl font-bold mb-6">Booking Summary</h3>
+      <h3 className="text-2xl font-bold mb-6">Résumé de la réservation</h3>
 
       <div className="space-y-4 mb-8">
         <div className="flex justify-between">
-          <span>Activity</span>
+          <span>Activité</span>
           <span className="font-semibold">{activity.name}</span>
         </div>
         <div className="flex justify-between">
@@ -68,7 +68,7 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
           <span className="font-semibold">{format(date, 'MMMM d, yyyy')}</span>
         </div>
         <div className="flex justify-between">
-          <span>Time</span>
+          <span>Heure</span>
           <span className="font-semibold">{time}</span>
         </div>
         <div className="flex justify-between">
@@ -76,7 +76,7 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
           <span className="font-semibold">{participants}</span>
         </div>
         <div className="flex justify-between">
-          <span>Price per person</span>
+          <span>Prix par personne</span>
           <span className="font-semibold">€{activity.first_price}</span>
         </div>
         <div className="pt-4 border-t border-gray-600">

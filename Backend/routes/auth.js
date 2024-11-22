@@ -9,7 +9,7 @@ module.exports = (db) => {
   // Login validation
   const loginValidation = [
     body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 6 })
+    body('password').isLength({ min: 4 }) // Change to 6
   ];
 
   // Register validation

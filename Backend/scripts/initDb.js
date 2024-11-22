@@ -27,7 +27,7 @@ try {
   ];
 
   const stmt = db.prepare(`
-    INSERT INTO activities (name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player)
+    INSERT INTO activities (name, type, first_price, second_price, third_price, is_social_deal, min_player, max_player)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 

@@ -1,5 +1,10 @@
 import { motion } from 'framer-motion';
 import { format, addDays, isSameDay } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
+function toCapitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 interface DateTimeSelectorProps {
   selectedDate: Date | null;
@@ -19,10 +24,12 @@ const DateTimeSelector = ({
   const nextWeek = Array.from({ length: 7 }, (_, i) => addDays(new Date(), i));
   const timeSlots = Array.from({ length: 12 }, (_, i) => `${i + 10}:00`);
 
+  console.log(nextWeek);
+
   return (
     <div>
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4">Select Date</h3>
+        <h3 className="text-lg font-semibold mb-4">Choisir une date</h3>
         <div className="flex gap-4 overflow-x-auto pb-4">
           {nextWeek.map((date, index) => (
             <motion.button
@@ -39,9 +46,9 @@ const DateTimeSelector = ({
               `}
               onClick={() => onDateSelect(date)}
             >
-              <div className="text-sm">{format(date, 'EEE')}</div>
-              <div className="text-lg font-bold">{format(date, 'd')}</div>
-              <div className="text-sm">{format(date, 'MMM')}</div>
+              <div className="text-sm">{toCapitalize(format(date, 'EEEE', { locale: fr }))}</div>
+              <div className="text-lg font-bold">{format(date, 'd', { locale: fr })}</div>
+              <div className="text-sm">{toCapitalize(format(date, 'MMM', { locale: fr }))}</div>
             </motion.button>
           ))}
         </div>
@@ -49,13 +56,12 @@ const DateTimeSelector = ({
 
       {selectedDate && (
         <div>
-          <h3 className="text-lg font-semibold mb-4">Select Time</h3>
+          <h3 className="text-lg font-semibold mb-4">Choisir une heure</h3>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {timeSlots.map((time, index) => {
               const hour = parseInt(time);
-              const isAvailable = availability[hour]?.available;
-              console.log("Available ? => "+isAvailable);
-              //const isAvailable = true;
+              // const isAvailable = availability[hour]?.available;
+              const isAvailable = true;
               
               return (
                 <motion.button

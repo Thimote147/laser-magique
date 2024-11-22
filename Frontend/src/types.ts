@@ -6,7 +6,7 @@ interface Activity {
     first_price: number;
     second_price?: number;
     third_price?: number;
-    is_social_seal: boolean;
+    is_social_deal: boolean;
     min_player: number;
     max_player: number;
 }

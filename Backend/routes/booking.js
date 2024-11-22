@@ -36,7 +36,6 @@ module.exports = (db) => {
       bookings.forEach(booking => {
         const hour = new Date(booking.date).getHours();
         timeSlots[hour].remainingSpots -= booking.nbr_pers;
-        console.log("Nombre de personnes => "+booking.nbr_pers);
         if (timeSlots[hour].remainingSpots <= 0) {
           timeSlots[hour].available = false;
         }

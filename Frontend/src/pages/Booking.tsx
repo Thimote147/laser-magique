@@ -39,7 +39,7 @@ const Booking = () => {
 
   const steps = [
     {
-      title: 'Select Activity',
+      title: 'Sélectionner une activité',
       component: <ActivitySelector 
         activities={activities} 
         selected={selectedActivity}
@@ -47,7 +47,7 @@ const Booking = () => {
       />
     },
     {
-      title: 'Choose Date & Time',
+      title: 'Choisir la date et l\'heure',
       component: <DateTimeSelector
         selectedDate={selectedDate}
         selectedTime={selectedTime}
@@ -57,7 +57,7 @@ const Booking = () => {
       />
     },
     {
-      title: 'Number of Participants',
+      title: 'Nombre de participants',
       component: <ParticipantsSelector
         participants={participants}
         setParticipants={setParticipants}
@@ -66,7 +66,7 @@ const Booking = () => {
       />
     },
     {
-      title: 'Review & Pay',
+      title: 'Résumé',
       component: <BookingSummary
         activity={selectedActivity}
         date={selectedDate}

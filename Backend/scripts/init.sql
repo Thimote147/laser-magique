@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS activities (
   first_price REAL NOT NULL,
   second_price REAL,
   third_price REAL,
-  is_social_seal BOOLEAN NOT NULL DEFAULT 0,
+  is_social_deal BOOLEAN NOT NULL DEFAULT 0,
   min_player INTEGER NOT NULL,
   max_player INTEGER NOT NULL
 );

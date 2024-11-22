@@ -18,7 +18,11 @@ interface WeeklyCalendarProps {
   onBookingMove: (bookingId: number, newDate: Date) => void;
 }
 
-const timeSlots = Array.from({ length: 12 }, (_, i) => i + 10); // 10:00 to 21:00
+const timeSlots = Array.from({ length: 24 }, (_, i) => {
+  const hour = Math.floor(i / 2) + 9;
+  const minutes = i % 2 === 0 ? '00' : '30';
+  return `${hour}:${minutes}`;
+});
 
 const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendarProps) => {
   const startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
@@ -81,7 +85,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
             <div key={hour} className="grid grid-cols-8 gap-2 mb-2">
               <div className="p-4 flex items-center justify-end text-gray-400">
                 <Clock className="w-4 h-4 mr-2" />
-                {`${hour}:00`}
+                {hour}
               </div>
               {weekDays.map((day) => (
                 <Droppable

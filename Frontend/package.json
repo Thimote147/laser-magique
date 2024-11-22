@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "laser-magique-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,6 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "author": "Thimoté Fétu",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
     "@icons-pack/react-simple-icons": "^10.1.0",
     "@prisma/client": "^5.10.2",

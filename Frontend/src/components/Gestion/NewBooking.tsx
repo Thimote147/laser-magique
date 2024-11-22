@@ -102,13 +102,13 @@ const NewRes = () => {
                                         <div key={key} className="w-full">
                                             <h3 className="font-bold text-lg mb-4">{key}</h3>
                                             <div className="flex gap-2">
-                                                {activity.map(({ activity_id, name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player }: Activity, index: number) => (
+                                                {activity.map(({ activity_id, name, type, first_price, second_price, third_price, is_social_deal, min_player, max_player }: Activity, index: number) => (
                                                     <motion.button
                                                         key={index}
                                                         className="w-full flex flex-col items-center justify-center py-3 duration-300 transition-colors hover:bg-[#f8f8f3] rounded-2xl"
                                                         onClick={() => {
                                                             setIsGameChosen(true);
-                                                            setGameChosen({ activity_id, name, type, first_price, second_price, third_price, is_social_seal, min_player, max_player } as Activity);
+                                                            setGameChosen({ activity_id, name, type, first_price, second_price, third_price, is_social_deal, min_player, max_player } as Activity);
                                                             setCount(min_player);
                                                             setType(type);
                                                         }}
