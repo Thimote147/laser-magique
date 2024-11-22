@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 import HeroSection from '../components/home/HeroSection';
 import ActivityCard from '../components/home/ActivityCard';
 import TestimonialCard from '../components/home/TestimonialCard';
-import bg_laser from '../assets/bg-laser.jpg';
-import bg_vr from '../assets/bg-vr.jpg';
-import bg_cyber from '../assets/bg-ct.jpg';
+import bg_laser from '../assets/bg_laser.jpg';
+import bg_vr from '../assets/bg_vr.jpg';
+import bg_cyber from '../assets/bg_ct.jpg';
 
 const activities = [
   {
