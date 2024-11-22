@@ -11,9 +11,10 @@ interface BookingSummaryProps {
   date: Date | null;
   time: string | null;
   participants: number;
+  nbr_parties: number;
 }
 
-const BookingSummary = ({ activity, date, time, participants }: BookingSummaryProps) => {
+const BookingSummary = ({ activity, date, time, participants, nbr_parties }: BookingSummaryProps) => {
   if (!activity || !date || !time) return null;
 
   const total = activity.first_price * participants;
@@ -79,6 +80,10 @@ const BookingSummary = ({ activity, date, time, participants }: BookingSummaryPr
         <div className="flex justify-between">
           <span>Prix par personne</span>
           <span className="font-semibold">{activity.first_price}€</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Nombre de parties</span>
+          <span className="font-semibold">{nbr_parties}</span>
         </div>
         <div className="pt-4 border-t border-gray-600">
           <div className="flex justify-between text-xl font-bold">

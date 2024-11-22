@@ -14,6 +14,7 @@ const Booking = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [participants, setParticipants] = useState(1);
+  const [nbr_parties, setNbr_parties] = useState(0);
   const [availability, setAvailability] = useState<Record<number, { available: boolean }>>({});
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const Booking = () => {
       participants={participants}
       setParticipants={setParticipants}
       selectedActivity={selectedActivity}
+      setNbr_parties={setNbr_parties}
       />
     },
     {
@@ -71,6 +73,7 @@ const Booking = () => {
         date={selectedDate}
         time={selectedTime}
         participants={participants}
+        nbr_parties={nbr_parties}
       />
     }
   ];
