@@ -18,11 +18,11 @@ const Counter = ({ count, setCount, min_player, max_player }: CounterProps) => {
                             <Minus className="w-5" onClick={() => { if (count > min_player) setCount(count - 1) }} />
                         </button>
                         <div className="flex items-center justify-center mx-8 mt-1">
-                            <h3 className="w-16 text-center flex items-center justify-center text-black shrink-0">
+                            <h3 className="w-16 text-center flex items-center justify-center shrink-0">
                                 <span className={`text-4xl font-medium ${count < 10 ? 'w-7' : 'w-12'}`}>
                                     <AnimatedNumbers
                                         includeComma
-                                        className="font-medium text-black"
+                                        className="font-medium"
                                         transitions={() => ({
                                             type: 'spring',
                                             duration: 0.3,
@@ -35,7 +35,7 @@ const Counter = ({ count, setCount, min_player, max_player }: CounterProps) => {
                             <Plus className="w-5" onClick={() => { if (count < max_player) setCount(count + 1) }} />
                         </button>
                     </div>
-                    <p className="text-black/50">
+                    <p className="pt-2">
                         Entre {min_player} et {max_player} personnes
                     </p>
                 </div>

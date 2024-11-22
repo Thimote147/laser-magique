@@ -47,6 +47,14 @@ const Booking = () => {
       />
     },
     {
+      title: 'Nombre de participants',
+      component: <ParticipantsSelector
+      participants={participants}
+      setParticipants={setParticipants}
+      selectedActivity={selectedActivity}
+      />
+    },
+    {
       title: 'Choisir la date et l\'heure',
       component: <DateTimeSelector
         selectedDate={selectedDate}
@@ -54,14 +62,6 @@ const Booking = () => {
         availability={availability}
         onDateSelect={setSelectedDate}
         onTimeSelect={setSelectedTime}
-      />
-    },
-    {
-      title: 'Nombre de participants',
-      component: <ParticipantsSelector
-        participants={participants}
-        setParticipants={setParticipants}
-        selectedActivity={selectedActivity}
       />
     },
     {
@@ -119,8 +119,8 @@ const Booking = () => {
                 className="px-6 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white"
                 disabled={
                   (step === 1 && !selectedActivity) ||
-                  (step === 2 && (!selectedDate || !selectedTime)) ||
-                  (step === 3 && !participants)
+                  (step === 2 && !participants) ||
+                  (step === 3 && (!selectedDate || !selectedTime))
                 }
               >
                 Next
