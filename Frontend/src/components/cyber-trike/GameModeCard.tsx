@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Users, Trophy } from 'lucide-react';
 
@@ -7,15 +6,15 @@ interface GameModeProps {
   description: string;
   duration: string;
   players: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: 'Facile' | 'Moyen' | 'Difficile';
   index: number;
 }
 
 const GameModeCard = ({ title, description, duration, players, difficulty, index }: GameModeProps) => {
   const difficultyColors = {
-    Easy: 'bg-green-500',
-    Medium: 'bg-yellow-500',
-    Hard: 'bg-red-500'
+    Facile: 'bg-green-500',
+    Moyen: 'bg-yellow-500',
+    Difficile: 'bg-red-500'
   };
 
   return (

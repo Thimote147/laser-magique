@@ -60,8 +60,7 @@ const DateTimeSelector = ({
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {timeSlots.map((time, index) => {
               const hour = parseInt(time);
-              // const isAvailable = availability[hour]?.available;
-              const isAvailable = true;
+              const isAvailable = availability[hour]?.available;
               
               return (
                 <motion.button

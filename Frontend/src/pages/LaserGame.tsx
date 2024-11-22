@@ -5,12 +5,55 @@ import {
   Target,
   Users,
   Map,
-  Timer,
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import StrategyCard from '../components/laser-game/StrategyCard';
 import ArenaFeature from '../components/laser-game/ArenaFeature';
 import about_lg from '../assets/about_lg.jpg';
+import GameModeCard from '../components/cyber-trike/GameModeCard';
+
+const gameModes = [
+  {
+    title: 'En Individuel',
+    description: 'Affrontez les autres joueurs dans une partie de laser game où chacun est livré à lui-même.',
+    difficulty: 'Moyen' as const,
+    icon: Users,
+    duration: '15 minutes',
+    players: '2-20 joueurs'
+  },
+  {
+    title: 'Par Équipe',
+    description: 'Affrontez les equipes adverses dans une partie de laser game où la coordination et la communication sont essentielles.',
+    difficulty: 'Facile' as const,
+    icon: Users,
+    duration: '15 minutes',
+    players: '2-20 joueurs'
+  },
+  {
+    title: 'Uniquement Entre Joueurs',
+    description: 'Affrontez uniquement d\'autres joueurs sans la possibilité d\'attaquer les vaisseaux spatiaux pour une expérience purement compétitive.',
+    difficulty: 'Facile' as const,
+    icon: Users,
+    duration: '15 minutes',
+    players: '2-20 joueurs'
+  },
+  {
+    title: 'Contre des vaisseaux spatiaux sans qu\'ils ne vous attaquent',
+    description: 'Affrontez des vaisseaux spatiaux qui ne ripostent pas, parfait pour s\'entraîner et améliorer vos compétences de tir.',
+    difficulty: 'Facile' as const,
+    icon: Users,
+    duration: '15 minutes',
+    players: '2-20 joueurs'
+  },
+  {
+    title: 'Contre des vaisseaux spatiaux qui vous attaquent',
+    description: 'Affrontez des vaisseaux spatiaux qui ripostent, offrant un défi supplémentaire et une expérience de jeu plus intense.',
+    difficulty: 'Difficile' as const,
+    icon: Users,
+    duration: '15 minutes',
+    players: '2-20 joueurs'
+  }
+];
 
 const strategies = [
   {
@@ -110,7 +153,7 @@ const LaserGame = () => {
         </div>
       </section>
 
-      {/* Arena Features Section */}
+      {/* Features Section */}
       <section id="arena-features" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.h2
@@ -129,8 +172,27 @@ const LaserGame = () => {
         </div>
       </section>
 
-      {/* Strategy Guide Section */}
+      {/* Game Modes Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-purple-900/20">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl font-bold text-center mb-12"
+          >
+            Modes de jeu
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {gameModes.map((mode, index) => (
+              <GameModeCard key={mode.title} {...mode} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Strategy Guide Section */}
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
             <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -144,131 +206,6 @@ const LaserGame = () => {
             {strategies.map((strategy, index) => (
               <StrategyCard key={strategy.title} {...strategy} index={index} />
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Game Modes Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-            <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-center mb-12"
-            >
-            Modes de Jeu
-            </motion.h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8"
-            >
-              <h3 className="text-2xl font-bold mb-4">En Individuel</h3>
-              <p className="text-gray-400 mb-4">
-                Affrontez les autres joueurs dans une partie de laser game où chacun est livré à lui-même.
-              </p>
-              <div className="flex items-center gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <Timer className="w-4 h-4" />
-                  <span>15 minutes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>2-20 joueurs</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8"
-            >
-              <h3 className="text-2xl font-bold mb-4">Par Équipe</h3>
-              <p className="text-gray-400 mb-4">
-                Affrontez les equipes adverses dans une partie de laser game où la coordination et la communication sont essentielles.
-              </p>
-              <div className="flex items-center gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <Timer className="w-4 h-4" />
-                  <span>15 minutes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>2-20 joueurs</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8"
-            >
-              <h3 className="text-2xl font-bold mb-4">Uniquement Entre Joueurs</h3>
-              <p className="text-gray-400 mb-4">
-                Affrontez uniquement d'autres joueurs sans la possibilité d'attaquer les vaisseaux spatiaux pour une expérience purement compétitive.
-              </p>
-              <div className="flex items-center gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <Timer className="w-4 h-4" />
-                  <span>15 minutes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>2-20 joueurs</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8"
-            >
-              <h3 className="text-2xl font-bold mb-4">Contre des vaisseaux spatiaux sans qu'ils ne vous attaquent</h3>
-              <p className="text-gray-400 mb-4">
-                Affrontez des vaisseaux spatiaux qui ne ripostent pas, parfait pour s'entraîner et améliorer vos compétences de tir.
-              </p>
-              <div className="flex items-center gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <Timer className="w-4 h-4" />
-                  <span>15 minutes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>2-20 joueurs</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8"
-            >
-              <h3 className="text-2xl font-bold mb-4">Contre des vaisseaux spatiaux qui vous attaquent</h3>
-                <p className="text-gray-400 mb-4">
-                Affrontez des vaisseaux spatiaux qui ripostent, offrant un défi supplémentaire et une expérience de jeu plus intense.
-                </p>
-              <div className="flex items-center gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <Timer className="w-4 h-4" />
-                  <span>15 minutes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>2-20 joueurs</span>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>

@@ -7,25 +7,25 @@ import about_vr from "../assets/about_vr.jpg";
 
 const gameModes = [
     {
-      title: 'Cyber Quest',
-      description: 'Embark on an epic journey through a digital realm, solving puzzles and defeating cyber enemies.',
+      title: 'Quête Cyber',
+      description: 'Embarquez pour un voyage épique à travers un royaume numérique, résolvant des énigmes et vainquant des ennemis cybernétiques.',
       duration: '45 minutes',
-      players: '1-4 players',
-      difficulty: 'Easy' as const
+      players: '1-4 joueurs',
+      difficulty: 'Facile' as const
     },
     {
-      title: 'Data Storm',
-      description: 'Race against time to collect data fragments while avoiding system corruption in this fast-paced challenge.',
+      title: 'Tempête de Données',
+      description: 'Faites la course contre la montre pour collecter des fragments de données tout en évitant la corruption du système dans ce défi rapide.',
       duration: '30 minutes',
-      players: '2-6 players',
-      difficulty: 'Medium' as const
+      players: '2-6 joueurs',
+      difficulty: 'Moyen' as const
     },
     {
-      title: 'Neural Combat',
-      description: 'Enter the neural network for an intense team-based combat experience in a dynamic digital battlefield.',
+      title: 'Combat Neuronal',
+      description: 'Entrez dans le réseau neuronal pour une expérience de combat en équipe intense dans un champ de bataille numérique dynamique.',
       duration: '60 minutes',
-      players: '4-8 players',
-      difficulty: 'Hard' as const
+      players: '4-8 joueurs',
+      difficulty: 'Difficile' as const
     }
   ];
   
@@ -110,27 +110,8 @@ const VirtualReality = () => {
                 </div>
             </section>
 
-            {/* Game Modes Section */}
-            <section className="py-20 px-4">
-                <div className="max-w-7xl mx-auto">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-3xl font-bold text-center mb-12"
-                    >
-                        Modes de jeu
-                    </motion.h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {gameModes.map((mode, index) => (
-                            <GameModeCard key={mode.title} {...mode} index={index} />
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* Features Section */}
-            <section className="py-20 px-4 bg-gradient-to-b from-purple-900/20">
+            <section className="py-20 px-4">
                 <div className="max-w-7xl mx-auto">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -143,6 +124,25 @@ const VirtualReality = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature, index) => (
                             <FeatureHighlight key={feature.title} {...feature} index={index} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Game Modes Section */}
+            <section className="py-20 px-4 bg-gradient-to-b from-purple-900/20">
+                <div className="max-w-7xl mx-auto">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-3xl font-bold text-center mb-12"
+                    >
+                        Modes de jeu
+                    </motion.h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {gameModes.map((mode, index) => (
+                            <GameModeCard key={mode.title} {...mode} index={index} />
                         ))}
                     </div>
                 </div>
