@@ -1,10 +1,7 @@
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { Activity } from '../../types';
-import { loadStripe } from '@stripe/stripe-js';
 import { fr } from 'date-fns/locale';
-
-const stripePromise = loadStripe('your_publishable_key');
 
 interface BookingSummaryProps {
   activity: Activity | null;
@@ -19,12 +16,9 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
 
   const total = activity.first_price * participants;
 
-  const handlePayment = async () => {
-    const stripe = await stripePromise;
-    if (!stripe) return;
-
+  const handleBooking = async () => {
     try {
-      const response = await fetch('http://localhost:3010/booking/create', {
+      const response = await fetch('http://localhost:3010/bookings/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,16 +33,13 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
         }),
       });
 
-      const session = await response.json();
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-
-      if (result.error) {
-        console.error(result.error);
+      if (response.ok) {
+        alert('Réservation effectuée avec succès !');
+      } else {
+        console.error('Réservation échouée :', response.statusText);
       }
     } catch (error) {
-      console.error('Payment failed:', error);
+      console.error('Réservation échouée :', error);
     }
   };
 
@@ -94,10 +85,10 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
       </div>
 
       <button
-        onClick={handlePayment}
+        onClick={handleBooking}
         className="w-full py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold"
       >
-        Procéder au paiement
+        Confirmer la réservation
       </button>
     </motion.div>
   );

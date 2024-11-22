@@ -1,69 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { addDays, subDays } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import WeeklyCalendar from '../components/gestion/WeeklyCalendar';
 import BookingStats from '../components/gestion/BookingStats';
 import NewRes from '../components/gestion/NewBooking';
+import { Booking } from '../types';
 
-// This would come from your API/database
-const mockBookings = [
-  {
-    id: 1,
-    activity: 'laser-game',
-    date: new Date(2024, 10, 20, 14), // November 20, 2024, 14:00
-    slots: 6,
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+32123456789',
-  },
-  {
-    id: 2,
-    activity: 'cyber-trike',
-    date: new Date(2024, 10, 20, 16), // November 20, 2024, 16:00
-    slots: 4,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    phone: '+32987654321',
-  },
-  {
-    id: 3,
-    activity: 'virtual-reality',
-    date: new Date(2024, 10, 21, 12), // November 21, 2024, 12:00
-    slots: 8,
-    name: 'Alice Johnson',
-    email: 'alice@gmail.com',
-    phone: '+32123456789',
-  },
-  {
-    id: 4,
-    activity: 'laser-game',
-    date: new Date(2024, 10, 21, 14, 30), // November 21, 2024, 14:30
-    slots: 20,
-    name: 'Bob Brown',
-    email: 'bob@gmail.com',
-    phone: '+32987654321',
+const calculateStats = (bookings: Booking[]) => {
+  const totalBookings = bookings.length || 0;
+
+  let totalRevenue = 0;
+
+  if (totalBookings !== 0) {
+    totalRevenue = bookings.reduce((sum, booking) => {
+      const basePrice = {
+        'laser-game': 8,
+        'virtual-reality': 10,
+        'cyber-trike': 20,
+      }[booking.activity] || 0;
+      return sum + basePrice * booking.slots;
+    }, 0);
   }
-];
 
-const calculateStats = (bookings: typeof mockBookings) => {
-  const totalBookings = bookings.length;
-  const totalRevenue = bookings.reduce((sum, booking) => {
-    const basePrice = {
-      'laser-game': 8,
-      'virtual-reality': 10,
-      'cyber-trike': 20,
-    }[booking.activity] || 0;
-    return sum + basePrice * booking.slots;
-  }, 0);
-  const averageGroupSize = bookings.reduce((sum, booking) => sum + booking.slots, 0) / totalBookings;
+  let averageGroupSize = 0;
+
+  if (totalBookings !== 0) {
+    averageGroupSize = parseFloat((bookings.reduce((sum, booking) => sum + booking.slots, 0) / totalBookings).toFixed(1));
+  }
 
   return { totalBookings, totalRevenue, averageGroupSize };
 };
 
 const Gestion = () => {
+  const [bookings, setBookings] = useState<Booking[]>();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [bookings, setBookings] = useState(mockBookings);
+
+  useEffect(() => {
+    fetch('http://localhost:3010/bookings/all')
+      .then((res) => res.json())
+      .then((data) => setBookings(data))
+      .catch(error => console.error('Erreur:', error));
+  }, []);
 
   const handlePreviousWeek = () => {
     setCurrentDate((date) => subDays(date, 7));
@@ -74,14 +52,14 @@ const Gestion = () => {
   };
 
   const handleBookingMove = (bookingId: number, newDate: Date) => {
-    setBookings((prevBookings) =>
+    setBookings((prevBookings = []) =>
       prevBookings.map((booking) =>
         booking.id === bookingId ? { ...booking, date: newDate } : booking
       )
     );
   };
 
-  const stats = calculateStats(bookings);
+  const stats = calculateStats(bookings || []);
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -118,13 +96,13 @@ const Gestion = () => {
 
         <div className="bg-white/5 rounded-2xl p-6">
           <WeeklyCalendar
-            bookings={bookings}
+            bookings={bookings || []}
             currentDate={currentDate}
             onBookingMove={handleBookingMove}
           />
         </div>
       </motion.div>
-      
+
       <NewRes />
     </div>
   );

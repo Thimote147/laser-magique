@@ -9,7 +9,6 @@ const { execFileSync } = require('child_process');
 
 const authMiddleware = require('./middleware/auth');
 const usersRouter = require('./routes/users');
-const reservationsRouter = require('./routes/reservations');
 const activitiesRouter = require('./routes/activities');
 const foodRouter = require('./routes/food.js');
 const authRouter = require('./routes/auth');
@@ -53,9 +52,8 @@ app.use('/activities', activitiesRouter(db));
 
 // Protected routes
 app.use('/users', authMiddleware, usersRouter(db));
-app.use('/reservations', authMiddleware, reservationsRouter(db));
 app.use('/food', authMiddleware, foodRouter(db));
-app.use('/booking', authMiddleware, bookingRouter(db));
+app.use('/bookings', authMiddleware, bookingRouter(db));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

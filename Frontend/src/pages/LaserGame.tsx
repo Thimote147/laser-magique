@@ -3,11 +3,9 @@ import {
   Crosshair,
   Shield,
   Target,
-  Zap,
   Users,
   Map,
   Timer,
-  Award
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import StrategyCard from '../components/laser-game/StrategyCard';

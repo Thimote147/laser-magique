@@ -1,16 +1,7 @@
 import { addDays, startOfWeek, isSameDay } from 'date-fns';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Clock } from 'lucide-react';
-
-interface Booking {
-  id: number;
-  activity: string;
-  date: Date;
-  slots: number;
-  name: string;
-  email: string;
-  phone: string;
-}
+import { Booking } from '../../types';
 
 interface WeeklyCalendarProps {
   bookings: Booking[];
@@ -29,10 +20,10 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(startDate, i));
 
   const getBookingsForSlot = (day: Date, hour: number, minute: number) => {
-    return bookings.filter(booking => {
+    return bookings.length ? bookings.filter((booking: Booking) => {
       const bookingDate = new Date(booking.date);
       return isSameDay(bookingDate, day) && bookingDate.getHours() === hour && bookingDate.getMinutes() === minute;
-    });
+    }) : [];
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -117,7 +108,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                   booking.activity
                                 )} p-2 rounded mb-2 text-sm text-white`}
                               >
-                                <div className="font-semibold">{booking.name}</div>
+                                <div className="font-semibold">{booking.fistname}</div>
                                 <div className="text-xs">
                                   {booking.slots} personne{booking.slots > 1 ? 's' : ''}
                                 </div>

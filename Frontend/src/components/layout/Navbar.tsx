@@ -57,7 +57,7 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="flex items-center space-x-2 text-white hover:text-purple-400 block px-3 py-2"
+                  className="flex items-center space-x-2 text-white hover:text-purple-400 px-3 py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   <item.icon className="w-5 h-5" />

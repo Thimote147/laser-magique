@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS activities (
   max_player INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS reservations (
+CREATE TABLE IF NOT EXISTS bookings (
   reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
   firstname TEXT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS activity_res (
   reservation_id INTEGER NOT NULL,
   activity_id INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id),
+  FOREIGN KEY (reservation_id) REFERENCES bookings(reservation_id),
   FOREIGN KEY (activity_id) REFERENCES activities(activity_id)
 );
 

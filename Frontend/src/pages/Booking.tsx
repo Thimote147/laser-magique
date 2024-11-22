@@ -26,7 +26,7 @@ const Booking = () => {
   useEffect(() => {
     if (selectedDate) {
       const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      fetch(`http://localhost:3010/booking/availability/${dateStr}`)
+      fetch(`http://localhost:3010/bookings/availability/${dateStr}`)
         .then(res => res.json())
         .then(data => {
           const formattedData = Object.keys(data).reduce((acc, key) => {

@@ -11,4 +11,15 @@ interface Activity {
     max_player: number;
 }
 
-export type { Activity };
+interface Booking {
+    id: number;
+    activity: string;
+    date: Date;
+    slots: number;
+    fistname: string;
+    lastname: string;
+    email: string;
+    phone: string;
+}
+
+export type { Activity, Booking };
