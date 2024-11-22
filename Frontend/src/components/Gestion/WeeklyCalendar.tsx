@@ -28,10 +28,10 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   const startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(startDate, i));
 
-  const getBookingsForSlot = (day: Date, hour: number) => {
+  const getBookingsForSlot = (day: Date, hour: number, minute: number) => {
     return bookings.filter(booking => {
       const bookingDate = new Date(booking.date);
-      return isSameDay(bookingDate, day) && bookingDate.getHours() === hour;
+      return isSameDay(bookingDate, day) && bookingDate.getHours() === hour && bookingDate.getMinutes() === minute;
     });
   };
 
@@ -60,6 +60,8 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
     }
   };
 
+  console.log(bookings);
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="overflow-x-auto">
@@ -81,53 +83,56 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
           </div>
 
           {/* Time slots */}
-          {timeSlots.map((hour) => (
-            <div key={hour} className="grid grid-cols-8 gap-2 mb-2">
-              <div className="p-4 flex items-center justify-end text-gray-400">
-                <Clock className="w-4 h-4 mr-2" />
-                {hour}
-              </div>
-              {weekDays.map((day) => (
-                <Droppable
-                  key={`${day.toISOString()}-${hour}`}
-                  droppableId={`${day.toISOString()}-${hour}`}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      className="min-h-[80px] p-2 bg-white/5 rounded-lg"
-                    >
-                      {getBookingsForSlot(day, hour).map((booking, index) => (
-                        <Draggable
-                          key={booking.id}
-                          draggableId={`${booking.id}-${hour}`}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className={`${getActivityColor(
-                                booking.activity
-                              )} p-2 rounded mb-2 text-sm text-white`}
-                            >
-                              <div className="font-semibold">{booking.name}</div>
-                              <div className="text-xs">
-                                {booking.slots} person{booking.slots > 1 ? 's' : ''}
+          {timeSlots.map((time) => {
+            const [hour, minute] = time.split(':').map(Number);
+            return (
+              <div key={time} className="grid grid-cols-8 gap-2 mb-2">
+                <div className="p-4 flex items-center justify-end text-gray-400">
+                  <Clock className="w-4 h-4 mr-2" />
+                  {time}
+                </div>
+                {weekDays.map((day) => (
+                  <Droppable
+                    key={`${day.toISOString()}-${time}`}
+                    droppableId={`${day.toISOString()}-${time}`}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="min-h-[80px] p-2 bg-white/5 rounded-lg"
+                      >
+                        {getBookingsForSlot(day, hour, minute).map((booking, index) => (
+                          <Draggable
+                            key={booking.id}
+                            draggableId={`${booking.id}-${time}`}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className={`${getActivityColor(
+                                  booking.activity
+                                )} p-2 rounded mb-2 text-sm text-white`}
+                              >
+                                <div className="font-semibold">{booking.name}</div>
+                                <div className="text-xs">
+                                  {booking.slots} personne{booking.slots > 1 ? 's' : ''}
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              ))}
-            </div>
-          ))}
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </DragDropContext>

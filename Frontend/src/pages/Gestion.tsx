@@ -11,7 +11,7 @@ const mockBookings = [
   {
     id: 1,
     activity: 'laser-game',
-    date: new Date(2024, 10, 20, 14), // March 20, 2024, 14:00
+    date: new Date(2024, 10, 20, 14), // November 20, 2024, 14:00
     slots: 6,
     name: 'John Doe',
     email: 'john@example.com',
@@ -20,7 +20,7 @@ const mockBookings = [
   {
     id: 2,
     activity: 'cyber-trike',
-    date: new Date(2024, 10, 20, 16), // March 20, 2024, 16:00
+    date: new Date(2024, 10, 20, 16), // November 20, 2024, 16:00
     slots: 4,
     name: 'Jane Smith',
     email: 'jane@example.com',
@@ -29,11 +29,20 @@ const mockBookings = [
   {
     id: 3,
     activity: 'virtual-reality',
-    date: new Date(2024, 10, 20, 14), // March 21, 2024, 12:00
+    date: new Date(2024, 10, 21, 12), // November 21, 2024, 12:00
     slots: 8,
     name: 'Alice Johnson',
     email: 'alice@gmail.com',
     phone: '+32123456789',
+  },
+  {
+    id: 4,
+    activity: 'laser-game',
+    date: new Date(2024, 10, 21, 14, 30), // November 21, 2024, 14:30
+    slots: 20,
+    name: 'Bob Brown',
+    email: 'bob@gmail.com',
+    phone: '+32987654321',
   }
 ];
 

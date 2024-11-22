@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Activity } from "../../types";
-import Pricing from "./Pricing";
+// import Pricing from "./Pricing";
 import BookingInfos from "./BookingInfos";
 
 const NewRes = () => {
@@ -135,9 +135,9 @@ const NewRes = () => {
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0, transition: { duration: 0.05 } }}
                                     >
-                                        {gameChosen && (
-                                            <Pricing count={count} setCount={setCount} setIsGameChosen={setIsGameChosen} gameChosen={gameChosen} setIsDataNeeded={setIsDataNeeded} />
-                                        )}
+                                        {/* {gameChosen && (
+                                            <Pricing count={count} gameChosen={gameChosen} setNbr_parties={set} />
+                                        )} */}
                                     </motion.div>
                                 </AnimatePresence>
                             ) : (
