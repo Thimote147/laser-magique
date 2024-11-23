@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
 
 interface LoginFormData {
   email: string;
@@ -12,7 +11,6 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const { register, handleSubmit } = useForm<LoginFormData>();
   const navigate = useNavigate();
-  const setAuth = useAuthStore((state) => state.setAuth);
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -23,13 +21,19 @@ const LoginForm = () => {
       });
 
       const result = await response.json();
+      console.log("response JSON: ", result);
 
       if (!response.ok) {
         throw new Error(result.message || 'Login failed');
       }
 
-      setAuth(result.token, result.role);
-      navigate('/');
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('role', result.role);
+      if (localStorage.getItem('role') === 'admin') {
+        navigate('/gestion');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     }
@@ -38,7 +42,7 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {error && <p className="text-red-500">{error}</p>}
-      
+
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-300">
           Email

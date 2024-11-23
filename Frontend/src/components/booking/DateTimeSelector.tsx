@@ -24,8 +24,6 @@ const DateTimeSelector = ({
   const nextWeek = Array.from({ length: 7 }, (_, i) => addDays(new Date(), i));
   const timeSlots = Array.from({ length: 12 }, (_, i) => `${i + 10}:00`);
 
-  console.log(nextWeek);
-
   return (
     <div>
       <div className="mb-8">

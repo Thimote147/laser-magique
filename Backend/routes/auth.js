@@ -15,7 +15,7 @@ module.exports = (db) => {
   // Register validation
   const registerValidation = [
     body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 6 }),
+    body('password').isLength({ min: 4 }), // Change to 6
     body('name').trim().notEmpty()
   ];
 
@@ -56,15 +56,15 @@ module.exports = (db) => {
     try {
       const { email, password, name } = req.body;
       const existingUser = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-
+      
       if (existingUser) {
         return res.status(400).json({ message: 'User already exists' });
       }
-
+      
       const hashedPassword = bcrypt.hashSync(password, 10);
       const result = db.prepare(
-        'INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)'
-      ).run(email, hashedPassword, name, 'user');
+        'INSERT INTO users (firstname, email, password, role) VALUES (?, ?, ?, ?)'
+      ).run(name, email, hashedPassword, 'user');
 
       const token = jwt.sign(
         { userId: result.lastInsertRowid, email, role: 'user' },

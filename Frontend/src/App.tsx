@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuthStore } from './store/authStore';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
@@ -11,8 +10,9 @@ import Auth from './pages/Auth';
 import Booking from './pages/Booking';
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => {
-  const { token, role } = useAuthStore();
-  
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+
   if (!token) {
     return <Navigate to="/auth" />;
   }
@@ -36,21 +36,21 @@ function App() {
             <Route path="/laser-game" element={<LaserGame />} />
             <Route path="/virtual-reality" element={<VirtualReality />} />
             <Route path="/cyber-trike" element={<CyberTrike />} />
-            <Route 
-              path="/gestion" 
+            <Route
+              path="/gestion"
               element={
                 <ProtectedRoute adminOnly>
                   <Gestion />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/booking" 
+            <Route
+              path="/booking"
               element={
                 <ProtectedRoute>
                   <Booking />
                 </ProtectedRoute>
-              } 
+              }
             />
           </Routes>
         </main>

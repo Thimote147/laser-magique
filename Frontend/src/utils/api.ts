@@ -1,10 +1,8 @@
-import { useAuthStore } from '../store/authStore';
-
 const API_URL = 'http://localhost:3010';
 
 export const api = {
   get: async (endpoint: string) => {
-    const token = useAuthStore.getState().token;
+    const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}${endpoint}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -15,7 +13,7 @@ export const api = {
   },
 
   post: async (endpoint: string, data: Record<string, unknown>) => {
-    const token = useAuthStore.getState().token;
+    const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
       headers: {

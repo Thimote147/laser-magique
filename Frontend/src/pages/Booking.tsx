@@ -118,7 +118,7 @@ const Booking = () => {
                 onClick={() => setStep(step - 1)}
                 className="px-6 py-2 rounded-full bg-gray-700 text-white hover:bg-gray-600"
               >
-                Previous
+                Précédent
               </button>
             )}
             {step < steps.length && (
@@ -131,7 +131,7 @@ const Booking = () => {
                   (step === 3 && (!selectedDate || !selectedTime))
                 }
               >
-                Next
+                Suivant
               </button>
             )}
           </div>
