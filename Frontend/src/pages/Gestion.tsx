@@ -19,14 +19,14 @@ const calculateStats = (bookings: Booking[]) => {
         'virtual-reality': 10,
         'cyber-trike': 20,
       }[booking.activity] || 0;
-      return sum + basePrice * booking.slots;
+      return sum + basePrice * booking.nbr_pers;
     }, 0);
   }
 
   let averageGroupSize = 0;
 
   if (totalBookings !== 0) {
-    averageGroupSize = parseFloat((bookings.reduce((sum, booking) => sum + booking.slots, 0) / totalBookings).toFixed(1));
+    averageGroupSize = parseFloat((bookings.reduce((sum, booking) => sum + booking.nbr_pers, 0) / totalBookings).toFixed(1));
   }
 
   return { totalBookings, totalRevenue, averageGroupSize };
@@ -60,7 +60,7 @@ const Gestion = () => {
   const handleBookingMove = (bookingId: number, newDate: Date) => {
     setBookings((prevBookings = []) =>
       prevBookings.map((booking) =>
-        booking.id === bookingId ? { ...booking, date: newDate } : booking
+        booking.booking_id === bookingId ? { ...booking, date: newDate } : booking
       )
     );
   };
