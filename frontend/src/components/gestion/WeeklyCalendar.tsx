@@ -16,8 +16,9 @@ const timeSlots = Array.from({ length: 27 }, (_, i) => {
 });
 
 const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendarProps) => {
-  const startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
-  const weekDays = Array.from({ length: 7 }, (_, i) => addDays(startDate, i));
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const startDate = isMobile ? currentDate : startOfWeek(currentDate, { weekStartsOn: 1 });
+  const weekDays = Array.from({ length: (isMobile ? 1 : 7) }, (_, i) => addDays(startDate, i));
 
   const getBookingsForSlot = (day: Date, hour: number, minute: number) => {
     return bookings.length ? bookings.filter((booking: Booking) => {
@@ -53,12 +54,14 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
     }
   };
 
+  const grid_cols_mobile = isMobile ? 'grid-cols-2' : 'grid-cols-8';
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="overflow-x-auto">
-        <div className="min-w-[1000px]">
+        <div className={`${isMobile ? "" : "min-w-[1000px]"}`}>
           {/* Header */}
-          <div className="grid grid-cols-8 gap-2 mb-4">
+          <div className={`grid ${grid_cols_mobile} gap-2 mb-4`}>
             <div className="p-4"></div>
             {weekDays.map((day) => (
               <div
@@ -77,7 +80,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
           {timeSlots.map((time) => {
             const [hour, minute] = time.split(':').map(Number);
             return (
-              <div key={time} className="grid grid-cols-8 gap-2 mb-2">
+              <div key={time} className={`grid ${grid_cols_mobile} gap-2 mb-2`}>
                 <div className="p-4 flex items-center justify-end text-gray-400">
                   <Clock className="w-4 h-4 mr-2" />
                   {time}

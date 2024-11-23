@@ -35,6 +35,7 @@ const calculateStats = (bookings: Booking[]) => {
 const Gestion = () => {
   const [bookings, setBookings] = useState<Booking[]>();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
     fetch('https://api.thimotefetu.fr/bookings/all', {
@@ -50,11 +51,11 @@ const Gestion = () => {
   console.log(bookings);
 
   const handlePreviousWeek = () => {
-    setCurrentDate((date) => subDays(date, 7));
+    setCurrentDate((date) => subDays(date, (isMobile ? 1 : 7)));
   };
 
   const handleNextWeek = () => {
-    setCurrentDate((date) => addDays(date, 7));
+    setCurrentDate((date) => addDays(date, (isMobile ? 1 : 7)));
   };
 
   const handleBookingMove = (bookingId: number, newDate: Date) => {
