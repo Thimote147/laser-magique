@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3010';
+const API_URL = 'https://api.thimotefetu.fr';
 
 export const api = {
   get: async (endpoint: string) => {

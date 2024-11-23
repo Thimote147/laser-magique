@@ -18,7 +18,7 @@ const Booking = () => {
   const [availability, setAvailability] = useState<Record<number, { available: boolean }>>({});
 
   useEffect(() => {
-    fetch('http://localhost:3010/activities')
+    fetch('https://api.thimotefetu.fr/activities')
       .then(res => res.json())
       .then(data => setActivities(Object.values(data).flat() as Activity[]));
   }, []);
@@ -26,7 +26,7 @@ const Booking = () => {
   useEffect(() => {
     if (selectedDate) {
       const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      fetch(`http://localhost:3010/bookings/availability/${dateStr}`)
+      fetch(`https://api.thimotefetu.fr/bookings/availability/${dateStr}`)
         .then(res => res.json())
         .then(data => {
           const formattedData = Object.keys(data).reduce((acc, key) => {

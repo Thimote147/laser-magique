@@ -37,7 +37,7 @@ const Gestion = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    fetch('http://localhost:3010/bookings/all', {
+    fetch('https://api.thimotefetu.fr/bookings/all', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
