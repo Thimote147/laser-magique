@@ -22,6 +22,8 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   const getBookingsForSlot = (day: Date, hour: number, minute: number) => {
     return bookings.length ? bookings.filter((booking: Booking) => {
       const bookingDate = new Date(booking.date);
+      console.log("date : " + bookingDate);
+      console.log("day : " + day);
       return isSameDay(bookingDate, day) && bookingDate.getHours() === hour && bookingDate.getMinutes() === minute;
     }) : [];
   };
@@ -106,9 +108,9 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                   booking.activity
                                 )} p-2 rounded mb-2 text-sm text-white`}
                               >
-                                <div className="font-semibold">{booking.fistname}</div>
+                                <div className="font-semibold">{booking.firstname}</div>
                                 <div className="text-xs">
-                                  {booking.slots} personne{booking.slots > 1 ? 's' : ''}
+                                  {booking.nbr_pers} personne{booking.nbr_pers > 1 ? 's' : ''}
                                 </div>
                               </div>
                             )}

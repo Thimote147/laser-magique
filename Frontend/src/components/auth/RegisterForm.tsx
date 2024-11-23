@@ -21,8 +21,6 @@ const RegisterForm = () => {
         body: JSON.stringify(data),
       });
 
-      console.log("response: ", response);
-
       const result = await response.json();
 
       if (!response.ok) {

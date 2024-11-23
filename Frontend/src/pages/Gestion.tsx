@@ -42,15 +42,12 @@ const Gestion = () => {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
     })
-      .then((res) => {
-        if (!res.ok) {
-          console.error('Erreur:', res);
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch(error => console.error('Erreur:', error));
   }, []);
+
+  console.log(bookings);
 
   const handlePreviousWeek = () => {
     setCurrentDate((date) => subDays(date, 7));

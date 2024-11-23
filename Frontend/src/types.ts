@@ -15,8 +15,8 @@ interface Booking {
     id: number;
     activity: string;
     date: Date;
-    slots: number;
-    fistname: string;
+    nbr_pers: number;
+    firstname: string;
     lastname: string;
     email: string;
     phone: string;

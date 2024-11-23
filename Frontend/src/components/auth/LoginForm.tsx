@@ -21,7 +21,6 @@ const LoginForm = () => {
       });
 
       const result = await response.json();
-      console.log("response JSON: ", result);
 
       if (!response.ok) {
         throw new Error(result.message || 'Login failed');
