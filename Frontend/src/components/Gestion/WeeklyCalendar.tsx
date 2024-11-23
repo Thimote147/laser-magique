@@ -95,8 +95,8 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                       >
                         {getBookingsForSlot(day, hour, minute).map((booking, index) => (
                           <Draggable
-                            key={booking.id}
-                            draggableId={`${booking.id}-${time}`}
+                            key={booking.booking_id}
+                            draggableId={`${booking.booking_id}-${time}`}
                             index={index}
                           >
                             {(provided) => (

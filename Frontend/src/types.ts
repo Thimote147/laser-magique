@@ -12,7 +12,7 @@ interface Activity {
 }
 
 interface Booking {
-    id: number;
+    booking_id: number;
     activity: string;
     date: Date;
     nbr_pers: number;
