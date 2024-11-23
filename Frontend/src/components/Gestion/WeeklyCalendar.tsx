@@ -51,8 +51,6 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
     }
   };
 
-  console.log(bookings);
-
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="overflow-x-auto">

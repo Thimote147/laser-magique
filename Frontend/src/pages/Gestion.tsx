@@ -37,8 +37,17 @@ const Gestion = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    fetch('http://localhost:3010/bookings/all')
-      .then((res) => res.json())
+    fetch('http://localhost:3010/bookings/all', {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          console.error('Erreur:', res);
+        }
+        return res.json();
+      })
       .then((data) => setBookings(data))
       .catch(error => console.error('Erreur:', error));
   }, []);

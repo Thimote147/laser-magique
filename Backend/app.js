@@ -7,12 +7,12 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { execFileSync } = require('child_process');
 
-const authMiddleware = require('./middleware/auth');
-const usersRouter = require('./routes/users');
-const activitiesRouter = require('./routes/activities');
+const authMiddleware = require('./middleware/auth.js');
+const usersRouter = require('./routes/users.js');
+const activitiesRouter = require('./routes/activities.js');
 const foodRouter = require('./routes/food.js');
-const authRouter = require('./routes/auth');
-const bookingRouter = require('./routes/booking');
+const authRouter = require('./routes/auth.js');
+const bookingRouter = require('./routes/booking.js');
 
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -25,7 +25,7 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 // execFileSync('node', [initDBScriptPath]);
 
 // Database initialization
-const db = new Database(path.resolve(__dirname, 'data', 'gestion.db'), {  
+const db = new Database(path.resolve(__dirname, 'data', 'gestion.db'), {
   verbose: console.log,
 });
 
@@ -58,9 +58,9 @@ app.use('/bookings', authMiddleware, bookingRouter(db));
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Something went wrong!',
-    message: err.message 
+    message: err.message
   });
 });
 
