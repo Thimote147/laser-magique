@@ -108,9 +108,9 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                   booking.activity
                                 )} p-2 rounded mb-2 text-sm text-white`}
                               >
-                                <div className="font-semibold">{booking.firstname}</div>
+                                <div className="font-semibold">{booking.firstname + " " + (booking.lastname !== null ? booking.lastname : '')}</div>
                                 <div className="text-xs">
-                                  {booking.nbr_pers} personne{booking.nbr_pers > 1 ? 's' : ''}
+                                  {booking.group_type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
                                 </div>
                               </div>
                             )}

@@ -13,11 +13,12 @@ interface Activity {
 
 interface Booking {
     booking_id: number;
-    activity: string;
-    date: Date;
-    nbr_pers: number;
     firstname: string;
     lastname: string;
+    date: Date;
+    group_type: string;
+    activity: string;
+    nbr_pers: number;
     email: string;
     phone: string;
 }
