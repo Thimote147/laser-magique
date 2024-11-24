@@ -12,7 +12,7 @@ const BookingInfos = ({ nbr_pers, type, activity_id, quantity }: BookingInfosPro
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('https://laser-magique.thimotefetu.fr/reservations/add', {
+            const response = await fetch('https://api.thimotefetu.fr/reservations/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -38,7 +38,7 @@ const Gestion = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
-    fetch('https://laser-magique.thimotefetu.fr/bookings/all', {
+    fetch('https://api.thimotefetu.fr/bookings/all', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
@@ -47,8 +47,6 @@ const Gestion = () => {
       .then((data) => setBookings(data))
       .catch(error => console.error('Erreur:', error));
   }, []);
-
-  console.log(bookings);
 
   const handlePreviousWeek = () => {
     setCurrentDate((date) => subDays(date, (isMobile ? 1 : 7)));

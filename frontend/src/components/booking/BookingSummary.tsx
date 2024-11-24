@@ -44,7 +44,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
 
   const handleBooking = async () => {
     try {
-      const response = await fetch('https://laser-magique.thimotefetu.fr/bookings/create', {
+      const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

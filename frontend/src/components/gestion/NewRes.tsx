@@ -16,7 +16,7 @@ const NewRes = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     useEffect(() => {
-        fetch('https://laser-magique.thimotefetu.fr/activities')
+        fetch('https://api.thimotefetu.fr/activities')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des activités');

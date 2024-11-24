@@ -18,7 +18,7 @@ const Booking = () => {
   const [availability, setAvailability] = useState<Record<string, { available: boolean }>>({});
 
   useEffect(() => {
-    fetch('https://laser-magique.thimotefetu.fr/activities')
+    fetch('https://api.thimotefetu.fr/activities')
       .then(res => res.json())
       .then(data => setActivities(Object.values(data).flat() as Activity[]));
   }, []);
@@ -26,7 +26,7 @@ const Booking = () => {
   useEffect(() => {
     if (selectedDate) {
       const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      fetch(`https://laser-magique.thimotefetu.fr/bookings/availability/${dateStr}/${participants}`)
+      fetch(`https://api.thimotefetu.fr/bookings/availability/${dateStr}/${participants}`)
         .then(res => res.json())
         .then(data => {
             const formattedData = Object.keys(data).reduce((acc, key) => {

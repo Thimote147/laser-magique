@@ -40,13 +40,12 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   };
 
   const getActivityColor = (activity: string) => {
-    console.log(bookings);
     switch (activity) {
-      case 'cyber-trike':
+      case 'Cyber Trike':
         return 'bg-blue-500';
-      case 'laser-game':
+      case 'Laser Game':
         return 'bg-purple-500';
-      case 'virtual-reality':
+      case 'Réalité Virtuelle':
         return 'bg-green-500';
       default:
         return 'bg-gray-500';
