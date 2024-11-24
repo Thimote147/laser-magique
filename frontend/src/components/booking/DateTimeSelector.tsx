@@ -3,13 +3,13 @@ import { format, addDays, isSameDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 function toCapitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 interface DateTimeSelectorProps {
   selectedDate: Date | null;
   selectedTime: string | null;
-  availability: Record<number, { available: boolean }>;
+  availability: Record<string, { available: boolean }>;
   onDateSelect: (date: Date) => void;
   onTimeSelect: (time: string) => void;
 }
@@ -21,8 +21,12 @@ const DateTimeSelector = ({
   onDateSelect,
   onTimeSelect,
 }: DateTimeSelectorProps) => {
-  const nextWeek = Array.from({ length: 7 }, (_, i) => addDays(new Date(), i));
-  const timeSlots = Array.from({ length: 12 }, (_, i) => `${i + 10}:00`);
+  const nextWeek = Array.from({ length: 31 }, (_, i) => addDays(new Date(), i));
+  const timeSlots = Array.from({ length: 22 }, (_, i) => {
+    const hour = Math.floor(i / 2) + 10;
+    const minutes = i % 2 === 0 ? '00' : '30';
+    return `${hour}:${minutes}`;
+  });
 
   return (
     <div>
@@ -57,9 +61,8 @@ const DateTimeSelector = ({
           <h3 className="text-lg font-semibold mb-4">Choisir une heure</h3>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {timeSlots.map((time, index) => {
-              const hour = parseInt(time);
-              const isAvailable = availability[hour]?.available;
-              
+              const isAvailable = availability[time]?.available;
+
               return (
                 <motion.button
                   key={time}
@@ -90,3 +93,4 @@ const DateTimeSelector = ({
 };
 
 export default DateTimeSelector;
+export { toCapitalize };

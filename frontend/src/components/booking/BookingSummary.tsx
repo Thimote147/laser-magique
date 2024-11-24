@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
-import { Activity } from '../../types';
 import { fr } from 'date-fns/locale';
+import React, { useState } from 'react';
+import { Activity } from '../../types';
+import { toCapitalize } from './DateTimeSelector';
+import { useNavigate } from 'react-router';
 
 interface BookingSummaryProps {
   activity: Activity | null;
@@ -12,34 +15,61 @@ interface BookingSummaryProps {
 }
 
 const BookingSummary = ({ activity, date, time, participants, nbr_parties }: BookingSummaryProps) => {
-  if (!activity || !date || !time) return null;
+  const navigate = useNavigate();
+  if (!activity || !date || !time || !participants || !nbr_parties) return null;
 
-  const total = activity.first_price * participants;
+  const total = (activity.first_price ?? activity.third_price) * participants;
+  const [firstname, setFirstname] = useState<string>();
+  const [lastname, setLastname] = useState<string>();
+  const [phone, setPhone] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+
+  const handleData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'firstname':
+        setFirstname(toCapitalize(value));
+        break;
+      case 'lastname':
+        setLastname(toCapitalize(value));
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+    }
+  };
 
   const handleBooking = async () => {
     try {
-      const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
+      const response = await fetch('http://localhost:3010/bookings/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth-storage')}`,
         },
         body: JSON.stringify({
+          firstname,
+          lastname,
+          phone,
+          email,
           activity_id: activity.activity_id,
           date: `${format(date, 'yyyy-MM-dd')}T${time}`,
           participants,
           quantity: participants,
-          type: activity.type,
+          type: activity.type
         }),
       });
 
       if (response.ok) {
         alert('Réservation effectuée avec succès !');
+        navigate('/');
       } else {
-        console.error('Réservation échouée :', response.statusText);
+        alert('Erreur lors de la réservation.');
       }
     } catch (error) {
-      console.error('Réservation échouée :', error);
+      alert('Erreur lors de la réservation.');
     }
   };
 
@@ -58,7 +88,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
         </div>
         <div className="flex justify-between">
           <span>Date</span>
-            <span className="font-semibold">{format(date, 'EEEE d MMMM yyyy', { locale: fr }).replace(/\b\w/g, char => char.toUpperCase())}</span>
+            <span className="font-semibold">{format(date, 'EEEE d MMMM yyyy', { locale: fr }).replace(/\b\w/g, char => char.toUpperCase()).replace("DéCembre", "Décembre")}</span>
         </div>
         <div className="flex justify-between">
           <span>Heure</span>
@@ -70,7 +100,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
         </div>
         <div className="flex justify-between">
           <span>Prix par personne</span>
-          <span className="font-semibold">{activity.first_price}€</span>
+          <span className="font-semibold">{activity.first_price ?? activity.third_price}€</span>
         </div>
         <div className="flex justify-between">
           <span>Nombre de parties</span>
@@ -82,6 +112,30 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
             <span>{total}€</span>
           </div>
         </div>
+      </div>
+
+      <div className="space-y-4 mb-8">
+        <h4 className="text-2xl font-bold mb-6">Informations de contact</h4>
+        <div className="flex justify-between">
+          <span>Prénom*</span>
+          <input className="text-black" type="text" name="firstname" required onChange={handleData} />
+        </div>
+        {localStorage.getItem('role') === 'admin' ? null : (
+          <>
+            <div className="flex justify-between">
+              <span>Nom</span>
+              <input className="text-black" type="text" name="lastname" onChange={handleData} />
+            </div>
+            <div className="flex justify-between">
+              <span>Téléphone*</span>
+              <input className="text-black" type="tel" name="phone" required onChange={handleData} />
+            </div>
+            <div className="flex justify-between">
+              <span>Email*</span>
+              <input className="text-black" type="email" name="email" required onChange={handleData} />
+            </div>
+          </>
+        )}
       </div>
 
       <button

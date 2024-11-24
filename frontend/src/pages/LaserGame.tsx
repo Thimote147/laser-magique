@@ -143,7 +143,7 @@ const LaserGame = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Button href="/booking" variant="primary">
-                Réserver maintenant
+                Réservez maintenant
               </Button>
               <Button href="#arena-features" variant="outline">
                 Explorer l'espace

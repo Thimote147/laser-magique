@@ -4,7 +4,7 @@ import { addDays, subDays } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import WeeklyCalendar from '../components/gestion/WeeklyCalendar';
 import BookingStats from '../components/gestion/BookingStats';
-import NewRes from '../components/gestion/NewBooking';
+// import NewRes from '../components/gestion/NewBooking';
 import { Booking } from '../types';
 
 const calculateStats = (bookings: Booking[]) => {
@@ -38,7 +38,7 @@ const Gestion = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
-    fetch('https://api.thimotefetu.fr/bookings/all', {
+    fetch('http://localhost:3010/bookings/all', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
@@ -110,7 +110,7 @@ const Gestion = () => {
         </div>
       </motion.div>
 
-      <NewRes />
+      {/* <NewRes /> */}
     </div>
   );
 };

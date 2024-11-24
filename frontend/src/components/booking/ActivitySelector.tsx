@@ -30,7 +30,7 @@ const ActivitySelector = ({ activities, selected, onSelect }: ActivitySelectorPr
             {activity.min_player}-{activity.max_player} joueurs
           </p>
           <p className="mt-4 text-lg font-semibold">
-            À partir de {activity.first_price}€/personne
+            À partir de {(activity.first_price ? activity.first_price : (activity.second_price ? activity.second_price : activity.third_price))}€/personne
           </p>
         </motion.div>
       ))}

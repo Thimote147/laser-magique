@@ -3,9 +3,9 @@ interface Activity {
     activity_id: number;
     name: string;
     type: string;
-    first_price: number;
+    first_price?: number;
     second_price?: number;
-    third_price?: number;
+    third_price: number;
     is_social_deal: boolean;
     min_player: number;
     max_player: number;
@@ -15,12 +15,12 @@ interface Booking {
     booking_id: number;
     firstname: string;
     lastname: string;
+    phone: string;
+    email: string;
     date: Date;
-    group_type: string;
     activity: string;
     nbr_pers: number;
-    email: string;
-    phone: string;
+    type: string;
 }
 
 export type { Activity, Booking };

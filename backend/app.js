@@ -18,7 +18,7 @@ const app = express();
 const PORT = process.env.PORT || 3010;
 
 app.use(express.json());
-app.use(cors({ origin: 'https://laser-magique.thimotefetu.fr' }));
+app.use(cors());//{ origin: 'https://laser-magique.thimotefetu.fr' }));
 
 // Run the initDB.js script to initialize the database
 // const initDBScriptPath = path.resolve(__dirname, 'scripts', 'initDB.js');
@@ -49,11 +49,11 @@ initializeAdmin();
 // Public routes
 app.use('/auth', authRouter(db));
 app.use('/activities', activitiesRouter(db));
+app.use('/bookings', bookingRouter(db));
 
 // Protected routes
 app.use('/users', authMiddleware, usersRouter(db));
 app.use('/food', authMiddleware, foodRouter(db));
-app.use('/bookings', authMiddleware, bookingRouter(db));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

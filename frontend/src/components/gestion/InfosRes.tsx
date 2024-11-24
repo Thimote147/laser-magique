@@ -12,11 +12,7 @@ const BookingInfos = ({ nbr_pers, type, activity_id, quantity }: BookingInfosPro
         const data = Object.fromEntries(formData.entries());
 
         try {
-<<<<<<<< HEAD:frontend/src/components/Gestion/BookingInfos.tsx
-            const response = await fetch('https://api.thimotefetu.fr/bookings/add', {
-========
-            const response = await fetch('https://api.thimotefetu.fr/reservations/add', {
->>>>>>>> main:frontend/src/components/Gestion/InfosRes.tsx
+            const response = await fetch('http://localhost:3010/reservations/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

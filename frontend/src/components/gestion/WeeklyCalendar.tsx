@@ -9,8 +9,8 @@ interface WeeklyCalendarProps {
   onBookingMove: (bookingId: number, newDate: Date) => void;
 }
 
-const timeSlots = Array.from({ length: 27 }, (_, i) => {
-  const hour = Math.floor(i / 2) + 9;
+const timeSlots = Array.from({ length: 22 }, (_, i) => {
+  const hour = Math.floor(i / 2) + 10;
   const minutes = i % 2 === 0 ? '00' : '30';
   return `${hour}:${minutes}`;
 });
@@ -23,8 +23,6 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   const getBookingsForSlot = (day: Date, hour: number, minute: number) => {
     return bookings.length ? bookings.filter((booking: Booking) => {
       const bookingDate = new Date(booking.date);
-      console.log("date : " + bookingDate);
-      console.log("day : " + day);
       return isSameDay(bookingDate, day) && bookingDate.getHours() === hour && bookingDate.getMinutes() === minute;
     }) : [];
   };
@@ -42,6 +40,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   };
 
   const getActivityColor = (activity: string) => {
+    console.log(bookings);
     switch (activity) {
       case 'cyber-trike':
         return 'bg-blue-500';
@@ -113,7 +112,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                               >
                                 <div className="font-semibold">{booking.firstname + " " + (booking.lastname !== null ? booking.lastname : '')}</div>
                                 <div className="text-xs">
-                                  {booking.group_type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
+                                  {booking.type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
                                 </div>
                               </div>
                             )}
