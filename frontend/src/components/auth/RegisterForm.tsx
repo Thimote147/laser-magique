@@ -15,7 +15,7 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const response = await fetch('http://localhost:3010/auth/register', {
+      const response = await fetch('https://laser-magique.thimotefetu.fr/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
