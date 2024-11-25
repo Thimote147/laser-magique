@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { User } from "../types";
 import { AnimatePresence, motion } from "framer-motion";
-import { Clock, Euro, Plus, X } from "lucide-react";
+import { Clock, Euro, Plus, X, Trash } from "lucide-react";
+import { useSwipeable } from 'react-swipeable';
 import { toCapitalize, toCurrency, toHours, toMinutes } from "../utils/functions";
 
 const formatDate = (date: Date): string => {
@@ -13,6 +14,46 @@ const formatDate = (date: Date): string => {
         hour: '2-digit',
         minute: '2-digit'
     }).replace(' ', 'T').replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1');
+};
+
+const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { id: number, date: string, beginning:string, ending?:string, nbr_hours?:string, amount?:number}, user: User, currentTime: string, onSwipe: (id: number) => void }) => {
+    const [deltaX, setDeltaX] = useState(0);
+
+    const handlers = useSwipeable({
+        onSwiping: (eventData) => {
+            if (eventData.deltaX < 0) {
+                setDeltaX(Math.max(eventData.deltaX, -35));
+            }
+        },
+        onSwipedLeft: (eventData) => {
+            if (Math.abs(eventData.deltaX) > 100) {
+                onSwipe(hour.id);
+            }
+            setDeltaX(0);
+        }
+    });
+
+    return (
+        <div className="relative m-2">
+            <div className="absolute inset-1 flex items-center justify-end bg-red-500 rounded-lg px-1 py-2">
+                <Trash className="text-white" />
+            </div>
+            <motion.div
+                {...handlers}
+                style={{ x: deltaX }}
+                className={`relative flex justify-between gap-10 ${hour.ending ? "bg-zinc-900 hover:bg-zinc-800" : "bg-gradient-to-br from-purple-500 to-pink-500"} rounded-lg px-5 py-2`}
+            >
+                    <div className="w-[200px]">
+                        <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
+                        <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
+                    </div>
+                    <div className="w-[50px]">
+                        <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
+                        <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
+                    </div>
+            </motion.div>
+        </div>
+    );
 };
 
 const Profile = () => {
@@ -39,7 +80,7 @@ const Profile = () => {
     ];
 
     useEffect(() => {
-        fetch(`https://api.thimotefetu.fr/users/${localStorage.getItem('userId')}`, {
+        fetch(`http://localhost:3010/users/${localStorage.getItem('userId')}`, {
             headers: {
                 authorization: 'Bearer ' + localStorage.getItem('token'),
             },
@@ -54,8 +95,6 @@ const Profile = () => {
                     totalMonthAmount += (hoursWorked / 60) * (data.hourly_rate ?? 0);
                     totalHoursCount += hoursWorked;
                 });
-
-                console.log(data.hours);
 
                 setMonthAmount(totalMonthAmount);
                 setHoursCount(totalHoursCount);
@@ -93,7 +132,7 @@ const Profile = () => {
     }, [currentTime]);
 
     const handleAddHour = (endingValue: boolean) => {
-        fetch(`https://api.thimotefetu.fr/users/${localStorage.getItem('userId')}/addHours`, {
+        fetch(`http://localhost:3010/users/${localStorage.getItem('userId')}/addHours`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -123,6 +162,17 @@ const Profile = () => {
                 setNewHour(!newHour);
                 setIsModalOpen(false);
             });
+    };
+
+    const handleSwipe = (id: number) => {
+        console.log(`Swiped item with id: ${id}`);
+        setUser((prevUser) => {
+            if (!prevUser) return prevUser;
+            return {
+                ...prevUser,
+                hours: prevUser.hours.filter((hour) => hour.id !== id),
+            };
+        });
     };
 
     return (
@@ -164,18 +214,25 @@ const Profile = () => {
                 <div className="min-w-[300px] bg-white/5 rounded-lg p-5">
                     <h2 className="text-xl font-bold mb-3">Heures travaillées</h2>
                     <div className="flex flex-wrap justify-evenly">
-                        {user?.hours.map((hour) => (
-                            <div key={hour.id} className={`flex justify-between gap-10 m-2 ${hour.ending ? "bg-zinc-900 hover:bg-zinc-800" : "bg-gradient-to-br from-purple-500 to-pink-500"} rounded-lg px-5 py-2`}>
-                                <div className="w-[200px]">
-                                    <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
-                                    <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
-                                </div>
-                                <div className="w-[50px]">
-                                    <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
-                                    <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
-                                </div>
-                            </div>
-                        ))}
+                        {user?.hours.map((hour) => {
+                            return (
+                                isMobile ? (
+                                    <SwipeableDiv key={hour.id} hour={{ ...hour, nbr_hours: hour.nbr_hours ?? '', amount: hour.amount ?? 0 }} user={user} currentTime={currentTime} onSwipe={handleSwipe} />
+                                ) : (
+                                    <div key={hour.id} className={`relative flex justify-between gap-10 m-2 ${hour.ending ? "bg-zinc-900 hover:bg-zinc-800" : "bg-gradient-to-br from-purple-500 to-pink-500"} rounded-lg px-5 py-2`}>
+                                        <div className="w-[200px]">
+                                            <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
+                                            <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
+                                        </div>
+                                        <div className="w-[50px]">
+                                            <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
+                                            <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
+                                        </div>
+                                    </div>
+                                )
+                            );
+                        }
+                        )}
                     </div>
                 </div>
             </div>
