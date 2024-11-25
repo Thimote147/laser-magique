@@ -36,9 +36,9 @@ interface User {
         user: number;
         date: string;
         beginning: string;
-        ending: string;
-        nbr_hours: string;
-        amount: number;
+        ending?: string;
+        nbr_hours?: string;
+        amount?: number;
     }[];
 }
 

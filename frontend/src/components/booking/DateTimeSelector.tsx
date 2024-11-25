@@ -1,10 +1,7 @@
 import { motion } from 'framer-motion';
 import { format, addDays, isSameDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
-
-function toCapitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
+import { toCapitalize } from '../../utils/functions';
 
 interface DateTimeSelectorProps {
   selectedDate: Date | null;
@@ -93,4 +90,3 @@ const DateTimeSelector = ({
 };
 
 export default DateTimeSelector;
-export { toCapitalize };

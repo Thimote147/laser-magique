@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import React, { useState } from 'react';
 import { Activity } from '../../types';
-import { toCapitalize } from './DateTimeSelector';
+import { toCapitalize } from '../../utils/functions';
 import { useNavigate } from 'react-router';
 
 interface BookingSummaryProps {
@@ -16,13 +16,15 @@ interface BookingSummaryProps {
 
 const BookingSummary = ({ activity, date, time, participants, nbr_parties }: BookingSummaryProps) => {
   const navigate = useNavigate();
-  if (!activity || !date || !time || !participants || !nbr_parties) return null;
 
-  const total = (activity.first_price ?? activity.third_price) * participants;
   const [firstname, setFirstname] = useState<string>();
   const [lastname, setLastname] = useState<string>();
   const [phone, setPhone] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  
+  if (!activity || !date || !time || !participants || !nbr_parties) return null;
+  
+  const total = (activity.first_price ?? activity.third_price) * participants * nbr_parties;
 
   const handleData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,7 +71,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
         alert('Erreur lors de la réservation.');
       }
     } catch (error) {
-      alert('Erreur lors de la réservation.');
+      alert('Erreur lors de la réservation : ' + error);
     }
   };
 
