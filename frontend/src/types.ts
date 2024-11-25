@@ -23,4 +23,23 @@ interface Booking {
     type: string;
 }
 
-export type { Activity, Booking };
+interface User {
+    user_id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phone: string;
+    role: string;
+    hourly_rate?: number;
+    hours: {
+        id: number;
+        user: number;
+        date: string;
+        beginning: string;
+        ending: string;
+        nbr_hours: string;
+        amount: number;
+    }[];
+}
+
+export type { Activity, Booking, User };

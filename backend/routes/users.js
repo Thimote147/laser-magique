@@ -5,9 +5,10 @@ module.exports = (db) => {
 
     router.get('/:id', (req, res) => {
         try {
-            const user = db.prepare('SELECT firstname FROM users WHERE user_id = ?').get(req.params.id);
+            const user = db.prepare('SELECT * FROM users WHERE user_id = ?').get(req.params.id);
             if (user) {
-                res.json({ firstname: user.firstname });
+                user.hours = db.prepare('SELECT * FROM hours WHERE user_id = ? ORDER BY date').all(req.params.id);
+                res.json(user);
             } else {
                 res.status(404).json({ error: 'Utilisateur non trouvé' });
             }

@@ -40,7 +40,7 @@ module.exports = (db) => {
         { expiresIn: '24h' }
       );
 
-      res.json({ token, role: user.role });
+      res.json({ token, role: user.role, userId: user.user_id });
     } catch (error) {
       res.status(500).json({ message: 'Login failed', error: error.message });
     }
@@ -72,7 +72,7 @@ module.exports = (db) => {
         { expiresIn: '24h' }
       );
 
-      res.status(201).json({ token, role: 'user' });
+      res.status(201).json({ token, role: 'user', userId: result.lastInsertRowid });
     } catch (error) {
       res.status(500).json({ message: 'Registration failed', error: error.message });
     }

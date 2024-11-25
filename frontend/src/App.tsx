@@ -8,6 +8,7 @@ import VirtualReality from './pages/VirtualReality';
 import Gestion from './pages/Gestion';
 import Auth from './pages/Auth';
 import Booking from './pages/Booking';
+import Profile from './pages/Profile.tsx';
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => {
   const token = localStorage.getItem('token');
@@ -36,6 +37,7 @@ function App() {
             <Route path="/laser-game" element={<LaserGame />} />
             <Route path="/virtual-reality" element={<VirtualReality />} />
             <Route path="/cyber-trike" element={<CyberTrike />} />
+            <Route path="/booking" element={<Booking />} />
             <Route
               path="/gestion"
               element={
@@ -43,15 +45,13 @@ function App() {
                   <Gestion />
                 </ProtectedRoute>
               }
-            />
-            <Route
-              path="/booking"
+              />
+              <Route path="/profile"
               element={
                 <ProtectedRoute>
-                  <Booking />
+                  <Profile />
                 </ProtectedRoute>
-              }
-            />
+              }/>
           </Routes>
         </main>
         <Footer />

@@ -44,7 +44,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
 
   const handleBooking = async () => {
     try {
-      const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
+      const response = await fetch('http://localhost:3010/bookings/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
         </div>
         <div className="flex justify-between">
           <span>Date</span>
-            <span className="font-semibold">{format(date, 'EEEE d MMMM yyyy', { locale: fr }).replace(/\b\w/g, char => char.toUpperCase()).replace("DéCembre", "Décembre")}</span>
+          <span className="font-semibold">{format(date, 'EEEE d MMMM yyyy', { locale: fr }).replace(/\b\w/g, char => char.toUpperCase()).replace("DéCembre", "Décembre")}</span>
         </div>
         <div className="flex justify-between">
           <span>Heure</span>

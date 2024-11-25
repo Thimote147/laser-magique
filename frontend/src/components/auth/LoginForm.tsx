@@ -14,7 +14,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await fetch('https://api.thimotefetu.fr/auth/login', {
+      const response = await fetch('http://localhost:3010/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -26,8 +26,11 @@ const LoginForm = () => {
         throw new Error(result.message || 'Login failed');
       }
 
+      console.log(result);
+
       localStorage.setItem('token', result.token);
       localStorage.setItem('role', result.role);
+      localStorage.setItem('userId', result.userId);
       if (localStorage.getItem('role') === 'admin') {
         navigate('/gestion');
       } else {

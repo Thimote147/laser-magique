@@ -38,7 +38,7 @@ const Gestion = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
-    fetch('https://api.thimotefetu.fr/bookings/all', {
+    fetch('http://localhost:3010/bookings/all', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
@@ -73,7 +73,7 @@ const Gestion = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto"
       >
-        <div className="flex justify-between items-center mb-8">
+        <div className="sm:flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Gestion des réservations</h1>
           <div className="flex items-center space-x-4">
             <button
@@ -97,7 +97,7 @@ const Gestion = () => {
           </div>
         </div>
 
-        <BookingStats {...stats} />
+        {!isMobile && (<BookingStats {...stats} />)}
 
         <div className="bg-white/5 rounded-2xl p-6">
           <WeeklyCalendar
