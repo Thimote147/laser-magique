@@ -16,7 +16,7 @@ const formatDate = (date: Date): string => {
     }).replace(' ', 'T').replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1');
 };
 
-const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { id: number, date: string, beginning:string, ending?:string, nbr_hours?:string, amount?:number}, user: User, currentTime: string, onSwipe: (id: number) => void }) => {
+const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { id: number, date: string, beginning: string, ending?: string, nbr_hours?: string, amount?: number }, user: User, currentTime: string, onSwipe: (id: number) => void }) => {
     const [deltaX, setDeltaX] = useState(0);
 
     const handlers = useSwipeable({
@@ -43,14 +43,14 @@ const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { id: number
                 style={{ x: deltaX }}
                 className={`relative flex justify-between gap-10 ${hour.ending ? "bg-zinc-900 hover:bg-zinc-800" : "bg-gradient-to-br from-purple-500 to-pink-500"} rounded-lg px-5 py-2`}
             >
-                    <div className="w-[200px]">
-                        <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
-                        <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
-                    </div>
-                    <div className="w-[50px]">
-                        <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
-                        <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
-                    </div>
+                <div className="w-[200px]">
+                    <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
+                    <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
+                </div>
+                <div className="w-[50px]">
+                    <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
+                    <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
+                </div>
             </motion.div>
         </div>
     );
@@ -80,7 +80,7 @@ const Profile = () => {
     ];
 
     useEffect(() => {
-        fetch(`http://localhost:3010/users/${localStorage.getItem('userId')}`, {
+        fetch(`https://api.thimotefetu.fr/users/${localStorage.getItem('userId')}`, {
             headers: {
                 authorization: 'Bearer ' + localStorage.getItem('token'),
             },
@@ -132,7 +132,7 @@ const Profile = () => {
     }, [currentTime]);
 
     const handleAddHour = (endingValue: boolean) => {
-        fetch(`http://localhost:3010/users/${localStorage.getItem('userId')}/addHours`, {
+        fetch(`https://api.thimotefetu.fr/users/${localStorage.getItem('userId')}/addHours`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -165,14 +165,26 @@ const Profile = () => {
     };
 
     const handleSwipe = (id: number) => {
-        console.log(`Swiped item with id: ${id}`);
-        setUser((prevUser) => {
-            if (!prevUser) return prevUser;
-            return {
-                ...prevUser,
-                hours: prevUser.hours.filter((hour) => hour.id !== id),
-            };
-        });
+        fetch(`https://api.thimotefetu.fr/users/${localStorage.getItem('userId')}/deleteHours/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+        })
+            .then(() => {
+                setUser((user) => {
+                    if (!user) {
+                        return user;
+                    }
+
+                    return {
+                        ...user,
+                        hours: user.hours.filter((hour) => hour.id !== id),
+                    };
+                });
+                setNewHour(!newHour);
+            });
     };
 
     return (

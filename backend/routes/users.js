@@ -57,5 +57,15 @@ module.exports = (db) => {
         }
     });
 
+    router.post('/:userid/deleteHours/:hourid', (req, res) => {
+        try {
+            db.prepare('DELETE FROM hours WHERE user_id = ? AND id = ?').run(req.params.userid, req.params.hourid);
+            console.log(req.params.userid, req.params.hourid);
+            res.json({ message: 'Heures supprimées' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     return router;
 };

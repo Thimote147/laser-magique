@@ -1,11 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const Database = require('better-sqlite3');
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const { execFileSync } = require('child_process');
+// const jwt = require('jsonwebtoken');
+// const { execFileSync } = require('child_process');
 
 const authMiddleware = require('./middleware/auth.js');
 const usersRouter = require('./routes/users.js');
@@ -18,7 +18,7 @@ const app = express();
 const PORT = process.env.PORT || 3010;
 
 app.use(express.json());
-app.use(cors({ origin: 'https://laser-magique.thimotefetu.fr' }));
+app.use(cors());//{ origin: 'https://laser-magique.thimotefetu.fr' }));
 
 // Run the initDB.js script to initialize the database
 // const initDBScriptPath = path.resolve(__dirname, 'scripts', 'initDB.js');
