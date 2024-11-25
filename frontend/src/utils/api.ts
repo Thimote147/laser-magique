@@ -1,4 +1,4 @@
-const API_URL = 'https://api.thimotefetu.fr';
+const API_URL = 'http://192.168.129.185:3010';
 
 export const api = {
   get: async (endpoint: string) => {

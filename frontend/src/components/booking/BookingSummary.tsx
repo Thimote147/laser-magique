@@ -21,9 +21,9 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
   const [lastname, setLastname] = useState<string>();
   const [phone, setPhone] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  
+
   if (!activity || !date || !time || !participants || !nbr_parties) return null;
-  
+
   const total = (activity.first_price ?? activity.third_price) * participants * nbr_parties;
 
   const handleData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
 
   const handleBooking = async () => {
     try {
-      const response = await fetch('http://localhost:3010/bookings/create', {
+      const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

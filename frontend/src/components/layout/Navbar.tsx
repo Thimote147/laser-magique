@@ -11,6 +11,10 @@ const Navbar = () => {
     { name: 'Cyber Trike', path: '/cyber-trike', icon: Gamepad2 },
   ];
 
+  const handleClick = () => {
+    window.location.href = '/booking';
+  }
+
   return (
     <nav className="bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,7 +37,7 @@ const Navbar = () => {
                 <span>{item.name}</span>
               </Link>
             ))}
-            <button className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-2 rounded-full font-semibold hover:opacity-90 transition-opacity" onClick={() => window.location.href="/booking"}>
+            <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 px-6 py-2 rounded-full font-semibold transition-all duration-300" onClick={handleClick}>
               Réservez maintenant
             </button>
           </div>
@@ -64,7 +68,7 @@ const Navbar = () => {
                   <span>{item.name}</span>
                 </Link>
               ))}
-              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-2 rounded-full font-semibold hover:opacity-90 transition-opacity mt-4">
+              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 px-6 py-2 rounded-full font-semibold transition-all duration-300" onClick={handleClick}>
                 Réservez maintenant
               </button>
             </div>
