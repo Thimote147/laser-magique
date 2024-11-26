@@ -45,11 +45,9 @@ const Navbar = () => {
                 <span>{item.name}</span>
               </Link>
             ))}
-            {(!localStorage.getItem('user') || JSON.parse(localStorage.getItem('user')!).role !== 'admin') && (
-              <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 px-6 py-2 rounded-full font-semibold transition-all duration-300" onClick={handleClick}>
-                Réservez maintenant
-              </button>
-            )}
+            <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 px-6 py-2 rounded-full font-semibold transition-all duration-300" onClick={handleClick}>
+              {localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')!).role === 'admin' ? (window.location.pathname === "/gestion" ? "Profil" : "Gestion") : "Réservez maintenant"}
+            </button>
           </div>
 
           {/* Mobile menu button */}
