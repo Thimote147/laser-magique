@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:frontend": "cd Frontend && npm run dev",
-    "dev:backend": "cd Backend && npm run dev",
-    "install:all": "npm install && cd Frontend && npm install && cd ../Backend && npm install",
-    "build": "cd Frontend && npm run build && cd ../Backend && npm run build",
-    "start": "cd Backend && npm start"
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "start": "cd backend && npm start"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
