@@ -37,12 +37,12 @@ module.exports = (db) => {
 
         for (let hour = 10; hour <= currentHour; hour++) {
           if (hour < currentHour || (hour === currentHour && currentMinutes >= 30)) {
-        timeSlots[`${hour}:00`].available = false;
-        timeSlots[`${hour}:00`].remainingSpots = 0;
+            timeSlots[`${hour}:00`].available = false;
+            timeSlots[`${hour}:00`].remainingSpots = 0;
           }
           if (hour < currentHour || (hour === currentHour && currentMinutes >= 0)) {
-        timeSlots[`${hour}:30`].available = false;
-        timeSlots[`${hour}:30`].remainingSpots = 0;
+            timeSlots[`${hour}:30`].available = false;
+            timeSlots[`${hour}:30`].remainingSpots = 0;
           }
         }
       }
@@ -67,7 +67,7 @@ module.exports = (db) => {
   // Create booking
   router.post('/create', async (req, res) => {
     try {
-      const { firstname, lastname, phone, email, participants, date, activity_id, quantity } = req.body;
+      const { firstname, lastname, phone, email, participants, date, activity_id, quantity, deposit, total } = req.body;
 
       // Calculate price based on activity and quantity
       // const activity = db.prepare('SELECT * FROM activities WHERE activity_id = ?').get(activity_id);
@@ -79,8 +79,8 @@ module.exports = (db) => {
       ).run(firstname, lastname, phone, email, participants, date);
 
       db.prepare(
-        'INSERT INTO activity_res (booking_id, activity_id, quantity) VALUES (?, ?, ?)'
-      ).run(result.lastInsertRowid, activity_id, quantity);
+        'INSERT INTO activity_res (booking_id, activity_id, nbr_pers, nbr_parties, deposit, amount, total) VALUES (?, ?, ?, ?, ?, ?, ?)'
+      ).run(result.lastInsertRowid, activity_id, participants, quantity, deposit, total - deposit, total);
 
       res.json({
         success: true,
@@ -94,7 +94,17 @@ module.exports = (db) => {
   // Get All bookings
   router.get('/all', (req, res) => {
     try {
-      let bookings = db.prepare('SELECT b.*, a.name AS activity, a.type FROM bookings b LEFT JOIN activity_res ar ON b.booking_id = ar.booking_id LEFT JOIN activities a ON ar.activity_id = a.activity_id').all();
+      const { start_date, end_date } = req.query;
+
+      let query = 'SELECT b.*, a.name AS activity, a.type, ar.deposit FROM bookings b LEFT JOIN activity_res ar ON b.booking_id = ar.booking_id LEFT JOIN activities a ON ar.activity_id = a.activity_id';
+      let params = [];
+
+      if (start_date && end_date) {
+        query += ' WHERE b.date BETWEEN ? AND ?';
+        params.push(start_date, end_date);
+      }
+
+      let bookings = db.prepare(query).all(...params);
 
       res.json(bookings);
     } catch (error) {

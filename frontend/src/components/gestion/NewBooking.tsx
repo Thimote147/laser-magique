@@ -6,13 +6,14 @@ import Pricing from "./Pricing";
 import BookingInfos from "./BookingInfos";
 import Counter from "./Counter";
 
-const NewRes = () => {
+const NewBooking = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGameChosen, setIsGameChosen] = useState(false);
     const [gameChosen, setGameChosen] = useState<Activity>();
     const [isDataNeeded, setIsDataNeeded] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
     const [nbr_parties, setNbr_parties] = useState(0);
+    const [total, setTotal] = useState(0);
     const [count, setCount] = useState(0);
     const [type, setType] = useState('');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -24,7 +25,7 @@ const NewRes = () => {
     }, [nbr_parties]);
 
     useEffect(() => {
-        fetch('https://api.thimotefetu.fr/activities')
+        fetch('http://localhost:3010/activities')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des activités');
@@ -147,7 +148,7 @@ const NewRes = () => {
                                         {gameChosen && (
                                             <>
                                                 <Counter count={count} setCount={setCount} min_player={gameChosen.min_player} max_player={gameChosen.max_player} />
-                                                <Pricing count={count} gameChosen={gameChosen} setNbr_parties={setNbr_parties} />
+                                                <Pricing count={count} gameChosen={gameChosen} setNbr_parties={setNbr_parties} setTotal={setTotal} />
                                             </>
 
                                         )}
@@ -156,7 +157,7 @@ const NewRes = () => {
                             ) : (
                                 <>
                                     {gameChosen &&
-                                        <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} />
+                                        <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total}/>
                                     }
                                 </>
                             )}
@@ -168,4 +169,4 @@ const NewRes = () => {
     );
 };
 
-export default NewRes;
+export default NewBooking;

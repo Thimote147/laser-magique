@@ -9,6 +9,7 @@ import Gestion from './pages/Gestion';
 import Auth from './pages/Auth';
 import Booking from './pages/Booking';
 import Profile from './pages/Profile.tsx';
+import BookingDetails from './pages/BookingDetails';
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => {
   const token = localStorage.getItem('token');
@@ -55,10 +56,19 @@ function App() {
             />
             <Route path="/profile"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly>
                   <Profile />
                 </ProtectedRoute>
-              } />
+              }
+            />
+            <Route path="/booking/:id"
+              element={
+                <ProtectedRoute adminOnly>
+                  <BookingDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
         <Footer />

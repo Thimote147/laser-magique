@@ -21,6 +21,7 @@ interface Booking {
     activity: string;
     nbr_pers: number;
     type: string;
+    deposit: number;
 }
 
 interface User {

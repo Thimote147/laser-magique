@@ -6,6 +6,7 @@ interface PricingProps {
     count: number
     gameChosen: Activity
     setNbr_parties: React.Dispatch<React.SetStateAction<number>>
+    setTotal: React.Dispatch<React.SetStateAction<number>>
 }
 
 const nbr_parties = (first: number, second: number, third: number) => [
@@ -26,11 +27,17 @@ const nbr_parties = (first: number, second: number, third: number) => [
     }
 ]
 
-const Pricing = ({ count, gameChosen, setNbr_parties }: PricingProps) => {
+const Pricing = ({ count, gameChosen, setNbr_parties, setTotal }: PricingProps) => {
     const [selected, setSelected] = React.useState(0)
     const [first] = React.useState(gameChosen.first_price ?? 0)
     const [second] = React.useState(((gameChosen.first_price ?? 0) + (gameChosen.second_price ?? 0)))
     const [third] = React.useState((gameChosen.first_price ?? 0) + (gameChosen.second_price ?? 0) + gameChosen.third_price)
+
+    const handleClick = (id: number, price : number) => {
+        setSelected(id);
+        setNbr_parties(id);
+        setTotal(price * count);
+    }
 
     return (
         <div className="flex w-full max-w-md flex-col items-center gap-3 rounded-[32px] pt-5">
@@ -38,7 +45,7 @@ const Pricing = ({ count, gameChosen, setNbr_parties }: PricingProps) => {
                 {nbr_parties(first, second, third).map((partie) => (
                     partie.price !== 0 && (
                         <button className={`flex w-full cursor-pointer justify-between rounded-2xl p-4 ${selected === partie.id ? 'bg-purple-500 text-white' : 'bg-gray-700 hover:bg-gray-600'}`}
-                            onClick={() => {setSelected(partie.id); setNbr_parties(partie.id)}}>
+                            onClick={() => handleClick(partie.id, partie.price)}>
                             <div className="flex flex-col items-start">
                                 <p className="text-xl font-semibold">{partie.name}</p>
                                 <p className="text-md flex ">

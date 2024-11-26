@@ -32,8 +32,6 @@ module.exports = (db) => {
       const { email, password } = req.body;
       const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
 
-      console.log(user);
-
       if (!user || !bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }

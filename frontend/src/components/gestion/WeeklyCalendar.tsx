@@ -35,7 +35,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
 
     const newDate = new Date(newDay);
     newDate.setHours(parseInt(newTime));
-    
+
     onBookingMove(parseInt(bookingId), newDate);
   };
 
@@ -109,10 +109,11 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                   booking.activity
                                 )} p-2 rounded mb-2 text-sm text-white`}
                               >
-                                <div className="font-semibold">{booking.firstname + " " + (booking.lastname !== null ? booking.lastname : '')}</div>
-                                <div className="text-xs">
+                                <p className="font-semibold">{booking.firstname + " " + (booking.lastname !== null ? booking.lastname : '')}</p>
+                                <p className="text-xs">
                                   {booking.type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
-                                </div>
+                                </p>
+                                <p className="text-xs">{booking.deposit ? "Acompte de " + booking.deposit + "€" : "Pas d'acompte"}</p>
                               </div>
                             )}
                           </Draggable>

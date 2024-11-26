@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { addDays, subDays } from 'date-fns';
+import { addDays, subDays, startOfWeek, endOfWeek } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import WeeklyCalendar from '../components/gestion/WeeklyCalendar';
 import BookingStats from '../components/gestion/BookingStats';
-import NewRes from '../components/gestion/NewBooking';
+import NewBooking from '../components/gestion/NewBooking';
 import { Booking } from '../types';
 
 const calculateStats = (bookings: Booking[]) => {
@@ -37,8 +37,8 @@ const Gestion = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  useEffect(() => {
-    fetch('https://api.thimotefetu.fr/bookings/all', {
+  const fetchBookings = (startDate: string, endDate: string) => {
+    fetch(`http://localhost:3010/bookings/all?start_date=${startDate}&end_date=${endDate}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
@@ -46,7 +46,13 @@ const Gestion = () => {
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch(error => console.error('Erreur:', error));
-  }, []);
+  };
+
+  useEffect(() => {
+    const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 });
+    const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
+    fetchBookings(startOfWeekDate.toISOString().split('T')[0], endOfWeekDate.toISOString().split('T')[0]);
+  }, [currentDate]);
 
   const handlePreviousWeek = () => {
     setCurrentDate((date) => subDays(date, (isMobile ? 1 : 7)));
@@ -108,7 +114,7 @@ const Gestion = () => {
         </div>
       </motion.div>
 
-      <NewRes />
+      <NewBooking />
     </div>
   );
 };
