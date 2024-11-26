@@ -17,7 +17,7 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const response = await fetch('https://api.thimotefetu.fr/auth/register', {
+      const response = await fetch('http://localhost:3010/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -33,7 +33,7 @@ const RegisterForm = () => {
       localStorage.setItem('user', JSON.stringify(result.user));
 
       const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
-      
+
       if (user && user.role === 'admin') {
         navigate('/gestion');
       } else {
