@@ -14,9 +14,11 @@ module.exports = (db) => {
 
   // Register validation
   const registerValidation = [
+    body('firstname').trim().notEmpty(),
+    body('lastname').trim().notEmpty(),
+    body('phone').trim().matches(/^\+?\d{1,3}?\s?\d{1,4}?\s?\d{1,4}?\s?\d{1,4}(?:\s?\d{1,4})?(?:x.+)?$/), // Validate phone with or without country code and spaces
     body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 4 }), // Change to 6
-    body('name').trim().notEmpty()
+    body('password').isLength({ min: 4 }), // Changed to 6
   ];
 
   // Login route
@@ -40,7 +42,7 @@ module.exports = (db) => {
         { expiresIn: '24h' }
       );
 
-      res.json({ token, role: user.role, userId: user.user_id });
+      res.json({ token, user });
     } catch (error) {
       res.status(500).json({ message: 'Login failed', error: error.message });
     }
@@ -48,13 +50,14 @@ module.exports = (db) => {
 
   // Register route
   router.post('/register', registerValidation, async (req, res) => {
+    console.log("ok");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     try {
-      const { email, password, name } = req.body;
+      const { firstname, lastname, phone, email, password } = req.body;
       const existingUser = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
       
       if (existingUser) {
@@ -63,8 +66,8 @@ module.exports = (db) => {
       
       const hashedPassword = bcrypt.hashSync(password, 10);
       const result = db.prepare(
-        'INSERT INTO users (firstname, email, password, role) VALUES (?, ?, ?, ?)'
-      ).run(name, email, hashedPassword, 'user');
+        'INSERT INTO users (firstname, lastname, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)'
+      ).run(firstname, lastname, phone, email, hashedPassword, 'user');
 
       const token = jwt.sign(
         { userId: result.lastInsertRowid, email, role: 'user' },
@@ -72,7 +75,7 @@ module.exports = (db) => {
         { expiresIn: '24h' }
       );
 
-      res.status(201).json({ token, role: 'user', userId: result.lastInsertRowid });
+      res.status(201).json({ token, user: { user_id: result.lastInsertRowid, firstname, lastname, phone, email, role: 'user' } });
     } catch (error) {
       res.status(500).json({ message: 'Registration failed', error: error.message });
     }

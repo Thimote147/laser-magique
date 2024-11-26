@@ -16,6 +16,9 @@ module.exports = (db) => {
 
       // Calculate available slots in 30-minute intervals
       let timeSlots = {};
+      const currentDate = new Date();
+      const selectedDate = new Date(date);
+
       for (let hour = 10; hour <= 20; hour++) {
         timeSlots[`${hour}:00`] = {
           available: true,
@@ -25,6 +28,23 @@ module.exports = (db) => {
           available: true,
           remainingSpots: 20 - participants
         };
+      }
+
+      // If the selected date is today, set past time slots to unavailable
+      if (selectedDate.toDateString() === currentDate.toDateString()) {
+        const currentHour = currentDate.getHours();
+        const currentMinutes = currentDate.getMinutes();
+
+        for (let hour = 10; hour <= currentHour; hour++) {
+          if (hour < currentHour || (hour === currentHour && currentMinutes >= 30)) {
+        timeSlots[`${hour}:00`].available = false;
+        timeSlots[`${hour}:00`].remainingSpots = 0;
+          }
+          if (hour < currentHour || (hour === currentHour && currentMinutes >= 0)) {
+        timeSlots[`${hour}:30`].available = false;
+        timeSlots[`${hour}:30`].remainingSpots = 0;
+          }
+        }
       }
 
       bookings.forEach(booking => {

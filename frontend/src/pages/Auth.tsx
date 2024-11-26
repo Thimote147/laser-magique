@@ -14,7 +14,7 @@ const Auth = () => {
         className="max-w-md w-full bg-gray-800 rounded-xl p-8 shadow-xl"
       >
         <h2 className="text-3xl font-bold text-center mb-8">
-          {isLogin ? 'Welcome Back' : 'Create Account'}
+            {isLogin ? 'Bienvenue' : 'Créer un compte'}
         </h2>
 
         {isLogin ? <LoginForm /> : <RegisterForm />}
@@ -24,7 +24,7 @@ const Auth = () => {
             onClick={() => setIsLogin(!isLogin)}
             className="text-purple-400 hover:text-purple-300"
           >
-            {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
+            {isLogin ? "Vous n'avez pas de compte ? Inscrivez-vous" : 'Vous avez déjà un compte ? Connectez-vous'}
           </button>
         </div>
       </motion.div>

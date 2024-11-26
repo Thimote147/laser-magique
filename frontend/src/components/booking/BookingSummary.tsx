@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import React, { useState } from 'react';
 import { Activity } from '../../types';
-import { toCapitalize } from '../../utils/functions';
 import { useNavigate } from 'react-router';
 
 interface BookingSummaryProps {
@@ -17,32 +15,11 @@ interface BookingSummaryProps {
 const BookingSummary = ({ activity, date, time, participants, nbr_parties }: BookingSummaryProps) => {
   const navigate = useNavigate();
 
-  const [firstname, setFirstname] = useState<string>();
-  const [lastname, setLastname] = useState<string>();
-  const [phone, setPhone] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-
   if (!activity || !date || !time || !participants || !nbr_parties) return null;
 
   const total = (activity.first_price ?? activity.third_price) * participants * nbr_parties;
 
-  const handleData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'firstname':
-        setFirstname(toCapitalize(value));
-        break;
-      case 'lastname':
-        setLastname(toCapitalize(value));
-        break;
-      case 'phone':
-        setPhone(value);
-        break;
-      case 'email':
-        setEmail(value);
-        break;
-    }
-  };
+  const user = JSON.parse(localStorage.getItem('user') || '{"firstname": "AH"}');
 
   const handleBooking = async () => {
     try {
@@ -52,10 +29,10 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstname,
-          lastname,
-          phone,
-          email,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          phone: user.phone,
+          email: user.email,
           activity_id: activity.activity_id,
           date: `${format(date, 'yyyy-MM-dd')}T${time}`,
           participants,
@@ -114,30 +91,6 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
             <span>{total}€</span>
           </div>
         </div>
-      </div>
-
-      <div className="space-y-4 mb-8">
-        <h4 className="text-2xl font-bold mb-6">Informations de contact</h4>
-        <div className="flex justify-between">
-          <span>Prénom*</span>
-          <input className="text-black" type="text" name="firstname" required onChange={handleData} />
-        </div>
-        {localStorage.getItem('role') === 'admin' ? null : (
-          <>
-            <div className="flex justify-between">
-              <span>Nom</span>
-              <input className="text-black" type="text" name="lastname" onChange={handleData} />
-            </div>
-            <div className="flex justify-between">
-              <span>Téléphone*</span>
-              <input className="text-black" type="tel" name="phone" required onChange={handleData} />
-            </div>
-            <div className="flex justify-between">
-              <span>Email*</span>
-              <input className="text-black" type="email" name="email" required onChange={handleData} />
-            </div>
-          </>
-        )}
       </div>
 
       <button

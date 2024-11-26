@@ -3,9 +3,11 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 interface RegisterFormData {
+  firstname: string;
+  lastname: string;
+  phone: string;
   email: string;
   password: string;
-  name: string;
 }
 
 const RegisterForm = () => {
@@ -28,9 +30,11 @@ const RegisterForm = () => {
       }
 
       localStorage.setItem('token', result.token);
-      localStorage.setItem('role', result.role);
-      localStorage.setItem('userId', result.userId);
-      if (localStorage.getItem('role') === 'admin') {
+      localStorage.setItem('user', JSON.stringify(result.user));
+
+      const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+      
+      if (user && user.role === 'admin') {
         navigate('/gestion');
       } else {
         navigate('/');
@@ -45,12 +49,36 @@ const RegisterForm = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-300">
-          Name
+        <label htmlFor="firstname" className="block text-sm font-medium text-gray-300">
+          Prénom
         </label>
         <input
-          {...register('name')}
+          {...register('firstname')}
           type="text"
+          className="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="lastname" className="block text-sm font-medium text-gray-300">
+          Nom
+        </label>
+        <input
+          {...register('lastname')}
+          type="text"
+          className="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-300">
+          Téléphone
+        </label>
+        <input
+          {...register('phone')}
+          type="tel"
           className="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white"
           required
         />
@@ -70,7 +98,7 @@ const RegisterForm = () => {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-          Password
+          Mot de passe
         </label>
         <input
           {...register('password')}
@@ -84,7 +112,7 @@ const RegisterForm = () => {
         type="submit"
         className="w-full rounded-md bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 text-white"
       >
-        Register
+        S'inscrire
       </button>
     </form>
   );

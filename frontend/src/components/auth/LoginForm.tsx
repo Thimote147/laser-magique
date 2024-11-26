@@ -26,12 +26,12 @@ const LoginForm = () => {
         throw new Error(result.message || 'Login failed');
       }
 
-      console.log(result);
-
       localStorage.setItem('token', result.token);
-      localStorage.setItem('role', result.role);
-      localStorage.setItem('userId', result.userId);
-      if (localStorage.getItem('role') === 'admin') {
+      localStorage.setItem('user', JSON.stringify(result.user));
+
+      const user = localStorage.getItem('user');
+      
+      if (user && JSON.parse(user).role === 'admin') {
         navigate('/gestion');
       } else {
         navigate('/');
@@ -59,7 +59,7 @@ const LoginForm = () => {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-          Password
+          Mot de passe
         </label>
         <input
           {...register('password')}
@@ -73,7 +73,7 @@ const LoginForm = () => {
         type="submit"
         className="w-full rounded-md bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 text-white"
       >
-        Login
+        Se connecter
       </button>
     </form>
   );

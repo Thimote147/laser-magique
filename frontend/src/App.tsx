@@ -37,7 +37,13 @@ function App() {
             <Route path="/laser-game" element={<LaserGame />} />
             <Route path="/virtual-reality" element={<VirtualReality />} />
             <Route path="/cyber-trike" element={<CyberTrike />} />
-            <Route path="/booking" element={<Booking />} />
+            <Route path="/booking"
+              element={
+                <ProtectedRoute>
+                  <Booking />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/gestion"
               element={
@@ -45,13 +51,13 @@ function App() {
                   <Gestion />
                 </ProtectedRoute>
               }
-              />
-              <Route path="/profile"
+            />
+            <Route path="/profile"
               element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
-              }/>
+              } />
           </Routes>
         </main>
         <Footer />
