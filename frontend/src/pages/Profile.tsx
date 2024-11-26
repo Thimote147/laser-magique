@@ -49,7 +49,7 @@ const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { id: number
                 </div>
                 <div className="w-[50px]">
                     <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
-                    <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
+                    <p>{hour.amount?.toFixed(2) !== "0.00" ? hour.amount?.toFixed(2) : toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
                 </div>
             </motion.div>
         </div>
