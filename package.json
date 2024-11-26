@@ -1,0 +1,26 @@
+{
+  "name": "laser-magique",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd Frontend && npm run dev",
+    "dev:backend": "cd Backend && npm run dev",
+    "install:all": "npm install && cd Frontend && npm install && cd ../Backend && npm install",
+    "build": "cd Frontend && npm run build && cd ../Backend && npm run build",
+    "start": "cd Backend && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "dependencies": {
+    "better-sqlite3": "^11.6.0",
+    "object-assign": "^4.1.1",
+    "side-channel": "^1.0.6"
+  }
+}
