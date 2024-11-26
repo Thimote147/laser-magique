@@ -24,7 +24,7 @@ const NewRes = () => {
     }, [nbr_parties]);
 
     useEffect(() => {
-        fetch('http://localhost:3010/activities')
+        fetch('https://api.thimotefetu.fr/activities')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des activités');
@@ -77,7 +77,7 @@ const NewRes = () => {
                                 >
                                     <Plus size={24} />
                                 </motion.div>
-                                <motion.span className="font-medium" layoutId="title">
+                                <motion.span className="font-medium text-xl" layoutId="title">
                                     Ajouter une réservation
                                 </motion.span>
                                 <motion.button
@@ -98,7 +98,7 @@ const NewRes = () => {
                             </div>
                             {(isModalOpen && !isGameChosen && !isDataNeeded) ? (
                                 <motion.div
-                                    className="w-full bg-white/5 px-6 py-6 flex flex-col gap-4 border-2 border-zinc-600"
+                                    className="w-full px-6 py-6 flex flex-col gap-4"
                                     style={{
                                         borderTopLeftRadius: 24,
                                         borderTopRightRadius: 24,

@@ -15,8 +15,10 @@ const BookingInfos = ({ nbr_pers, type, activity_id, quantity }: BookingInfosPro
         data.phone = '';
         data.email = '';
 
+        console.log(data);
+
         try {
-            const response = await fetch('http://localhost:3010/bookings/add', {
+            const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

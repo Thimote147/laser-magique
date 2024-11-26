@@ -38,7 +38,7 @@ const Gestion = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
-    fetch('http://localhost:3010/bookings/all', {
+    fetch('https://api.thimotefetu.fr/bookings/all', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },
