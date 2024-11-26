@@ -50,7 +50,6 @@ module.exports = (db) => {
 
   // Register route
   router.post('/register', registerValidation, async (req, res) => {
-    console.log("ok");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });

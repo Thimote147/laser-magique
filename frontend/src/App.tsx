@@ -12,7 +12,8 @@ import Profile from './pages/Profile.tsx';
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => {
   const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
+  const user = localStorage.getItem('user');
+  const role = user ? JSON.parse(user).role : null;
 
   if (!token) {
     return <Navigate to="/auth" />;
