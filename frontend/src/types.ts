@@ -22,6 +22,8 @@ interface Booking {
     nbr_pers: number;
     type: string;
     deposit: number;
+    amount: number;
+    total: number;
 }
 
 interface User {

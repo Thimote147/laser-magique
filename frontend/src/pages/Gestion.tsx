@@ -36,6 +36,7 @@ const Gestion = () => {
   const [bookings, setBookings] = useState<Booking[]>();
   const [currentDate, setCurrentDate] = useState(new Date());
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const [bookingAdded, setBookingAdded] = useState(false);
 
   const fetchBookings = (startDate: string, endDate: string) => {
     fetch(`http://localhost:3010/bookings/all?start_date=${startDate}&end_date=${endDate}`, {
@@ -52,7 +53,17 @@ const Gestion = () => {
     const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 });
     const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
     fetchBookings(startOfWeekDate.toISOString().split('T')[0], endOfWeekDate.toISOString().split('T')[0]);
-  }, [currentDate]);
+    setBookingAdded(false);
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      if (now.getSeconds() === 0) {
+        fetchBookings(startOfWeekDate.toISOString().split('T')[0], endOfWeekDate.toISOString().split('T')[0]);
+      }
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [currentDate, bookingAdded]);
 
   const handlePreviousWeek = () => {
     setCurrentDate((date) => subDays(date, (isMobile ? 1 : 7)));
@@ -80,8 +91,8 @@ const Gestion = () => {
         className="max-w-7xl mx-auto"
       >
         <div className="sm:flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Gestion des réservations</h1>
-          <div className="flex items-center space-x-4">
+          <h1 className="text-3xl font-bold text-center ">Gestion des réservations</h1>
+          <div className="flex items-center space-x-4 justify-center">
             <button
               onClick={handlePreviousWeek}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -114,7 +125,7 @@ const Gestion = () => {
         </div>
       </motion.div>
 
-      <NewBooking />
+      <NewBooking setBookingAdded={setBookingAdded}/>
     </div>
   );
 };

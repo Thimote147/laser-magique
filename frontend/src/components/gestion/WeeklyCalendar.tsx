@@ -23,7 +23,10 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   const getBookingsForSlot = (day: Date, hour: number, minute: number) => {
     return bookings.length ? bookings.filter((booking: Booking) => {
       const bookingDate = new Date(booking.date);
-      return isSameDay(bookingDate, day) && bookingDate.getHours() === hour && bookingDate.getMinutes() === minute;
+      return isSameDay(bookingDate, day) && bookingDate.getHours() === hour && (
+        (minute === 0 && bookingDate.getMinutes() < 30) ||
+        (minute === 30 && bookingDate.getMinutes() >= 30)
+      );
     }) : [];
   };
 
@@ -52,7 +55,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
     }
   };
 
-  const grid_cols_mobile = isMobile ? 'grid-cols-2' : 'grid-cols-8';
+  const grid_cols_mobile = isMobile ? 'grid-cols-1' : 'grid-cols-7';
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
@@ -60,7 +63,6 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
         <div className={`${isMobile ? "" : "min-w-[1000px]"}`}>
           {/* Header */}
           <div className={`grid ${grid_cols_mobile} gap-2 mb-4`}>
-            <div className="p-4"></div>
             {weekDays.map((day) => (
               <div
                 key={day.toString()}
@@ -79,10 +81,6 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
             const [hour, minute] = time.split(':').map(Number);
             return (
               <div key={time} className={`grid ${grid_cols_mobile} gap-2 mb-2`}>
-                <div className="p-4 flex items-center justify-end text-gray-400">
-                  <Clock className="w-4 h-4 mr-2" />
-                  {time}
-                </div>
                 {weekDays.map((day) => (
                   <Droppable
                     key={`${day.toISOString()}-${time}`}
@@ -94,6 +92,10 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                         {...provided.droppableProps}
                         className="min-h-[80px] p-2 bg-white/5 rounded-lg"
                       >
+                        <div className="pb-2 flex items-center text-gray-400 text-xs">
+                          <Clock className="w-4 h-4 mr-2" />
+                          {time}
+                        </div>
                         {getBookingsForSlot(day, hour, minute).map((booking, index) => (
                           <Draggable
                             key={booking.booking_id}
@@ -102,6 +104,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                           >
                             {(provided) => (
                               <div
+                                onClick={() => window.location.href = "/booking/" + booking.booking_id}
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
@@ -114,6 +117,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                   {booking.type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
                                 </p>
                                 <p className="text-xs">{booking.deposit ? "Acompte de " + booking.deposit + "€" : "Pas d'acompte"}</p>
+                                <p>{booking.type}</p>
                               </div>
                             )}
                           </Draggable>

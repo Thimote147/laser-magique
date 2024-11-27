@@ -224,7 +224,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className="flex justify-center">
-                <div className="min-w-[300px] bg-white/5 rounded-lg p-5">
+                <div className="min-w-[300px] max-w-3xl bg-white/5 rounded-lg p-5">
                     <h2 className="text-xl font-bold mb-3">Heures travaillées</h2>
                     <div className="flex flex-wrap justify-evenly">
                         {user?.hours.map((hour) => {

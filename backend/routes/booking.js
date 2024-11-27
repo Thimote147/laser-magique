@@ -112,5 +112,18 @@ module.exports = (db) => {
     }
   });
 
+  // Get booking by ID
+  router.get('/:id', (req, res) => {
+    try {
+      const booking = db.prepare(
+        'SELECT b.*, a.name AS activity, a.type, ar.deposit, ar.amount, ar.total FROM bookings b LEFT JOIN activity_res ar ON b.booking_id = ar.booking_id LEFT JOIN activities a ON ar.activity_id = a.activity_id WHERE b.booking_id = ?'
+      ).get(req.params.id);
+
+      res.json(booking);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

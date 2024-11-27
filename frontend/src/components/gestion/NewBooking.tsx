@@ -1,12 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Activity } from "../../types";
 import Pricing from "./Pricing";
 import BookingInfos from "./BookingInfos";
 import Counter from "./Counter";
 
-const NewBooking = () => {
+interface NewBookingProps {
+    setBookingAdded: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const NewBooking = ({setBookingAdded }: NewBookingProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGameChosen, setIsGameChosen] = useState(false);
     const [gameChosen, setGameChosen] = useState<Activity>();
@@ -157,7 +161,7 @@ const NewBooking = () => {
                             ) : (
                                 <>
                                     {gameChosen &&
-                                        <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total}/>
+                                                <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total} setBookingAdded={setBookingAdded} />
                                     }
                                 </>
                             )}
