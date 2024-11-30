@@ -81,7 +81,7 @@ const Profile = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:3010/users/${JSON.parse(localStorage.getItem('user')!).user_id}`, {
+        fetch(`https://api.thimotefetu.fr/users/${JSON.parse(localStorage.getItem('user')!).user_id}`, {
             headers: {
                 authorization: 'Bearer ' + localStorage.getItem('token'),
             },
@@ -133,7 +133,7 @@ const Profile = () => {
     }, [currentTime]);
 
     const handleAddHour = (endingValue: boolean) => {
-        fetch(`http://localhost:3010/users/${JSON.parse(localStorage.getItem('user')!).user_id}/addHours`, {
+        fetch(`https://api.thimotefetu.fr/users/${JSON.parse(localStorage.getItem('user')!).user_id}/addHours`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ const Profile = () => {
     };
 
     const handleSwipe = (id: number) => {
-        fetch(`http://localhost:3010/users/${JSON.parse(localStorage.getItem('user')!).user_id}/deleteHours/${id}`, {
+        fetch(`https://api.thimotefetu.fr/users/${JSON.parse(localStorage.getItem('user')!).user_id}/deleteHours/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

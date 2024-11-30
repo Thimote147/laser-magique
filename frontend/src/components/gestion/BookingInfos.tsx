@@ -23,7 +23,7 @@ const BookingInfos = ({ nbr_pers, type, activity_id, quantity, setIsGameChosen, 
         data.email = formData.get('email') || '';
 
         try {
-            const response = await fetch('http://localhost:3010/bookings/create', {
+            const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

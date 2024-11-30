@@ -39,7 +39,7 @@ const Gestion = () => {
   const [bookingAdded, setBookingAdded] = useState(false);
 
   const fetchBookings = (startDate: string, endDate: string) => {
-    fetch(`http://localhost:3010/bookings/all?start_date=${startDate}&end_date=${endDate}`, {
+    fetch(`https://api.thimotefetu.fr/bookings/all?start_date=${startDate}&end_date=${endDate}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
       },

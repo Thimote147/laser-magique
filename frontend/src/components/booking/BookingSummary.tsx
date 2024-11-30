@@ -23,7 +23,7 @@ const BookingSummary = ({ activity, date, time, participants, nbr_parties }: Boo
 
   const handleBooking = async () => {
     try {
-      const response = await fetch('http://localhost:3010/bookings/create', {
+      const response = await fetch('https://api.thimotefetu.fr/bookings/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

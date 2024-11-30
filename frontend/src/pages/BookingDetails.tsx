@@ -7,7 +7,7 @@ const BookingDetails = () => {
 
     useEffect(() => {
         const id = window.location.pathname.split("/").pop();
-        fetch(`http://localhost:3010/bookings/${id}`)
+        fetch(`https://api.thimotefetu.fr/bookings/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setInfos(data);

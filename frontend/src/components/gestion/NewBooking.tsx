@@ -29,7 +29,7 @@ const NewBooking = ({setBookingAdded }: NewBookingProps) => {
     }, [nbr_parties]);
 
     useEffect(() => {
-        fetch('http://localhost:3010/activities')
+        fetch('https://api.thimotefetu.fr/activities')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la récupération des activités');
