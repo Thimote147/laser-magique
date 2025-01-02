@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { supabase } from '../supabase/client';
 import type { User } from '../types/user';
 import { getUserProfile } from '../utils/auth';
@@ -15,6 +15,7 @@ export interface AuthContextType {
     lastName: string
   ) => Promise<void>;
   signOut: () => Promise<void>;
+  refreshUser: () => Promise<void>; // Ajoutez cette ligne
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -24,6 +25,14 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const refreshUser = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      const profile = await getUserProfile(session.user.id);
+      setUser(profile);
+    }
+  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -67,7 +76,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     email: string,
     password: string
   ) => {
-    console.log('signUp ', password.length);
     try {
       const {
         data: { user: authUser },
@@ -79,8 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           data: {
             firstname,
             lastname,
-            phone,
-            password
+            phone
           },
         },
       });
@@ -95,11 +102,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
       if (error) throw error;
+      if (user) {
+        const profile = await getUserProfile(user.id);
+        setUser(profile);
+      }
     } catch (error) {
       console.error('Error signing in:', error);
       throw error;
@@ -110,6 +122,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      setUser(null);
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
@@ -117,8 +130,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

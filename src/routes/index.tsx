@@ -9,6 +9,7 @@ import LaserGamePage from '../pages/laser-game/LaserGamePage';
 import VirtualRealityPage from '../pages/virtual-reality/VirtualRealityPage';
 import CyberTrikePage from '../pages/cyber-trike/CyberTrikePage.tsx';
 import BookingPage from '../pages/booking/BookingPage';
+import GestionPage from '../pages/GestionPage.tsx';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,9 +21,10 @@ export const router = createBrowserRouter(
             <Route path="/laser-game" element={<AuthRoute><LaserGamePage /></AuthRoute>} />
             <Route path="/virtual-reality" element={<AuthRoute><VirtualRealityPage /></AuthRoute>} />
             <Route path="/cyber-trike" element={<AuthRoute><CyberTrikePage /></AuthRoute>} />
-            <Route path="/booking" element={<AuthRoute><BookingPage /></AuthRoute>} />
 
             {/* Protected Routes */}
+            <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
+            <Route path="/gestion" element={<ProtectedRoute><GestionPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Route>
     )

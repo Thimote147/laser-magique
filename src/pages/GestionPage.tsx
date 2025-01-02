@@ -32,7 +32,7 @@ const calculateStats = (bookings: Booking[]) => {
   return { totalBookings, totalRevenue, averageGroupSize };
 };
 
-const Gestion = () => {
+const GestionPage = () => {
   const [bookings, setBookings] = useState<Booking[]>();
   const [currentDate, setCurrentDate] = useState(new Date());
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -130,4 +130,4 @@ const Gestion = () => {
   );
 };
 
-export default Gestion;
+export default GestionPage;

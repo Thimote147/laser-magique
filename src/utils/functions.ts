@@ -16,7 +16,8 @@ const toHours = (minutes: number) => {
 
 const toCurrency = (hours: string, hourlyRate: number) => {
     const [hoursWorked, minutesWorked] = hours.split('h').map(Number);
-    const total = hoursWorked * hourlyRate + (minutesWorked / 60) * hourlyRate;
+    let total = hoursWorked * hourlyRate + (minutesWorked / 60) * hourlyRate;
+
     return total.toFixed(2);
 }
 

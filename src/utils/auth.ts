@@ -15,6 +15,21 @@ export const getUserProfile = async (userId: string): Promise<User | null> => {
       return null;
     }
 
+    if (publicUser.role !== 'user') {
+      try {
+        publicUser.hours = (await supabase.from('hours').select('*').eq('user_id', userId).order('hour_id', { ascending: false })).data;
+
+        for (const hour of publicUser.hours) {
+          hour.beginning = hour.beginning.slice(0, 5);
+          hour.ending = hour.ending ? hour.ending.slice(0, 5) : null;
+          hour.nbr_hours = hour.nbr_hours ? hour.nbr_hours.slice(0, 5) : null;
+        }
+
+      } catch (error) {
+        console.error('Error fetching hours:', error);
+      }
+    }
+
     return {
       user_id: publicUser.user_id,
       firstname: publicUser.firstname,

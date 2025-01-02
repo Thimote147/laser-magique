@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { User } from "../../types/user";
 import { AnimatePresence, motion } from "framer-motion";
-import { Clock, Euro, Plus, X, Trash } from "lucide-react";
+import { Clock, Euro, Plus, X, Trash, Edit } from "lucide-react";
 import { useSwipeable } from 'react-swipeable';
 import { toCapitalize, toCurrency, toHours, toMinutes } from "../../utils/functions";
+import { useAuth } from "../../hooks/useAuth";
+import { addHour, deleteHour } from "../../components/profile/hours";
+import { Button } from "../../components/ui/Button";
 
 const formatDate = (date: Date): string => {
     return date.toLocaleString('fr-FR', {
@@ -57,14 +60,14 @@ const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { hour_id: n
 };
 
 const ProfilePage = () => {
-    const [user, setUser] = useState<User>();
+    const { user, refreshUser, loading } = useAuth();
     const [monthAmount, setMonthAmount] = useState(0);
     const [hoursCount, setHoursCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const [currentTime, setCurrentTime] = useState<string>(formatDate(new Date()));
     const [workingHour, setWorkingHour] = useState<string>(currentTime);
-    const [newHour, setNewHour] = useState(false);
+    const [newHour, setNewHour] = useState<boolean>(!user?.hours.length || (user?.hours[0]?.ending !== undefined && user?.hours[0]?.ending !== null));
 
     const stats = [
         {
@@ -79,28 +82,22 @@ const ProfilePage = () => {
         },
     ];
 
-
     useEffect(() => {
-        fetch(`http://localhost:3010/users/${JSON.parse(localStorage.getItem('user')!).user_id}`, {
-            headers: {
-                authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                let totalMonthAmount = 0;
-                let totalHoursCount = 0;
+        refreshUser();
 
-                data.hours.forEach((hour: { beginning: string; ending?: string }) => {
-                    const hoursWorked = toMinutes(hour.ending || currentTime.split('T')[1]) - toMinutes(hour.beginning || '');
-                    totalMonthAmount += (hoursWorked / 60) * (data.hourly_rate ?? 0);
-                    totalHoursCount += hoursWorked;
-                });
+        if (!user || !user.hours) {
+            return;
+        }
 
-                setMonthAmount(totalMonthAmount);
-                setHoursCount(totalHoursCount);
-                setUser(data);
-            });
+        let amount = 0;
+        let count = 0;
+        for (const hour of user.hours) {
+            amount += hour.amount ?? parseFloat(toCurrency(toHours(toMinutes(hour.ending ?? currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0));
+            count += toMinutes(hour.ending ?? currentTime.split('T')[1]) - toMinutes(hour.beginning);
+        }
+
+        setMonthAmount(amount);
+        setHoursCount(count);
     }, [currentTime, newHour]);
 
     useEffect(() => {
@@ -121,7 +118,8 @@ const ProfilePage = () => {
             // Set an interval to update every minute
             const interval = setInterval(updateCurrentTime, 60000);
             // Clear the interval on component unmount
-            return () => clearInterval(interval);
+            const clear = () => clearInterval(interval);
+            return clear;
         }, delay);
 
         // Clear the timeout on component unmount
@@ -132,74 +130,39 @@ const ProfilePage = () => {
         setWorkingHour(currentTime);
     }, [currentTime]);
 
-    const handleAddHour = (endingValue: boolean) => {
-        fetch(`http://localhost:3010/users/${JSON.parse(localStorage.getItem('user')!).user_id}/addHours`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
-            body: JSON.stringify({
-                date: workingHour.split('T')[0],
-                hours: workingHour.split('T')[1],
-                value: endingValue,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setUser((user) => {
-                    if (!user) {
-                        return user;
-                    }
-
-                    return {
-                        ...user,
-                        hours: [
-                            ...user.hours,
-                            data,
-                        ],
-                    };
-                });
-                setNewHour(!newHour);
-                setIsModalOpen(false);
-            });
+    const handleAddHour = async () => {
+        addHour(user!, workingHour, newHour);
+        setNewHour(!newHour);
+        setIsModalOpen(false);
     };
 
-    const handleSwipe = (id: number) => {
-        fetch(`http://localhost:3010/users/${JSON.parse(localStorage.getItem('user')!).user_id}/deleteHours/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
-        })
-            .then(() => {
-                setUser((user) => {
-                    if (!user) {
-                        return user;
-                    }
-
-                    return {
-                        ...user,
-                        hours: user.hours.filter((hour) => hour.hour_id !== id),
-                    };
-                });
-                setNewHour(!newHour);
-            });
+    const handleSwipe = (hour_id: number) => {
+        deleteHour(hour_id);
     };
 
     return (
         <div className="min-h-screen bg-black text-white p-8">
             <h1 className="text-3xl font-bold mb-5">Profil</h1>
             <div className="md:flex justify-evenly mb-8">
-                <div className="bg-white/5 rounded-lg p-5 mb-8">
-                    <h2 className="text-xl font-bold">Informations personnelles</h2>
-                    <p>Prénom: {user?.firstname}</p>
-                    <p>Nom: {user?.lastname}</p>
-                    <p>Téléphone: {user?.phone}</p>
-                    <p>Email: {user?.email}</p>
-                    <p>Rôle: {user?.role}</p>
-                    {user?.role === 'admin' && <p>Tarif horaire: {user?.hourly_rate}€</p>}
+                <div className="grid gap-6 mb-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
+                        className="bg-white/5 rounded-xl p-6 min-w-[250px]"
+                    >
+                        <div >
+                            <h2 className="text-xl font-bold">Informations personnelles</h2>
+                            <p>Prénom: {user?.firstname}</p>
+                            <p>Nom: {user?.lastname}</p>
+                            <p>Téléphone: {user?.phone}</p>
+                            <p>Email: {user?.email}</p>
+                            <p>Rôle: {user?.role}</p>
+                            {user?.role === 'admin' && <p>Tarif horaire: {user?.hourly_rate}€</p>}
+                            <Button>Modifier</Button>
+                            <Button variant="contained" disabled={loading}>{loading ? 'Déconnexion en cours...' : 'Se déconnecter'}</Button>
+                        </div>
+                    </motion.div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-6 mb-8">
                     {stats.map((stat, index) => (
@@ -232,14 +195,24 @@ const ProfilePage = () => {
                                 isMobile ? (
                                     <SwipeableDiv key={hour.hour_id} hour={{ ...hour, nbr_hours: hour.nbr_hours ?? '', amount: hour.amount ?? 0 }} user={user} currentTime={currentTime} onSwipe={handleSwipe} />
                                 ) : (
-                                    <div key={hour.hour_id} className={`relative flex justify-between gap-10 m-2 ${hour.ending ? "bg-zinc-900 hover:bg-zinc-800" : "bg-gradient-to-br from-purple-500 to-pink-500"} rounded-lg px-5 py-2`}>
-                                        <div className="w-[200px]">
-                                            <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
-                                            <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
+                                    <div key={hour.hour_id} className={`flex flex-col gap-2 m-2 ${hour.ending ? "bg-zinc-900 hover:bg-zinc-800" : "bg-gradient-to-br from-purple-500 to-pink-500"} rounded-lg px-5 py-2`}>
+                                        <div className="flex flex-row justify-between gap-10 ">
+                                            <div className="w-[200px]">
+                                                <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
+                                                <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
+                                            </div>
+                                            <div className="w-[50px]">
+                                                <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
+                                                <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
+                                            </div>
                                         </div>
-                                        <div className="w-[50px]">
-                                            <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>
-                                            <p>{hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0)}€</p>
+                                        <div className="flex justify-between gap-4">
+                                            <button className="border-2 border-white hover:bg-white/15 rounded-lg w-full p-2 flex justify-center">
+                                                <Edit className="text-white" />
+                                            </button>
+                                            <button className="border-2 border-white hover:bg-white/15 rounded-lg w-full p-2 flex justify-center" onClick={() => handleSwipe(hour.hour_id)}>
+                                                <Trash className="text-white" />
+                                            </button>
                                         </div>
                                     </div>
                                 )
@@ -288,7 +261,7 @@ const ProfilePage = () => {
                                         <Plus size={24} />
                                     </motion.div>
                                     <motion.span className="font-medium" layoutId="title">
-                                        Ajouter une heure {user?.hours[0]?.ending ? 'de début' : 'de fin'}
+                                        Ajouter une heure {newHour ? 'de début' : 'de fin'}
                                     </motion.span>
                                     <motion.button
                                         className="flex items-center justify-center bg-[#c0bfba] text-white p-1 size-7 rounded-full"
@@ -315,7 +288,7 @@ const ProfilePage = () => {
                                         exit={{ opacity: 0, transition: { duration: 0.05 } }}
                                     >
                                         <input type="datetime-local" className="border-2 border-[#efefef] rounded-lg p-2" value={workingHour} onChange={(e) => setWorkingHour(e.target.value)} />
-                                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 rounded-full font-semibold hover:opacity-90 transition-opacity text-white" onClick={() => handleAddHour(user?.hours[0].ending ? true : false)}>
+                                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 rounded-full font-semibold hover:opacity-90 transition-opacity text-white" onClick={handleAddHour}>
                                             Ajouter
                                         </button>
                                     </motion.div>
