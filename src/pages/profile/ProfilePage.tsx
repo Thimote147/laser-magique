@@ -60,7 +60,7 @@ const SwipeableDiv = ({ hour, user, currentTime, onSwipe }: { hour: { hour_id: n
 };
 
 const ProfilePage = () => {
-    const { user, refreshUser, loading } = useAuth();
+    const { user, refreshUser, loading, signOut } = useAuth();
     const [monthAmount, setMonthAmount] = useState(0);
     const [hoursCount, setHoursCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -131,13 +131,18 @@ const ProfilePage = () => {
     }, [currentTime]);
 
     const handleAddHour = async () => {
-        addHour(user!, workingHour, newHour);
+        await addHour(user!, workingHour, newHour);
         setNewHour(!newHour);
         setIsModalOpen(false);
     };
 
-    const handleSwipe = (hour_id: number) => {
-        deleteHour(hour_id);
+    const handleSwipe = async (hour_id: number) => {
+        await deleteHour(hour_id);
+        refreshUser();
+    };
+
+    const handleDisconnection = async () => {
+        await signOut();
     };
 
     return (
@@ -157,10 +162,16 @@ const ProfilePage = () => {
                             <p>Nom: {user?.lastname}</p>
                             <p>Téléphone: {user?.phone}</p>
                             <p>Email: {user?.email}</p>
-                            <p>Rôle: {user?.role}</p>
-                            {user?.role === 'admin' && <p>Tarif horaire: {user?.hourly_rate}€</p>}
-                            <Button>Modifier</Button>
-                            <Button variant="contained" disabled={loading}>{loading ? 'Déconnexion en cours...' : 'Se déconnecter'}</Button>
+                            {user?.role !== 'user' && (
+                                <>
+                                    <p>Rôle: {user?.role}</p>
+                                    <p>Tarif horaire: {user?.hourly_rate}€</p>
+                                </>
+                            )}
+                            <div className="flex gap-4 mt-4">
+                                <Button variant="contained" disabled={loading}>{loading ? 'Chargement...' : 'Modifier'}</Button>
+                                <Button variant="contained" disabled={loading} onClick={handleDisconnection}>{loading ? 'Déconnexion en cours...' : 'Se déconnecter'}</Button>
+                            </div>
                         </div>
                     </motion.div>
                 </div>
@@ -199,7 +210,7 @@ const ProfilePage = () => {
                                         <div className="flex flex-row justify-between gap-10 ">
                                             <div className="w-[200px]">
                                                 <p className="text-lg">{toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}</p>
-                                                <p>{hour.beginning} - {hour.ending || currentTime.split('T')[1]}</p>
+                                                <p>{hour.beginning} - {hour.ending || 'En cours'}</p>
                                             </div>
                                             <div className="w-[50px]">
                                                 <p>{hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}</p>

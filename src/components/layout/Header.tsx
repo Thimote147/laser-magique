@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Gamepad2, Crosshair, Headset } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
 
   const navItems = [
     { name: 'Laser Game', path: '/laser-game', icon: Crosshair },
@@ -12,14 +14,12 @@ const Navbar = () => {
   ];
 
   const handleClick = () => {
-    if (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')!).role === 'admin') {
-      if (window.location.pathname === '/gestion') {
-        window.location.href = '/profile';
-      } else {
-        window.location.href = '/gestion';
-      }
-    } else {
+    if (!user || user.role === 'user') {
       window.location.href = '/booking';
+    } else if (window.location.pathname === '/gestion') {
+      window.location.href = '/profile';
+    } else {
+      window.location.href = '/gestion';
     }
   }
 
@@ -46,7 +46,7 @@ const Navbar = () => {
               </Link>
             ))}
             <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 px-6 py-2 rounded-full font-semibold transition-all duration-300" onClick={handleClick}>
-              {localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')!).role === 'admin' ? (window.location.pathname === "/gestion" ? "Profil" : "Gestion") : "Réservez maintenant"}
+              {user ? (user.role !== 'user' ? (window.location.pathname === "/gestion" ? "Profil" : "Gestion") : "Réservez maintenant") : "Réservez maintenant"}
             </button>
           </div>
 
@@ -77,7 +77,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 px-6 py-2 rounded-full font-semibold transition-all duration-300" onClick={handleClick}>
-                {localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')!).role === 'admin' ? (window.location.pathname === "/gestion" ? "Profil" : "Gestion") : "Réservez maintenant"}
+                {user ? (user.role !== 'user' ? (window.location.pathname === "/gestion" ? "Profil" : "Gestion") : "Réservez maintenant") : "Réservez maintenant"}
               </button>
             </div>
           </div>
