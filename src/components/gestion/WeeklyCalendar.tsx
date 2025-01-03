@@ -31,7 +31,6 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   };
 
   const handleDragEnd = (result: DropResult) => {
-    console.log(result);
     if (!result.destination) return;
 
     const [bookingId] = result.draggableId.split('-');

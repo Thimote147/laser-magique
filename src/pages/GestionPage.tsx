@@ -55,15 +55,16 @@ const GestionPage = () => {
   };
 
   useEffect(() => {
-    const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 });
-    const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
-    fetchBookings(startOfWeekDate.toISOString().split('T')[0], endOfWeekDate.toISOString().split('T')[0]);
+    const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 }).toLocaleDateString().split('/').reverse().join('-') + 'T' + startOfWeek(currentDate, { weekStartsOn: 1 }).toLocaleTimeString();
+    const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 }).toLocaleDateString().split('/').reverse().join('-') + 'T' + endOfWeek(currentDate, { weekStartsOn: 1 }).toLocaleTimeString();
+
+    fetchBookings(startOfWeekDate, endOfWeekDate);
     setBookingAdded(false);
 
     const interval = setInterval(() => {
       const now = new Date();
       if (now.getSeconds() === 0) {
-        fetchBookings(startOfWeekDate.toISOString().split('T')[0], endOfWeekDate.toISOString().split('T')[0]);
+        fetchBookings(startOfWeekDate, endOfWeekDate);
       }
     }, 1000);
 
