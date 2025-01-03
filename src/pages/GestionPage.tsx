@@ -6,6 +6,7 @@ import WeeklyCalendar from '../components/gestion/WeeklyCalendar';
 import BookingStats from '../components/gestion/BookingStats';
 import NewBooking from '../components/gestion/NewBooking';
 import { Booking } from '../types';
+import { supabase } from '../supabase/client';
 
 const calculateStats = (bookings: Booking[]) => {
   const totalBookings = bookings.length || 0;
@@ -39,14 +40,18 @@ const GestionPage = () => {
   const [bookingAdded, setBookingAdded] = useState(false);
 
   const fetchBookings = (startDate: string, endDate: string) => {
-    fetch(`http://localhost:3010/bookings/all?start_date=${startDate}&end_date=${endDate}`, {
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setBookings(data))
-      .catch(error => console.error('Erreur:', error));
+    const fetchBookings = async () => {
+      const { data, error } = await supabase
+        .rpc('get_bookings_with_activities', { start_date: startDate, end_date: endDate });
+
+      if (error) {
+        console.error('Error fetching bookings', error);
+      } else {
+        setBookings(data);
+      }
+    }
+
+    fetchBookings();
   };
 
   useEffect(() => {
@@ -61,7 +66,7 @@ const GestionPage = () => {
         fetchBookings(startOfWeekDate.toISOString().split('T')[0], endOfWeekDate.toISOString().split('T')[0]);
       }
     }, 1000);
-    
+
     return () => clearInterval(interval);
   }, [currentDate, bookingAdded]);
 
@@ -74,11 +79,17 @@ const GestionPage = () => {
   };
 
   const handleBookingMove = (bookingId: number, newDate: Date) => {
-    setBookings((prevBookings = []) =>
-      prevBookings.map((booking) =>
-        booking.booking_id === bookingId ? { ...booking, date: newDate } : booking
-      )
-    );
+    const updateBooking = async (id: number, date: Date) => {
+      const { error } = await supabase.from('bookings').update({ date: date.toLocaleString().split(',')[0].split('/').reverse().join('-') + 'T' + newDate.toLocaleTimeString() }).eq('booking_id', id);
+
+      if (error) {
+        console.error('Error updating booking', error);
+      } else {
+        fetchBookings(startOfWeek(currentDate, { weekStartsOn: 1 }).toISOString().split('T')[0], endOfWeek(currentDate, { weekStartsOn: 1 }).toISOString().split('T')[0]);
+      }
+    }
+
+    updateBooking(bookingId, newDate);
   };
 
   const stats = calculateStats(bookings || []);
@@ -125,7 +136,7 @@ const GestionPage = () => {
         </div>
       </motion.div>
 
-      <NewBooking setBookingAdded={setBookingAdded}/>
+      <NewBooking setBookingAdded={setBookingAdded} />
     </div>
   );
 };

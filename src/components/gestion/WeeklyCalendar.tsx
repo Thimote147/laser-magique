@@ -31,14 +31,16 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   };
 
   const handleDragEnd = (result: DropResult) => {
+    console.log(result);
     if (!result.destination) return;
 
     const [bookingId] = result.draggableId.split('-');
-    const [newDay, newTime] = result.destination.droppableId.split('-');
+    const [newDay, newTime] = result.destination.droppableId.split('T');
 
-    const newDate = new Date(newDay);
-    newDate.setHours(parseInt(newTime));
-
+    let newDate = new Date(newDay);
+    newDate.setHours(parseInt(newTime.split(':')[0]));
+    newDate.setMinutes(parseInt(newTime.split(':')[1]));
+    
     onBookingMove(parseInt(bookingId), newDate);
   };
 
@@ -84,7 +86,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                 {weekDays.map((day) => (
                   <Droppable
                     key={`${day.toISOString()}-${time}`}
-                    droppableId={`${day.toISOString()}-${time}`}
+                    droppableId={`${day.toLocaleDateString().split('/').reverse().join('-')}T${time}`}
                   >
                     {(provided) => (
                       <div
@@ -98,7 +100,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                         </div>
                         {getBookingsForSlot(day, hour, minute).map((booking, index) => (
                           <Draggable
-                            key={booking.booking_id}
+                            key={`${booking.booking_id}`}
                             draggableId={`${booking.booking_id}-${time}`}
                             index={index}
                           >
@@ -116,8 +118,8 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                 <p className="text-xs">
                                   {booking.type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
                                 </p>
+                                <p className="text-xs">{booking.nbr_parties + " parties de " + booking.activity}</p>
                                 <p className="text-xs">{booking.deposit ? "Acompte de " + booking.deposit + "€" : "Pas d'acompte"}</p>
-                                <p>{booking.type}</p>
                               </div>
                             )}
                           </Draggable>

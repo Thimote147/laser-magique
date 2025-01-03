@@ -134,6 +134,7 @@ const ProfilePage = () => {
         await addHour(user!, workingHour, newHour);
         setNewHour(!newHour);
         setIsModalOpen(false);
+        refreshUser();
     };
 
     const handleSwipe = async (hour_id: number) => {

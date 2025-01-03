@@ -5,12 +5,13 @@ import { Activity } from "../../types";
 import Pricing from "./Pricing";
 import BookingInfos from "./BookingInfos";
 import Counter from "./Counter";
+import { supabase } from "../../supabase/client";
 
 interface NewBookingProps {
     setBookingAdded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NewBooking = ({setBookingAdded }: NewBookingProps) => {
+const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGameChosen, setIsGameChosen] = useState(false);
     const [gameChosen, setGameChosen] = useState<Activity>();
@@ -29,19 +30,26 @@ const NewBooking = ({setBookingAdded }: NewBookingProps) => {
     }, [nbr_parties]);
 
     useEffect(() => {
-        fetch('http://localhost:3010/activities')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erreur réseau lors de la récupération des activités');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setActivities(data);
-            })
-            .catch(error => console.error('Erreur:', error));
-    }
-        , []);
+        const fetchActivities = async () => {
+            const { data, error } = await supabase.from('activities').select('*');
+            
+            if (error) {
+                console.log('error', error);
+            } else {
+                const activities = data.reduce((acc: { [key: string]: Activity[] }, activity: Activity) => {
+                    if (!acc[activity.type]) {
+                        acc[activity.type] = [];
+                    }
+                    acc[activity.type].push(activity);
+                    return acc;
+                }, {});
+                    
+                setActivities(activities);
+            }
+        };
+
+        fetchActivities();
+    }, []);
 
     return (
         <div className="fixed right-3 bottom-3">
@@ -161,7 +169,7 @@ const NewBooking = ({setBookingAdded }: NewBookingProps) => {
                             ) : (
                                 <>
                                     {gameChosen &&
-                                                <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total} setBookingAdded={setBookingAdded} />
+                                        <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total} setBookingAdded={setBookingAdded} />
                                     }
                                 </>
                             )}

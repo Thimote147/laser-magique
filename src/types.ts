@@ -19,6 +19,7 @@ interface Booking {
     email: string;
     date: Date;
     activity: string;
+    nbr_parties: number;
     nbr_pers: number;
     type: string;
     deposit: number;

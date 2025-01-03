@@ -1,5 +1,5 @@
 function toCapitalize(str: string) {
-    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    return str.split(' ').map(word => word.length > 1 ? word.charAt(0).toUpperCase() + word.slice(1) : word).join(' ');
 }
 
 const toMinutes = (date: string) => {

@@ -10,6 +10,7 @@ import VirtualRealityPage from '../pages/virtual-reality/VirtualRealityPage';
 import CyberTrikePage from '../pages/cyber-trike/CyberTrikePage.tsx';
 import BookingPage from '../pages/booking/BookingPage';
 import GestionPage from '../pages/GestionPage.tsx';
+import BookingDetails from '../pages/booking/BookingDetails.tsx';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
 
             {/* Protected Routes */}
             <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
+            <Route path="/booking/:id" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>} />
             <Route path="/gestion" element={<ProtectedRoute><GestionPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Route>
