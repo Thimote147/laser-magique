@@ -20,7 +20,6 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
     const [nbr_parties, setNbr_parties] = useState(0);
     const [total, setTotal] = useState(0);
     const [count, setCount] = useState(0);
-    const [type, setType] = useState('');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     useEffect(() => {
@@ -132,7 +131,6 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
                                                             setIsGameChosen(true);
                                                             setGameChosen({ activity_id, name, type, first_price, second_price, third_price, is_social_deal, min_player, max_player } as Activity);
                                                             setCount(min_player);
-                                                            setType(type);
                                                         }}
                                                     >
                                                         {/* <Icon /> */}
@@ -169,7 +167,7 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
                             ) : (
                                 <>
                                     {gameChosen &&
-                                        <BookingInfos nbr_pers={count} type={type} activity_id={gameChosen.activity_id} quantity={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total} setBookingAdded={setBookingAdded} />
+                                        <BookingInfos nbr_pers={count} activity_id={gameChosen.activity_id} nbr_parties={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total} setBookingAdded={setBookingAdded} />
                                     }
                                 </>
                             )}

@@ -1,10 +1,10 @@
 import React from "react";
+import { supabase } from "../../supabase/client";
 
 interface BookingInfosProps {
     nbr_pers: number;
-    type: string;
     activity_id: number;
-    quantity: number;
+    nbr_parties: number;
     setIsGameChosen: React.Dispatch<React.SetStateAction<boolean>>;
     setIsDataNeeded: React.Dispatch<React.SetStateAction<boolean>>;
     setNbr_parties: React.Dispatch<React.SetStateAction<number>>;
@@ -12,38 +12,45 @@ interface BookingInfosProps {
     setBookingAdded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const BookingInfos = ({ nbr_pers, type, activity_id, quantity, setIsGameChosen, setIsDataNeeded, setNbr_parties, total, setBookingAdded }: BookingInfosProps) => {
+const BookingInfos = ({ nbr_pers, activity_id, nbr_parties, setIsGameChosen, setIsDataNeeded, setNbr_parties, total, setBookingAdded }: BookingInfosProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const data = Object.fromEntries(formData.entries());
+        const data = {
+            firstname: formData.get('firstname'),
+            lastname: formData.get('lastname'),
+            phone: formData.get('phone'),
+            email: formData.get('email'),
+            deposit: parseInt(formData.get('deposit') as string || '0'),
+            date: formData.get('date'),
+            nbr_pers,
+            activity_id,
+            nbr_parties,
+            total
+        };
 
-        data.lastname = formData.get('lastname') || '';
-        data.phone = formData.get('phone') || '';
-        data.email = formData.get('email') || '';
 
-        try {
-            const response = await fetch('http://localhost:3010/bookings/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                alert('Réservation effectuée');
-            } else {
-                console.error('Error:', response);
-                alert('Erreur lors de la réservation');
-            }
-        } catch (error) {
-            console.error('Error:', error);
+        const { error } = await supabase.rpc('insert_booking', {
+            firstname: data.firstname,
+            lastname: data.lastname,
+            phone: data.phone,
+            email: data.email,
+            deposit: data.deposit,
+            date: data.date,
+            nbr_pers: data.nbr_pers,
+            activity_id: data.activity_id,
+            nbr_parties: data.nbr_parties,
+            total: data.total
+        });
+        if (error) {
+            alert('Erreur lors de la réservation');
+            console.error('Error inserting booking', error);
+        } else {
+            setBookingAdded(true);
+            setIsGameChosen(false);
+            setIsDataNeeded(false);
+            setNbr_parties(0);
         }
-
-        setIsGameChosen(false);
-        setIsDataNeeded(false);
-        setNbr_parties(0);        
     };
 
     const actualDate = new Date().toISOString().slice(0, 16);
@@ -62,12 +69,7 @@ const BookingInfos = ({ nbr_pers, type, activity_id, quantity, setIsGameChosen, 
             <input className="w-full rounded-full bg-white/5 p-3 text-lg text-white transition-transform duration-300 active:scale-95 mb-5" type="number" name="deposit" min={0} defaultValue={0} />
             <label htmlFor="date" className="text-xl">Date :</label>
             <input className="w-full rounded-full bg-white/5 p-3 text-lg text-white transition-transform duration-300 active:scale-95 mb-5" type="datetime-local" name="date" defaultValue={actualDate} required />
-            <input type="hidden" name="participants" value={nbr_pers} />
-            <input type="hidden" name="type" value={type} />
-            <input type="hidden" name="activity_id" value={activity_id} />
-            <input type="hidden" name="quantity" value={quantity} />
-            <input type="hidden" name="total" value={total} />
-            <button className="w-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 p-3 text-lg text-white transition-transform duration-300 active:scale-95" onClick={() => setBookingAdded(true)}>
+            <button className="w-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 p-3 text-lg text-white transition-transform duration-300 active:scale-95" onClick={() => handleSubmit}>
                 Réserver
             </button>
         </form>
