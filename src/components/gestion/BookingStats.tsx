@@ -16,12 +16,12 @@ const BookingStats = ({ totalBookings, totalRevenue, averageGroupSize }: Booking
     },
     {
       label: 'Revenus totaux',
-      value: `${totalRevenue.toLocaleString()}€`,
+      value: `${totalRevenue}€`,
       icon: TrendingUp,
     },
     {
       label: 'Taille moyenne des groupes',
-      value: averageGroupSize.toFixed(1),
+      value: averageGroupSize,
       icon: Users,
     },
   ];

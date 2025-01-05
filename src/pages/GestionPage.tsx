@@ -15,19 +15,14 @@ const calculateStats = (bookings: Booking[]) => {
 
   if (totalBookings !== 0) {
     totalRevenue = bookings.reduce((sum, booking) => {
-      const basePrice = {
-        'laser-game': 8,
-        'virtual-reality': 10,
-        'cyber-trike': 20,
-      }[booking.activity] || 0;
-      return sum + basePrice * booking.nbr_pers;
+      return sum + booking.deposit + (booking.total - (booking.amount + booking.deposit));
     }, 0);
   }
 
   let averageGroupSize = 0;
 
   if (totalBookings !== 0) {
-    averageGroupSize = parseFloat((bookings.reduce((sum, booking) => sum + booking.nbr_pers, 0) / totalBookings).toFixed(1));
+    averageGroupSize = bookings.reduce((sum, booking) => sum + booking.nbr_pers, 0) / totalBookings;
   }
 
   return { totalBookings, totalRevenue, averageGroupSize };
