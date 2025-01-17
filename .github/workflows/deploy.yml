@@ -1,0 +1,126 @@
+name: Deploy to Server
+
+on:
+  pull_request:
+    types: [closed]  # Trigger on PR merge
+    branches:
+      - main
+      - dev
+
+jobs:
+  # Job for dependency submission
+  dependency-submission:
+    runs-on: [self-hosted, dependency-submission]  # Use self-hosted runner labeled for dependency submission
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js and npm
+        run: |
+          sudo apt update -y
+          sudo apt install nodejs npm -y
+      
+      # Automatically detect and report build-time dependencies
+      - name: Submit Dependencies
+        run: |
+          echo "Submitting build-time dependencies for ecosystem..."
+          npm install  || { echo "npm install failed"; exit 1; }
+
+  # Job for deployment
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: [self-hosted, deploy]
+
+    steps:
+      # Checkout your repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up SSH key for deployment
+      - name: Set up SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+      # Deploy to your server
+      - name: Deploy to Server
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          VITE_SUPABASE_URL: ${{ secrets.PROD_VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.PROD_VITE_SUPABASE_ANON_KEY }}
+        run: |
+          # Determine port based on branch
+          if [ "$BRANCH_NAME" = "dev" ]; then
+            PORT=3015
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            PORT=3010
+            BRANCH_NAME="main"
+          else
+            echo "Unsupported branch: $BRANCH_NAME" && exit 1
+          fi
+
+          # Determine environment variables based on branch
+          if [ "$BRANCH_NAME" = "dev" ]; then
+            VITE_SUPABASE_URL=$DEV_VITE_SUPABASE_URL
+            VITE_SUPABASE_ANON_KEY=$DEV_VITE_SUPABASE_ANON_KEY
+          else
+            VITE_SUPABASE_URL=$PROD_VITE_SUPABASE_URL
+            VITE_SUPABASE_ANON_KEY=$PROD_VITE_SUPABASE_ANON_KEY
+          fi
+
+          # Set up SSH key
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+          # SSH into the server and deploy
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << EOF
+            # Ensure correct permissions and remove existing directory
+            sudo chown -R runner-deploy:runner-deploy /home/runner-deploy/actions-runner/_work/laser-magique
+            sudo chmod -R 755 /home/runner-deploy/actions-runner/_work/laser-magique
+            sudo find /home/runner-deploy/actions-runner/_work/laser-magique -type f -exec chmod +rw {} \;
+
+            if [ -d "/home/runner-deploy/actions-runner/_work/laser-magique" ]; then
+              echo "Removing existing laser-magique directory..."
+              sudo rm -rf /home/runner-deploy/actions-runner/_work/laser-magique || { echo "Failed to remove directory"; exit 1; }
+            fi
+
+            # Clone the repository using SSH
+            echo "Cloning the repository..."
+            git clone git@github.com:Thimote147/laser-magique.git /home/runner-deploy/actions-runner/_work/laser-magique/laser-magique || { echo "Git clone failed"; exit 1; }
+
+            # Set permissions for the repository
+            sudo chown -R runner-deploy:runner-deploy /home/runner-deploy/actions-runner/_work/laser-magique/laser-magique
+            sudo chmod -R 755 /home/runner-deploy/actions-runner/_work/laser-magique/laser-magique
+
+            # Create the .env file
+            echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > /home/runner-deploy/actions-runner/_work/laser-magique/laser-magique/.env
+            echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> /home/runner-deploy/actions-runner/_work/laser-magique/laser-magique/.env
+
+            # Remove existing Docker container
+            if docker ps -a --format '{{.Names}}' | grep -q "laser-magique-app-$BRANCH_NAME"; then
+              docker stop laser-magique-app-$BRANCH_NAME || true
+              docker rm -f laser-magique-app-$BRANCH_NAME || true
+            else
+              echo "Container laser-magique-app-$BRANCH_NAME does not exist."
+            fi
+
+            # Clean up old Docker images
+            docker image prune -f
+
+            # Build and run the Docker container
+            cd /home/runner-deploy/actions-runner/_work/laser-magique/laser-magique
+            docker build -t laser-magique-app-$BRANCH_NAME . || { echo "Docker build failed"; exit 1; }
+            docker run -d --name laser-magique-app-$BRANCH_NAME -p $PORT:80 --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
+          EOF
