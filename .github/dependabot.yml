@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"  # Ecosystem to update (e.g., npm, yarn, etc.)
+    directory: "/"             # Location of package manifests
+    schedule:
+      interval: "weekly"       # Frequency of updates
+    target-branch: "main"      # Specify the branch (e.g., "main")
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "dev"       # Specify the dev branch here
+
+labels:
+  - "dependencies"
+  - "automated"
