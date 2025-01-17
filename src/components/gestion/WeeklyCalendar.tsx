@@ -10,7 +10,7 @@ interface WeeklyCalendarProps {
 }
 
 const timeSlots = Array.from({ length: 22 }, (_, i) => {
-  const hour = Math.floor(i / 2) + 10;
+  const hour = Math.floor(i / 2) + 9;
   const minutes = i % 2 === 0 ? '00' : '30';
   return `${hour}:${minutes}`;
 });
@@ -119,6 +119,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                 </p>
                                 <p className="text-xs">{booking.nbr_parties + " parties de " + booking.activity}</p>
                                 <p className="text-xs">{booking.deposit ? "Acompte de " + booking.deposit + "€" : "Pas d'acompte"}</p>
+                                {booking.comment && <p className="text-xs">{booking.comment}</p>}
                               </div>
                             )}
                           </Draggable>

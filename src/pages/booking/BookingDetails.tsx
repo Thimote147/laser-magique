@@ -10,7 +10,7 @@ const BookingDetails = () => {
         const id = window.location.pathname.split("/").pop();
 
         const fetchBooking = async (id: string) => {
-            const {data, error } = (await supabase.rpc('get_booking_details', { id }));
+            const { data, error } = (await supabase.rpc('get_booking_details', { id }));
 
             if (error) {
                 console.error('Error fetching booking', error);
@@ -34,10 +34,11 @@ const BookingDetails = () => {
                     {infos?.email?.trim() && <p>Email: {infos.email}</p>}
                     {infos?.phone?.trim() && <p>Téléphone: {infos.phone}</p>}
                     <p>Nombre de personnes: {infos?.nbr_pers}</p>
-                    <p>Date: {infos?.date ? toCapitalize(new Date(infos.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: "2-digit", minute:"2-digit" })) : "Erreur de date"}</p>
-                    <p>{"Acompte : " + infos?.deposit +'€'}</p>
+                    <p>Date: {infos?.date ? toCapitalize(new Date(infos.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: "2-digit", minute: "2-digit" })) : "Erreur de date"}</p>
+                    <p>{"Acompte : " + infos?.deposit + '€'}</p>
                     <p>Restant à payer : {infos?.amount}€</p>
                     <p>Total à payer : {infos?.total}€</p>
+                    {infos?.comment && <p>Commentaire: {infos.comment}</p>}
                 </div>
             </section>
         </div>

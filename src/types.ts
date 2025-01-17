@@ -25,5 +25,6 @@ interface Booking {
     deposit: number;
     amount: number;
     total: number;
+    comment: string;
 }
 export type { Activity, Booking };

@@ -22,7 +22,7 @@ const calculateStats = (bookings: Booking[]) => {
   let averageGroupSize = 0;
 
   if (totalBookings !== 0) {
-    averageGroupSize = bookings.reduce((sum, booking) => sum + booking.nbr_pers, 0) / totalBookings;
+    averageGroupSize = Math.floor(bookings.reduce((sum, booking) => sum + booking.nbr_pers, 0) / totalBookings);
   }
 
   return { totalBookings, totalRevenue, averageGroupSize };

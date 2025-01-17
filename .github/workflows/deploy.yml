@@ -121,11 +121,11 @@ jobs:
             echo "VITE_GOOGLE_MAPS_ID=$VITE_GOOGLE_MAPS_ID" >> /home/runner-deploy/actions-runner/_work/exhibition-project/exhibition-project/.env
 
             # Remove existing Docker container
-            if docker ps -a --format '{{.Names}}' | grep -q "exhibition-app-$BRANCH_NAME"; then
-              docker stop exhibition-app-$BRANCH_NAME || true
-              docker rm -f exhibition-app-$BRANCH_NAME || true
+            if docker ps -a --format '{{.Names}}' | grep -q "laser-magique-app-$BRANCH_NAME"; then
+              docker stop laser-magique-app-$BRANCH_NAME || true
+              docker rm -f laser-magique-app-$BRANCH_NAME || true
             else
-              echo "Container exhibition-app-$BRANCH_NAME does not exist."
+              echo "Container laser-magique-app-$BRANCH_NAME does not exist."
             fi
 
             # Clean up old Docker images
@@ -133,6 +133,6 @@ jobs:
 
             # Build and run the Docker container
             cd /home/runner-deploy/actions-runner/_work/exhibition-project/exhibition-project
-            docker build -t exhibition-app-$BRANCH_NAME . || { echo "Docker build failed"; exit 1; }
-            docker run -d --name exhibition-app-$BRANCH_NAME -p $PORT:80 --env-file .env exhibition-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
+            docker build -t laser-magique-app-$BRANCH_NAME . || { echo "Docker build failed"; exit 1; }
+            docker run -d --name laser-magique-app-$BRANCH_NAME -p $PORT:80 --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
           EOF
