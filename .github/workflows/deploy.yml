@@ -74,8 +74,8 @@ jobs:
           fi
 
           # Set environment variables based on branch
-            VITE_SUPABASE_URL=$PROD_VITE_SUPABASE_URL
-            VITE_SUPABASE_ANON_KEY=$PROD_VITE_SUPABASE_ANON_KEY
+            VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+            VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
 
           # Set up SSH key
           mkdir -p ~/.ssh
