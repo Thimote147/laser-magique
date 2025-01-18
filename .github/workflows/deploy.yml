@@ -82,9 +82,9 @@ jobs:
           # SSH into the server and deploy
           ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << EOF
             # Ensure correct permissions for the repository directory
-            sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites
-            sudo chmod -R 755 /home/$SERVER_USER/websites
-            sudo find /home/$SERVER_USER/websites -type f -exec chmod +rw {} \;
+            sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique
+            sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique
+            sudo find /home/$SERVER_USER/websites/laser-magique -type f -exec chmod +rw {} \;
 
             # Remove existing laser-magique directory
             if [ -d "/home/$SERVER_USER/websites/laser-magique" ]; then
@@ -94,7 +94,7 @@ jobs:
 
             # Clone the repository using SSH
             echo "Cloning the repository branch: $BRANCH_NAME..."
-            git clone --branch $BRANCH_NAME git@github.com:Thimote147/laser-magique.git /home/$SERVER_USER/websites || { echo "Git clone failed"; exit 1; }
+            git clone --branch $BRANCH_NAME git@github.com:Thimote147/laser-magique.git /home/$SERVER_USER/websites/laser-magique || { echo "Git clone failed"; exit 1; }
 
             # Set permissions for the repository
             sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique
