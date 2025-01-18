@@ -5,6 +5,7 @@ on:
     types: [closed] # Trigger on PR merge
     branches:
       - main
+      - dev
 
 jobs:
   # Job for dependency submission
@@ -59,19 +60,22 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
-          VITE_SUPABASE_URL: ${{ secrets.PROD_VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.PROD_VITE_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
         run: |
           # Determine port based on branch
-          if [ "$BRANCH_NAME" = "main" ]; then
+          if [ "$BRANCH_NAME" = "dev" ]; then
+            PORT=5174
+          elif [ "$BRANCH_NAME" = "main" ]; then
             PORT=5173
           else
             echo "Unsupported branch: $BRANCH_NAME" && exit 1
           fi
 
           # Set environment variables based on branch
-          VITE_SUPABASE_URL=$VITE_SUPABASE_URL
-          VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+            VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+            VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
 
           # Set up SSH key
           mkdir -p ~/.ssh
@@ -82,51 +86,57 @@ jobs:
           # SSH into the server and deploy
           ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << EOF
             # Ensure correct permissions for the repository directory
-            sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique
-            sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique
-            sudo find /home/$SERVER_USER/websites/laser-magique -type f -exec chmod +rw {} \;
+            sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
+            sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
+            sudo find /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME -type f -exec chmod +rw {} \;
 
             # Remove existing laser-magique directory
-            if [ -d "/home/$SERVER_USER/websites/laser-magique" ]; then
+            if [ -d "/home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME" ]; then
               echo "Removing existing laser-magique directory..."
-              echo "$SUDO_PASSWORD" | sudo -S rm -rf /home/$SERVER_USER/websites/laser-magique || { echo "Failed to remove directory"; exit 1; }
+              echo "$SUDO_PASSWORD" | sudo -S rm -rf /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME || { echo "Failed to remove directory"; exit 1; }
             fi
 
             # Clone the repository using SSH
             echo "Cloning the repository branch: $BRANCH_NAME..."
-            git clone --branch $BRANCH_NAME git@github.com:Thimote147/laser-magique.git /home/$SERVER_USER/websites/laser-magique || { echo "Git clone failed"; exit 1; }
+            git clone --branch $BRANCH_NAME git@github.com:Thimote147/laser-magique.git /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME || { echo "Git clone failed"; exit 1; }
 
             # Set permissions for the repository
-            sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique
-            sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique
+            sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
+            sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
 
             # Create the .env file for environment variables
-            echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > /home/$SERVER_USER/websites/laser-magique/.env
-            echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> /home/$SERVER_USER/websites/laser-magique/.env
+            echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
+            echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
 
             # Navigate to the project directory and build
-            cd /home/$SERVER_USER/websites/laser-magique
+            cd /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
             npm install
             npm run build
 
+
             # Remove existing Docker container if exists
-            if docker ps -a --format '{{.Names}}' | grep -q "laser-magique"; then
-              docker stop laser-magique || true
-              docker rm -f laser-magique || true
+            if docker ps -a --format '{{.Names}}' | grep -q "laser-magique-app-$BRANCH_NAME"; then
+              docker stop laser-magique-app-$BRANCH_NAME || true
+              docker rm -f laser-magique-app-$BRANCH_NAME || true
             else
-              echo "Container laser-magique does not exist."
+              echo "Container laser-magique-app-$BRANCH_NAME does not exist."
             fi
 
             # Clean up old Docker images
             docker image prune -f
+            docker builder prune -f --all
 
             # Build and run the Docker container
-            cd /home/$SERVER_USER/websites/laser-magique
-            docker build -t laser-magique . || { echo "Docker build failed"; exit 1; }
+            cd /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
+            if [ "$BRANCH_NAME" = "dev" ]; then
+              docker build --no-cache --build-arg BRANCH_NAME=dev -t laser-magique-app-$BRANCH_NAME . || { echo "Docker build failed"; exit 1; }
+            else
+              docker build --no-cache --build-arg BRANCH_NAME=prod -t laser-magique-app-$BRANCH_NAME . || { echo "Docker build failed"; exit 1; }
+            fi
 
             # For prod, use the default dist folder (dist)
             docker cp /home/$SERVER_USER/websites/laser-magique/dist/. laser-magique:/usr/share/nginx/html
 
-            echo "Running Docker container #laser-magique at port $PORT..."
-            docker run -d --name laser-magique -p "$PORT:80" --env-file .env laser-magique || { echo "Docker run failed"; exit 1; }
+            echo "Running Docker container #laser-magique-app-$BRANCH_NAME at port $PORT..."
+            docker run -d --name laser-magique-app-$BRANCH_NAME -p "$PORT:80" --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
           EOF
