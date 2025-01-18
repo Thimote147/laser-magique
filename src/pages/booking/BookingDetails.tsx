@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Booking } from "../../types";
 import { toCapitalize } from "../../utils/functions";
 import { supabase } from "../../supabase/client";
+import Conso from "../../components/booking/Conso";
 
 const BookingDetails = () => {
     const [infos, setInfos] = useState<Booking>();
@@ -41,6 +42,7 @@ const BookingDetails = () => {
                     {infos?.comment && <p>Commentaire: {infos.comment}</p>}
                 </div>
             </section>
+            <Conso/>
         </div>
     );
 };
