@@ -1,13 +1,32 @@
-FROM node:20
+# Stage 1: Build the React app
+FROM node:20 AS builder
 
-WORKDIR /frontend
+# Set the working directory
+WORKDIR /app
 
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-RUN npm install
+# Install dependencies (use npm ci for better reliability)
+RUN npm ci
 
+# Copy the rest of the application code
 COPY . .
 
-EXPOSE 5173
+# Verify vite is installed (optional for debugging)
+RUN ls -la node_modules/.bin/  # This will list executables, including vite
 
-CMD ["npm", "run", "dev"]
+# Build the application
+RUN npm run build
+
+# Stage 2: Serve the React app using Nginx
+FROM nginx:stable-alpine
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose the port on which Nginx will serve the app
+EXPOSE 80
+
+# Run Nginx
+CMD ["nginx", "-g", "daemon off;"]

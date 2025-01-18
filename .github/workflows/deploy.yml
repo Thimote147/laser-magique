@@ -128,5 +128,5 @@ jobs:
             docker cp /home/$SERVER_USER/websites/laser-magique/dist/. laser-magique:/usr/share/nginx/html
 
             echo "Running Docker container #laser-magique at port $PORT..."
-            docker run -d --name laser-magique -p "$PORT:5173" --env-file .env laser-magique || { echo "Docker run failed"; exit 1; }
+            docker run -d --name laser-magique -p "$PORT:80" --env-file .env laser-magique || { echo "Docker run failed"; exit 1; }
           EOF
