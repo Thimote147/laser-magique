@@ -108,6 +108,11 @@ jobs:
             echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
             echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
 
+            # Navigate to the project directory and build
+            cd /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
+            npm install
+            npm run build
+
 
             # Remove existing Docker container if exists
             if docker ps -a --format '{{.Names}}' | grep -q "laser-magique-app-$BRANCH_NAME"; then
@@ -129,7 +134,9 @@ jobs:
               docker build --no-cache --build-arg BRANCH_NAME=prod -t laser-magique-app-$BRANCH_NAME . || { echo "Docker build failed"; exit 1; }
             fi
 
-            echo "Running Docker container #laser-magique-app-$BRANCH_NAME at port $PORT..."
-            docker run -d --name laser-magique-app-$BRANCH_NAME -p "$PORT:5173" --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
+            # For prod, use the default dist folder (dist)
+            docker cp /home/$SERVER_USER/websites/laser-magique/dist/. laser-magique:/usr/share/nginx/html
 
+            echo "Running Docker container #laser-magique-app-$BRANCH_NAME at port $PORT..."
+            docker run -d --name laser-magique-app-$BRANCH_NAME -p "$PORT:80" --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
           EOF
