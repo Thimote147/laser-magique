@@ -131,4 +131,5 @@ jobs:
 
             echo "Running Docker container #laser-magique-app-$BRANCH_NAME at port $PORT..."
             docker run -d --name laser-magique-app-$BRANCH_NAME -p "$PORT:5173" --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
+
           EOF
