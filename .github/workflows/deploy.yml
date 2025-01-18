@@ -108,12 +108,6 @@ jobs:
             echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
             echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
 
-            # Navigate to the project directory and build
-            cd /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
-            npm install
-            npm run build
-
-
             # Remove existing Docker container if exists
             if docker ps -a --format '{{.Names}}' | grep -q "laser-magique-app-$BRANCH_NAME"; then
               docker stop laser-magique-app-$BRANCH_NAME || true
