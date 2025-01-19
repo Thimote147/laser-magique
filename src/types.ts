@@ -33,6 +33,7 @@ interface Conso {
     name: string;
     price: number;
     quantity: number;
+    food_id?: number;
 }
 
 export type { Activity, Booking, Conso };

@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase/client";
 import type { Conso } from "../../types";
+import { useParams } from "react-router-dom";
 
-const Conso = () => {
+interface ConsommationsProps {
+    update: boolean;
+    setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Consommations = ({update, setUpdate}: ConsommationsProps) => {
+    const { id } = useParams<{ id: string }>();
     const [stockConso, setStockConso] = useState<Conso[]>([]);
-    const [consos, setConsos] = useState<Conso[]>([]);
-    const [update, setUpdate] = useState(false);
 
     useEffect(() => {
         const fetchStockConso = async () => {
@@ -25,26 +30,14 @@ const Conso = () => {
             }
         };
 
-        const fetchConsos = async () => {
-            const { data, error } = await supabase
-                .from('conso')
-                .select('*')
-                .order('name');
-
-            if (error) {
-                console.error('Error fetching conso', error);
-            } else {
-                setConsos(data);
-            }
-        };
+        
 
         fetchStockConso();
-        fetchConsos();
     }, [update]);
 
-    const handleClick = (conso_id: number) => {
+    const handleClickAdd = (conso_id: number) => {
         const fetchBooking = async () => {
-            const { error } = await supabase.rpc('insert_conso', { conso_id });
+            const { error } = await supabase.rpc('insert_conso', { actual_booking_id: id, actual_food_id: conso_id });
 
             if (error) {
                 console.error('Error inserting conso', error);
@@ -60,17 +53,10 @@ const Conso = () => {
         <div>
             <h3 className="text-2xl">Consommations :</h3>
             <div className="flex">
-                <div>
-                    {consos.map(({ conso_id, name, price }) => (
-                        <div key={conso_id} className="flex justify-between">
-                            <p>{name}</p>
-                            <p>{price}€</p>
-                        </div>
-                    ))}
-                </div>
+                
                 <div className="flex flex-wrap gap-5">
                     {stockConso.map(({ conso_id, name }) => (
-                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12 font-bold" onClick={() => handleClick(conso_id)}>{name}</button>
+                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12 font-bold" onClick={() => handleClickAdd(conso_id)}>{name}</button>
                     ))}
                 </div>
             </div>
@@ -78,4 +64,4 @@ const Conso = () => {
     );
 }
 
-export default Conso;
+export default Consommations;
