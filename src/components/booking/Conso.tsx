@@ -59,18 +59,20 @@ const Conso = () => {
     return (
         <div>
             <h3 className="text-2xl">Consommations :</h3>
-            <div>
-                {consos.map(({ conso_id, name, price }) => (
-                    <div key={conso_id} className="flex justify-between">
-                        <p>{name}</p>
-                        <p>{price}€</p>
-                    </div>
-                ))}
-            </div>
-            <div className="flex flex-wrap gap-5">
-                {stockConso.map(({ conso_id, name }) => (
-                    <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12" onClick={() => handleClick(conso_id)}>{name}</button>
-                ))}
+            <div className="flex">
+                <div>
+                    {consos.map(({ conso_id, name, price }) => (
+                        <div key={conso_id} className="flex justify-between">
+                            <p>{name}</p>
+                            <p>{price}€</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex flex-wrap gap-5">
+                    {stockConso.map(({ conso_id, name }) => (
+                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12 font-bold" onClick={() => handleClick(conso_id)}>{name}</button>
+                    ))}
+                </div>
             </div>
         </div>
     );

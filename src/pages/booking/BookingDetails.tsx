@@ -40,6 +40,11 @@ const BookingDetails = () => {
                     <p>Restant à payer : {infos?.amount}€</p>
                     <p>Total à payer : {infos?.total}€</p>
                     {infos?.comment && <p>Commentaire: {infos.comment}</p>}
+                    <div className="flex justify-around mt-5">
+                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Modifier</button>
+                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Annuler</button>
+                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Supprimer</button>
+                    </div>
                 </div>
             </section>
             <Conso/>
