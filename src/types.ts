@@ -27,4 +27,13 @@ interface Booking {
     total: number;
     comment: string;
 }
-export type { Activity, Booking };
+
+interface Conso {
+    conso_id: number;
+    name: string;
+    price: number;
+    quantity: number;
+    food_id?: number;
+}
+
+export type { Activity, Booking, Conso };
