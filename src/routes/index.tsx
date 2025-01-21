@@ -25,7 +25,8 @@ export const router = createBrowserRouter(
 
             {/* Protected Routes */}
             <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
-            <Route path="/booking/:id" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>} />
+            <Route path="/booking/:id/" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>}>
+            </Route>
             <Route path="/gestion" element={<ProtectedRoute><GestionPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Route>
