@@ -52,11 +52,10 @@ const Consommations = ({update, setUpdate}: ConsommationsProps) => {
     return (
         <div>
             <h3 className="text-2xl">Consommations :</h3>
-            <div className="flex">
-                
-                <div className="flex flex-wrap gap-5">
+            <div className="flex justify-center">
+                <div className="flex flex-wrap gap-5 max-w-4xl">
                     {stockConso.map(({ conso_id, name }) => (
-                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12 font-bold" onClick={() => handleClickAdd(conso_id)}>{name}</button>
+                        <button key={conso_id} className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12 font-bold" onClick={() => handleClickAdd(conso_id)}>{name}</button>
                     ))}
                 </div>
             </div>
