@@ -44,7 +44,7 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
         <Container maxWidth="sm" sx={{ px: { xs: 2, sm: 3 }, backgroundColor: 'background.form' }}>
             <Paper elevation={3} sx={{ mt: { xs: 4, sm: 8 }, p: { xs: 3, sm: 4 } }}>
                 <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    {error && <Alert severity="error">{error}</Alert>}
+                    {(error || infos?.is_cancelled) && <Alert severity="error" className="flex items-center">{error || 'Cette réservation a été annulée, vous ne pouvez donc plus modifier ses informations.'}</Alert>}
 
                     <Typography component="h1" variant="h5" gutterBottom>
                         Modifier les informations
@@ -55,7 +55,8 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         type="text"
                         defaultValue={infos?.firstname}
                         onChange={(e) => setFirstname(e.target.value)}
-                        required
+                        disabled={infos?.is_cancelled}
+                        required={!infos?.is_cancelled}
                     />
 
                     <Input
@@ -63,6 +64,7 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         type="text"
                         defaultValue={infos?.lastname}
                         onChange={(e) => setLastname(e.target.value)}
+                        disabled={infos?.is_cancelled}
                     />
 
                     <Input
@@ -70,6 +72,7 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         type="tel"
                         defaultValue={infos?.phone}
                         onChange={(e) => setPhone(e.target.value)}
+                        disabled={infos?.is_cancelled}
                     />
 
                     <Input
@@ -77,6 +80,7 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         type="email"
                         defaultValue={infos?.email}
                         onChange={(e) => setEmail(e.target.value)}
+                        disabled={infos?.is_cancelled}
                     />
 
                     <Input
@@ -88,7 +92,8 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                             const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
                             setDate(localDate);
                         }}
-                        required
+                        disabled={infos?.is_cancelled}
+                        required={!infos?.is_cancelled}
                     />
 
                     <Input
@@ -97,6 +102,8 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         defaultValue={infos?.nbr_pers}
                         onChange={(e) => setNbrPers(parseInt(e.target.value))}
                         inputProps={{ min: 2, max: 20 }}
+                        disabled={infos?.is_cancelled}
+                        required={!infos?.is_cancelled}
                     />
 
                     <Input
@@ -105,6 +112,8 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         defaultValue={infos?.nbr_parties}
                         onChange={(e) => setNbrParties(parseInt(e.target.value))}
                         inputProps={{ min: 1 }}
+                        disabled={infos?.is_cancelled}
+                        required={!infos?.is_cancelled}
                     />
 
                     <Input
@@ -113,6 +122,7 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         defaultValue={infos?.deposit}
                         onChange={(e) => setDeposit(parseInt(e.target.value))}
                         inputProps={{ min: 0 }}
+                        disabled={infos?.is_cancelled}
                     />
 
                     <Input
@@ -120,13 +130,14 @@ const BookingDetailsModifications = ({ infos, update, setUpdate }: BookingDetail
                         type="text"
                         defaultValue={infos?.comment}
                         onChange={(e) => setComment(e.target.value)}
+                        disabled={infos?.is_cancelled}
                     />
 
                     <Button
                         type="submit"
                         variant="contained"
-                        disabled={loading}
                         fullWidth
+                        disabled={infos?.is_cancelled || loading}
                     >
                         {loading ? 'Mise à jour...' : 'Mettre à jour'}
                     </Button>
