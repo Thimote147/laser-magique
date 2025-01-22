@@ -29,6 +29,7 @@ const BookingInfos = ({ nbr_pers, activity_id, nbr_parties, setIsGameChosen, set
             total
         };
 
+        console.log(data.date);
 
         const { error } = await supabase.rpc('insert_booking', {
             firstname: data.firstname,
@@ -42,6 +43,7 @@ const BookingInfos = ({ nbr_pers, activity_id, nbr_parties, setIsGameChosen, set
             nbr_parties: data.nbr_parties,
             total: data.total
         });
+
         if (error) {
             alert('Erreur lors de la réservation');
             console.error('Error inserting booking', error);

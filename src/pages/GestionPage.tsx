@@ -108,7 +108,7 @@ const GestionPage = () => {
             </button>
             <button
               onClick={() => setCurrentDate(new Date())}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="px-5 py-2 hover:bg-white/10 rounded-lg transition-colors"
             >
               Aujourd'hui
             </button>

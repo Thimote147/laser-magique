@@ -5,7 +5,8 @@ import Consommations from "../../components/booking/Consommations";
 import type { Conso } from "../../types";
 import { useParams } from "react-router-dom";
 import BookingDetailsInfos from "./BookingDetailsInfos";
-import { FileText, Coffee } from "lucide-react";
+import { FileText, Coffee, Edit } from "lucide-react";
+import BookingDetailsModifications from "./BookingDetailsModifications";
 
 const BookingDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -42,27 +43,33 @@ const BookingDetails = () => {
     const handleClick = (type: string) => {
         if (type === 'infos') {
             setPage('infos');
-        } else {
+        } else if (type === 'conso') {
             setPage('conso');
+        } else if (type === 'modify') {
+            setPage('modify');
+        } else {
+            alert('Le menu auquel vous tentez d\'accéder n\'existe pas');
         }
     }
 
     return (
         <div className="min-h-screen bg-black text-white p-8">
             <h1 className="text-4xl mb-8">Réservation de {infos?.firstname}</h1>
-            <div>
-                <nav>
-                    <ul className="flex">
-                        <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'infos' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('infos')}><FileText className="mr-2" /> Infos</li>
-                        <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'conso' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('conso')}><Coffee className="mr-2"/>Conso</li>
-                    </ul>
-                    <hr className="border-gray-600 mb-5" />
-                </nav>
-            </div>
-            {page === 'infos' ?
+            <nav>
+                <ul className="flex">
+                    <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'infos' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('infos')}><FileText className="mr-2" />Infos</li>
+                    <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'conso' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('conso')}><Coffee className="mr-2" />Conso</li>
+                    <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'modify' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('modify')}><Edit className="mr-2" />Modifier</li>
+                </ul>
+                <hr className="border-gray-600 mb-5" />
+            </nav>
+            {page === 'infos' ? (
                 <BookingDetailsInfos infos={infos} consos={consos} update={update} setUpdate={setUpdate} />
-                : <Consommations update={update} setUpdate={setUpdate} />
-            }
+            ) : page === 'conso' ? (
+                <Consommations update={update} setUpdate={setUpdate} bookingCancelled={infos?.is_cancelled}/>
+            ) : (
+                <BookingDetailsModifications infos={infos} update={update} setUpdate={setUpdate} />
+            )}
         </div>
     );
 };
