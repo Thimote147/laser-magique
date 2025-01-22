@@ -29,22 +29,19 @@ const BookingDetailsInfos = ({ infos, consos, update, setUpdate }: BookingDetail
     }
 
     return (
-        <div>
-            <h3 className="text-2xl">Informations</h3>
             <div className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between">
                 <div className="bg-white/5 p-5 w-full lg:max-w-xl">
                     <p>Prénom: {infos?.firstname}</p>
                     {infos?.lastname?.trim() && <p>Nom: {infos.lastname}</p>}
-                    {infos?.email?.trim() && <p>Email: {infos.email}</p>}
                     {infos?.phone?.trim() && <p>Téléphone: {infos.phone}</p>}
+                    {infos?.email?.trim() && <p>Email: {infos.email}</p>}
                     <p>Nombre de personnes: {infos?.nbr_pers}</p>
                     <p>Date: {infos?.date ? toCapitalize(new Date(infos.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: "2-digit", minute: "2-digit" })) : "Erreur de date"}</p>
                     <p>{"Acompte : " + infos?.deposit + '€'}</p>
                     <p>Restant à payer : {infos?.amount}€</p>
                     <p>Total à payer : {infos?.total}€</p>
                     {infos?.comment && <p>Commentaire: {infos.comment}</p>}
-                    <div className="flex justify-around mt-5">
-                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Modifier</button>
+                    <div className="flex mt-5 gap-5">
                         <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Annuler</button>
                         <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Supprimer</button>
                     </div>
@@ -59,7 +56,6 @@ const BookingDetailsInfos = ({ infos, consos, update, setUpdate }: BookingDetail
                 </div>
                 }
             </div>
-        </div>
     )
 }
 
