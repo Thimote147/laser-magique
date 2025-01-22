@@ -3,6 +3,7 @@ import { Booking, Conso } from "../../types";
 import { toCapitalize } from "../../utils/functions";
 import { supabase } from "../../supabase/client";
 import { useParams } from "react-router-dom";
+import { Alert } from "@mui/material";
 
 interface BookingDetailsInfosProps {
     infos: Booking | undefined;
@@ -28,34 +29,66 @@ const BookingDetailsInfos = ({ infos, consos, update, setUpdate }: BookingDetail
         fetchConsos();
     }
 
+    const handleClickCancel = () => {
+        const fetchCancel = async () => {
+            const { error } = await supabase.from('bookings').update({ is_cancelled: true }).eq('booking_id', id);
+
+            if (error) {
+                console.error('Error canceling booking', error);
+            } else {
+                setUpdate(!update);
+            }
+        }
+
+        fetchCancel();
+    }
+
+    const handleClickActivate = () => {
+        const fetchActivate = async () => {
+            const { error } = await supabase.from('bookings').update({ is_cancelled: false }).eq('booking_id', id);
+
+            if (error) {
+                console.error('Error activating booking', error);
+            } else {
+                setUpdate(!update);
+            }
+        }
+
+        fetchActivate();
+    }
+
     return (
-            <div className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between">
-                <div className="bg-white/5 p-5 w-full lg:max-w-xl">
-                    <p>Prénom: {infos?.firstname}</p>
-                    {infos?.lastname?.trim() && <p>Nom: {infos.lastname}</p>}
-                    {infos?.phone?.trim() && <p>Téléphone: {infos.phone}</p>}
-                    {infos?.email?.trim() && <p>Email: {infos.email}</p>}
-                    <p>Nombre de personnes: {infos?.nbr_pers}</p>
-                    <p>Date: {infos?.date ? toCapitalize(new Date(infos.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: "2-digit", minute: "2-digit" })) : "Erreur de date"}</p>
-                    <p>{"Acompte : " + infos?.deposit + '€'}</p>
-                    <p>Restant à payer : {infos?.amount}€</p>
-                    <p>Total à payer : {infos?.total}€</p>
-                    {infos?.comment && <p>Commentaire: {infos.comment}</p>}
-                    <div className="flex mt-5 gap-5">
-                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Annuler</button>
-                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Supprimer</button>
-                    </div>
+        <div className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between">
+            <div className="bg-white/5 p-5 w-full lg:max-w-xl">
+                {infos?.is_cancelled && <Alert severity="error">Cette réservation a été annulée.</Alert>}
+                <p>Prénom: {infos?.firstname}</p>
+                {infos?.lastname?.trim() && <p>Nom: {infos.lastname}</p>}
+                {infos?.phone?.trim() && <p>Téléphone: {infos.phone}</p>}
+                {infos?.email?.trim() && <p>Email: {infos.email}</p>}
+                <p>Nombre de personnes: {infos?.nbr_pers}</p>
+                <p>Date: {infos?.date ? toCapitalize(new Date(infos.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: "2-digit", minute: "2-digit" })) : "Erreur de date"}</p>
+                <p>{"Acompte : " + infos?.deposit + '€'}</p>
+                <p>Restant à payer : {infos?.amount}€</p>
+                <p>Total à payer : {infos?.total}€</p>
+                {infos?.comment && <p>Commentaire: {infos.comment}</p>}
+                <div className="flex mt-5 gap-5">
+                    {infos?.is_cancelled ?
+                        <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12" onClick={handleClickActivate}>Remettre</button>
+                        : <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12" onClick={handleClickCancel}>Annuler</button>
+                    }
+                    <button className="bg-gradient-to-r from-purple-500 to-pink-500 w-40 h-12">Supprimer</button>
                 </div>
-                {consos.length !== 0 && <div className="bg-white/5 p-5 max-w-xl">
-                    {consos.map(({ food_id, name, quantity, price }) => (
-                        <div key={food_id} className="flex justify-between">
-                            <p>{"   - " + quantity + "x " + name + " - " + price + "€"}</p>
-                            <button onClick={() => handleClickDelete(food_id!)}><Delete className="mr-2" /></button>
-                        </div>
-                    ))}
-                </div>
-                }
             </div>
+            {consos.length !== 0 && <div className="bg-white/5 p-5 max-w-xl">
+                {consos.map(({ food_id, name, quantity, price }) => (
+                    <div key={food_id} className="flex justify-between">
+                        <p>{"   - " + quantity + "x " + name + " - " + price + "€"}</p>
+                        <button onClick={() => handleClickDelete(food_id!)}><Delete className="mr-2" /></button>
+                    </div>
+                ))}
+            </div>
+            }
+        </div>
     )
 }
 

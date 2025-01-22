@@ -2,6 +2,7 @@ import { addDays, startOfWeek, isSameDay } from 'date-fns';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Clock } from 'lucide-react';
 import { Booking } from '../../types';
+import { is } from 'date-fns/locale';
 
 interface WeeklyCalendarProps {
   bookings: Booking[];
@@ -39,20 +40,26 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
     let newDate = new Date(newDay);
     newDate.setHours(parseInt(newTime.split(':')[0]));
     newDate.setMinutes(parseInt(newTime.split(':')[1]));
-    
+
     onBookingMove(parseInt(bookingId), newDate);
   };
 
-  const getActivityColor = (activity: string) => {
-    switch (activity) {
-      case 'Cyber Trike':
-        return 'bg-blue-500';
-      case 'Laser Game':
-        return 'bg-purple-500';
-      case 'Réalité Virtuelle':
-        return 'bg-green-500';
-      default:
-        return 'bg-gray-500';
+  const getActivityColor = (activity: string, is_cancelled: boolean) => {
+    console.log(is_cancelled);
+    switch (is_cancelled) {
+      case true:
+        return 'bg-red-500';
+      case false:
+        switch (activity) {
+          case 'Cyber Trike':
+            return 'bg-blue-500';
+          case 'Laser Game':
+            return 'bg-purple-500';
+          case 'Réalité Virtuelle':
+            return 'bg-green-500';
+          default:
+            return 'bg-gray-500';
+        }
     }
   };
 
@@ -110,7 +117,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 className={`${getActivityColor(
-                                  booking.activity
+                                  booking.activity, booking.is_cancelled
                                 )} p-2 rounded mb-2 text-sm text-white`}
                               >
                                 <p className="font-semibold">{booking.firstname + " " + (booking.lastname !== null ? booking.lastname : '')}</p>
@@ -120,6 +127,7 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                 <p className="text-xs">{booking.nbr_parties + " parties de " + booking.activity}</p>
                                 <p className="text-xs">{booking.deposit ? "Acompte de " + booking.deposit + "€" : "Pas d'acompte"}</p>
                                 {booking.comment && <p className="text-xs">{booking.comment}</p>}
+                                {booking.is_cancelled && <p className="text-xs font-bold">Annulée</p>}
                               </div>
                             )}
                           </Draggable>

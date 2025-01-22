@@ -66,7 +66,7 @@ const BookingDetails = () => {
             {page === 'infos' ? (
                 <BookingDetailsInfos infos={infos} consos={consos} update={update} setUpdate={setUpdate} />
             ) : page === 'conso' ? (
-                <Consommations update={update} setUpdate={setUpdate} />
+                <Consommations update={update} setUpdate={setUpdate} bookingCancelled={infos?.is_cancelled}/>
             ) : (
                 <BookingDetailsModifications infos={infos} update={update} setUpdate={setUpdate} />
             )}
