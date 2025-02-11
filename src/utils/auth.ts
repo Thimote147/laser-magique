@@ -18,10 +18,7 @@ export const getUserProfile = async (userId: string): Promise<User | null> => {
     if (publicUser.role !== 'user') {
       try {
         const { data: hours, error: hoursError } = await supabase
-          .from('hours')
-          .select('*')
-          .eq('user_id', userId)
-          .order('hour_id', { ascending: false });
+          .rpc('get_hours', { actual_user_id: userId, actual_month: new Date().getMonth() + 1, actual_year: new Date().getFullYear() });
 
         if (hoursError) {
           console.error('Error fetching hours:', hoursError);

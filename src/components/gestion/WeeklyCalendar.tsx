@@ -2,7 +2,6 @@ import { addDays, startOfWeek, isSameDay } from 'date-fns';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Clock } from 'lucide-react';
 import { Booking } from '../../types';
-import { is } from 'date-fns/locale';
 
 interface WeeklyCalendarProps {
   bookings: Booking[];
