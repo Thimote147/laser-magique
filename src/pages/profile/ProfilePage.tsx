@@ -98,7 +98,7 @@ const ProfilePage = () => {
 
         setMonthAmount(amount);
         setHoursCount(count);
-    }, [currentTime, newHour]);
+    }, [currentTime, newHour, refreshUser, user]);
 
     useEffect(() => {
         const updateCurrentTime = () => {
