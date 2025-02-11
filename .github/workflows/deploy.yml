@@ -47,8 +47,8 @@ jobs:
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
@@ -79,12 +79,12 @@ jobs:
 
           # Set up SSH key
           mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
           # SSH into the server and deploy
-          ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << EOF
+          ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 $SERVER_USER@$SERVER_HOST << EOF
             # Ensure correct permissions for the repository directory
             sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
             sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
