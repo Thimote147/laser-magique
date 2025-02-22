@@ -93,7 +93,7 @@ const ProfilePage = () => {
         let count = 0;
         for (const hour of user.hours) {
             amount += hour.amount ?? parseFloat(toCurrency(toHours(toMinutes(hour.ending ?? currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0));
-            count += toMinutes(hour.ending ?? currentTime.split('T')[1]) - toMinutes(hour.beginning);
+            count += hour.nbr_hours ? toMinutes(hour.nbr_hours) : toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning);
         }
 
         setMonthAmount(amount);
