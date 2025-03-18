@@ -30,7 +30,7 @@ jobs:
 
   # Job for deployment
   deploy:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest # Use the default GitHub runner for deployment
 
     steps:
