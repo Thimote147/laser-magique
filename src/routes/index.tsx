@@ -17,12 +17,11 @@ export const router = createBrowserRouter(
             <Route path="/" element={<HomePage />} />
             <Route path="/auth" element={<AuthRoute><AuthPage /></AuthRoute>} />
             <Route path="/register" element={<AuthRoute><RegisterPage /></AuthRoute>} />
-            <Route path="/laser-game" element={<AuthRoute><LaserGamePage /></AuthRoute>} />
+            <Route path="/laser-game" element={<LaserGamePage />} />
 
             {/* Protected Routes */}
             <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
-            <Route path="/booking/:id/" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>}>
-            </Route>
+            <Route path="/booking/:id" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>} />
             <Route path="/gestion" element={<ProtectedRoute><GestionPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Route>

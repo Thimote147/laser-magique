@@ -23,26 +23,10 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleClick = () => {
-    if (!user || user.role === 'user') {
-      window.location.href = '/booking';
-    } else if (window.location.pathname === '/gestion') {
-      window.location.href = '/profile';
-    } else {
-      window.location.href = '/gestion';
-    }
-  };
-
-  const getButtonText = () => {
-    if (!user) return "Réserver maintenant";
-    if (user.role === 'user') return "Réserver maintenant";
-    return window.location.pathname === "/gestion" ? "Profil" : "Gestion";
-  };
-
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-lg' : 'bg-transparent'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled || isOpen ? 'bg-black/80 backdrop-blur-lg' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 relative z-50">
           {/* Logo */}
           <Link 
             to="/" 
@@ -74,28 +58,38 @@ const Navbar = () => {
             
             <div className="flex items-center space-x-4">
               {user && (
-                <Link
-                  to="/profile"
-                  className="flex items-center space-x-2 text-white hover:text-purple-400 transition-colors"
-                >
-                  <User className="w-5 h-5" />
-                </Link>
+                <>
+                  <Link
+                    to="/profile"
+                    className="flex items-center space-x-2 text-white hover:text-purple-400 transition-colors"
+                  >
+                    <User className="w-5 h-5" />
+                  </Link>
+                  {user.role !== 'user' && (
+                    <Link
+                      to="/gestion"
+                      className="flex items-center space-x-2 text-white hover:text-purple-400 transition-colors"
+                    >
+                      <Calendar className="w-5 h-5" />
+                    </Link>
+                  )}
+                </>
               )}
               
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-semibold hover:opacity-90 transition-all duration-300 flex items-center space-x-2"
-                onClick={handleClick}
+                onClick={() => window.location.href = '/booking'}
               >
                 <Calendar className="w-5 h-5" />
-                <span>{getButtonText()}</span>
+                <span>Réserver maintenant</span>
               </motion.button>
             </div>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden relative z-50">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-white hover:text-purple-400 transition-colors"
@@ -112,35 +106,59 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden overflow-hidden"
+              className="md:hidden fixed inset-x-0 top-16 z-40"
             >
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                      location.pathname === item.path 
-                        ? 'text-purple-500 bg-white/5' 
-                        : 'text-white hover:bg-white/5'
-                    }`}
-                    onClick={() => setIsOpen(false)}
+              <div className="bg-black shadow-xl border-t border-gray-800">
+                <div className="px-4 py-3 space-y-3">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.path}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+                        location.pathname === item.path 
+                          ? 'text-purple-500 bg-white/5' 
+                          : 'text-white hover:bg-white/5'
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      <span>{item.name}</span>
+                    </Link>
+                  ))}
+                  {user && (
+                    <>
+                      <Link
+                        to="/profile"
+                        className="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/5"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <User className="w-5 h-5" />
+                        <span>Profil</span>
+                      </Link>
+                      {user.role !== 'user' && (
+                        <Link
+                          to="/gestion"
+                          className="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/5"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Calendar className="w-5 h-5" />
+                          <span>Gestion</span>
+                        </Link>
+                      )}
+                    </>
+                  )}
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2"
+                    onClick={() => {
+                      window.location.href = '/booking';
+                      setIsOpen(false);
+                    }}
                   >
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 flex items-center justify-center space-x-2"
-                  onClick={() => {
-                    handleClick();
-                    setIsOpen(false);
-                  }}
-                >
-                  <Calendar className="w-5 h-5" />
-                  <span>{getButtonText()}</span>
-                </motion.button>
+                    <Calendar className="w-5 h-5" />
+                    <span>Réserver maintenant</span>
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           )}

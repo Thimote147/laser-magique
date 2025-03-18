@@ -2,97 +2,58 @@ import { motion } from 'framer-motion';
 import {
   Crosshair,
   Shield,
-  Target,
   Users,
-  Map,
+  Clock,
+  AlertTriangle
 } from 'lucide-react';
 import about_lg from '../../assets/about_lg.jpg';
 import { Button } from '../../components/ui/Button';
 import ArenaFeature from '../../components/laser-game/ArenaFeature';
-import GameModeCard from '../../components/cyber-trike/GameModeCard';
 import StrategyCard from '../../components/laser-game/StrategyCard';
 
-const gameModes = [
+const safetyRules = [
   {
-    title: 'En Individuel',
-    description: 'Affrontez les autres joueurs dans une partie de laser game où chacun est livré à lui-même.',
-    difficulty: 'Moyen' as const,
-    icon: Users,
-    duration: '15 minutes',
-    players: '2-20 joueurs'
+    icon: AlertTriangle,
+    title: 'Ne pas courir',
+    description: 'Pour votre sécurité, la course est interdite dans l\'arène.'
   },
   {
-    title: 'Par Équipe',
-    description: 'Affrontez les equipes adverses dans une partie de laser game où la coordination et la communication sont essentielles.',
-    difficulty: 'Facile' as const,
     icon: Users,
-    duration: '15 minutes',
-    players: '2-20 joueurs'
+    title: 'Distance de sécurité',
+    description: 'Maintenez environ 2 mètres de distance avec les autres joueurs.'
   },
-  {
-    title: 'Uniquement Entre Joueurs',
-    description: 'Affrontez uniquement d\'autres joueurs sans la possibilité d\'attaquer les vaisseaux spatiaux pour une expérience purement compétitive.',
-    difficulty: 'Facile' as const,
-    icon: Users,
-    duration: '15 minutes',
-    players: '2-20 joueurs'
-  },
-  {
-    title: 'Contre des vaisseaux spatiaux sans qu\'ils ne vous attaquent',
-    description: 'Affrontez des vaisseaux spatiaux qui ne ripostent pas, parfait pour s\'entraîner et améliorer vos compétences de tir.',
-    difficulty: 'Facile' as const,
-    icon: Users,
-    duration: '15 minutes',
-    players: '2-20 joueurs'
-  },
-  {
-    title: 'Contre des vaisseaux spatiaux qui vous attaquent',
-    description: 'Affrontez des vaisseaux spatiaux qui ripostent, offrant un défi supplémentaire et une expérience de jeu plus intense.',
-    difficulty: 'Difficile' as const,
-    icon: Users,
-    duration: '15 minutes',
-    players: '2-20 joueurs'
-  }
-];
-
-const strategies = [
   {
     icon: Shield,
-    title: 'Maîtrise de la Défense',
-    description: 'Apprenez à utiliser les armes efficacement et à vous protéger des attaques ennemies.'
+    title: 'Rester debout',
+    description: 'Pour une expérience optimale et sécurisée, restez debout pendant le jeu.'
   },
   {
-    icon: Target,
-    title: 'Précision de Tir',
-    description: 'Maîtrisez l\'art du tir précis tout en vous déplaçant dans le labyrinthe.'
+    icon: AlertTriangle,
+    title: 'Sécurité de l\'arme',
+    description: 'Mettez bien la lanière de votre arme autour de votre cou'
   },
   {
-    icon: Users,
-    title: 'Tactiques d\'Équipe',
-    description: 'Coordonnez-vous avec vos coéquipiers pour exécuter des embuscades parfaites et des stratégies efficaces.'
-  },
-  {
-    icon: Map,
-    title: 'Connaissance du Labyrinthe',
-    description: 'Naviguez efficacement dans le labyrinthe à plusieurs niveaux pour obtenir des avantages sur la connaissance du terrain.'
+    icon: AlertTriangle,
+    title: 'Placement de l\'arme',
+    description: 'Mettez bien votre arme toujours à auteur du ventre, jamais plus haut que le dessous de l\'epaule'
   }
 ];
 
 const arenaFeatures = [
   {
-    title: 'Taille du labyrinthe',
-    value: '400m²',
-    description: 'Labyrinthe à plusieurs niveaux avec diverses positions tactiques'
+    title: 'Durée de partie',
+    value: '15min',
+    description: 'Parties chronométrées sur réservation'
   },
   {
-    title: 'Joueurs Max',
-    value: '20',
-    description: 'Parfait pour les grands groupes et les batailles en équipe'
+    title: 'Capacité',
+    value: '2-20',
+    description: 'Joueurs par session'
   },
   {
-    title: 'Modes de Jeu',
-    value: '5',
-    description: 'Affrontez d\'autres joueurs, en individuel ou par équipes, engagez-vous dans des combats contre des vaisseaux spatiaux, ou défendez-vous contre des vaisseaux spatiaux qui ripostent.'
+    title: 'Équipement',
+    value: 'Léger',
+    description: 'Matériel hygiénique et robuste'
   }
 ];
 
@@ -107,6 +68,7 @@ const LaserGame = () => {
             alt="Laser Game"
             className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,34 +89,31 @@ const LaserGame = () => {
             >
               Laser Game
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto"
+              className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto space-y-6"
             >
-              Entrez dans notre labyrinthe à plusieurs niveaux pour une expérience de combat laser intense.
-              Le jeu stratégique rencontre l'équipement de haute technologie dans notre arène ultramoderne.
-            </motion.p>
+              <p>
+                Le Laser Game, appelé aussi Laser Shooting, Laser Tag, Q-Zar, jeu de laser, est un jeu entreprenant, amusant et stratégique qui consiste à faire lutter entre eux différents participants, qui sont équipés d'un pistolet disposant d'un pointer laser coloré ou infrarouge, indolore et sans danger. Les participants jouent dans un labyrinthe sombre et éclairé par des lumières fluorescentes.
+              </p>
+            </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Button href="/booking" variant="primary">
-                Réservez maintenant
-              </Button>
-              <Button href="#arena-features" variant="outline">
-                Explorer l'espace
+                Réserver maintenant
               </Button>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="arena-features" className="py-20 px-4">
+      {/* Notre Expérience Section */}
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -162,17 +121,20 @@ const LaserGame = () => {
             transition={{ duration: 0.5 }}
             className="text-3xl font-bold text-center mb-12"
           >
-            Caractéristiques
+            Chez Laser Magique
           </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {arenaFeatures.map((feature, index) => (
-              <ArenaFeature key={feature.title} {...feature} index={index} />
-            ))}
-            </div>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 max-w-3xl mx-auto">
+            <p className="text-gray-300 mb-6">
+              Nous utilisons une technologie 100% belge et innovante, basée sur une arme mixte (laser et infrarouge) ne nécessitant aucun port de capteur (pas de veste). L'équipement est léger, hygiénique, robuste et permet de rentrer dans une partie rapidement.
+            </p>
+            <p className="text-gray-300">
+              Laser Magique vous fait découvrir un Laser Game original dans lequel vous jouerez avec nos robots et figurines interactifs en 3D, qui n'hésiteront pas à riposter pour vous faire perdre des points. Vous devrez faire preuve de stratégie, en équipe ou seul, afin de les toucher pour prendre de l'avance et terminer la partie avec le meilleur score. Double challenge: il vous faudra également être attentif aux autres joueurs !
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Game Modes Section */}
+      {/* Arena Features */}
       <section className="py-20 px-4 bg-gradient-to-b from-purple-900/20">
         <div className="max-w-7xl mx-auto">
           <motion.h2
@@ -181,31 +143,57 @@ const LaserGame = () => {
             transition={{ duration: 0.5 }}
             className="text-3xl font-bold text-center mb-12"
           >
-            Modes de jeu
+            Informations Pratiques
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {gameModes.map((mode, index) => (
-              <GameModeCard key={mode.title} {...mode} index={index} />
+            {arenaFeatures.map((feature, index) => (
+              <ArenaFeature key={feature.title} {...feature} index={index} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Strategy Guide Section */}
+      {/* Safety Rules */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-            <motion.h2
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-3xl font-bold text-center mb-12"
-            >
-            Guide Stratégique
-            </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {strategies.map((strategy, index) => (
-              <StrategyCard key={strategy.title} {...strategy} index={index} />
+          >
+            Règles de Sécurité
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {safetyRules.map((rule, index) => (
+              <StrategyCard key={rule.title} {...rule} index={index} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Briefing Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-purple-900/20">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl font-bold text-center mb-12"
+          >
+            Instructions & Briefing
+          </motion.h2>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 max-w-3xl mx-auto">
+            <p className="text-gray-300 mb-6">
+              Nous accordons une importance toute particulière au premier contact avec le(s) joueur(s). Nous expliquons le jeu, le pistolet, comment gagner des points, comment éviter de se faire toucher et nous insistons sur les règles de sécurité.
+            </p>
+            <p className="text-gray-300 mb-6">
+              Il y a également des possibilités de diversifier les parties afin qu'elles ne se ressemblent pas. À la fin du briefing, nous équipons le(s) joueur(s) et la partie peut commencer...
+            </p>
+            <div className="flex items-center gap-3 text-purple-400">
+              <Clock className="w-6 h-6" />
+              <span className="font-medium">Durée de la partie : 15 minutes, sur réservation.</span>
+            </div>
           </div>
         </div>
       </section>
