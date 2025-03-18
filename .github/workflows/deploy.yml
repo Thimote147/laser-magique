@@ -5,6 +5,8 @@ on:
     types: [closed] # Trigger on PR merge
     branches:
       - main
+  push:
+    branches:
       - dev
 
 jobs:
