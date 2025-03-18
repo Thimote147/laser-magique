@@ -6,11 +6,9 @@ import { AuthPage } from '../pages/auth/AuthPage';
 import { RegisterPage } from '../pages/auth/register/RegisterPage';
 import ProfilePage from '../pages/profile/ProfilePage';
 import LaserGamePage from '../pages/laser-game/LaserGamePage';
-import VirtualRealityPage from '../pages/virtual-reality/VirtualRealityPage';
-import CyberTrikePage from '../pages/cyber-trike/CyberTrikePage.tsx';
 import BookingPage from '../pages/booking/BookingPage';
-import GestionPage from '../pages/GestionPage.tsx';
-import BookingDetails from '../pages/booking/BookingDetails.tsx';
+import GestionPage from '../pages/GestionPage';
+import BookingDetails from '../pages/booking/BookingDetails';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,8 +18,6 @@ export const router = createBrowserRouter(
             <Route path="/auth" element={<AuthRoute><AuthPage /></AuthRoute>} />
             <Route path="/register" element={<AuthRoute><RegisterPage /></AuthRoute>} />
             <Route path="/laser-game" element={<AuthRoute><LaserGamePage /></AuthRoute>} />
-            <Route path="/virtual-reality" element={<AuthRoute><VirtualRealityPage /></AuthRoute>} />
-            <Route path="/cyber-trike" element={<AuthRoute><CyberTrikePage /></AuthRoute>} />
 
             {/* Protected Routes */}
             <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
