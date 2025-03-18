@@ -5,6 +5,8 @@ on:
     types: [closed] # Trigger on PR merge
     branches:
       - main
+  push:
+    branches:
       - dev
 
 jobs:
@@ -28,7 +30,7 @@ jobs:
 
   # Job for deployment
   deploy:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest # Use the default GitHub runner for deployment
 
     steps:
@@ -47,8 +49,8 @@ jobs:
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
@@ -66,25 +68,25 @@ jobs:
         run: |
           # Determine port based on branch
           if [ "$BRANCH_NAME" = "dev" ]; then
-            PORT=5174
+            PORT=5176
           elif [ "$BRANCH_NAME" = "main" ]; then
-            PORT=5173
+            PORT=5175
           else
             echo "Unsupported branch: $BRANCH_NAME" && exit 1
           fi
 
           # Set environment variables based on branch
-            VITE_SUPABASE_URL=$VITE_SUPABASE_URL
-            VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+          VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+          VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
 
           # Set up SSH key
           mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
           # SSH into the server and deploy
-          ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << EOF
+          ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 $SERVER_USER@$SERVER_HOST << EOF
             # Ensure correct permissions for the repository directory
             sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
             sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
@@ -103,7 +105,7 @@ jobs:
             # Set permissions for the repository
             sudo chown -R $SERVER_USER:$SERVER_USER /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
             sudo chmod -R 755 /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME
-
+                        
             # Create the .env file for environment variables
             echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
             echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> /home/$SERVER_USER/websites/laser-magique-$BRANCH_NAME/.env
@@ -132,5 +134,5 @@ jobs:
             docker cp /home/$SERVER_USER/websites/laser-magique/dist/. laser-magique:/usr/share/nginx/html
 
             echo "Running Docker container #laser-magique-app-$BRANCH_NAME at port $PORT..."
-            docker run -d --name laser-magique-app-$BRANCH_NAME -p "$PORT:80" --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
+            docker run -d --name laser-magique-app-$BRANCH_NAME --restart unless-stopped -p "$PORT:80" --env-file .env laser-magique-app-$BRANCH_NAME || { echo "Docker run failed"; exit 1; }
           EOF

@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { Booking } from "../../types";
-import { toCapitalize } from "../../utils/functions";
 import { supabase } from "../../supabase/client";
+import Consommations from "../../components/booking/Consommations";
+import type { Conso } from "../../types";
+import { useParams } from "react-router-dom";
+import BookingDetailsInfos from "./BookingDetailsInfos";
+import { FileText, Coffee, Edit } from "lucide-react";
+import BookingDetailsModifications from "./BookingDetailsModifications";
 
 const BookingDetails = () => {
+    const { id } = useParams<{ id: string }>();
     const [infos, setInfos] = useState<Booking>();
+    const [consos, setConsos] = useState<Conso[]>([]);
+    const [update, setUpdate] = useState(false);
+    const [page, setPage] = useState('infos');
 
     useEffect(() => {
-        const id = window.location.pathname.split("/").pop();
-
         const fetchBooking = async (id: string) => {
             const { data, error } = (await supabase.rpc('get_booking_details', { id }));
 
@@ -16,31 +23,53 @@ const BookingDetails = () => {
                 console.error('Error fetching booking', error);
             } else {
                 setInfos(data[0]);
-                console.log(data[0]);
+            }
+        };
+
+        const fetchConsos = async () => {
+            const { data, error } = await supabase.rpc('get_conso', { actual_booking_id: id });
+
+            if (error) {
+                console.error('Error fetching conso', error);
+            } else {
+                setConsos(data);
             }
         };
 
         fetchBooking(id!);
-    }, []);
+        fetchConsos();
+    }, [update]);
+
+    const handleClick = (type: string) => {
+        if (type === 'infos') {
+            setPage('infos');
+        } else if (type === 'conso') {
+            setPage('conso');
+        } else if (type === 'modify') {
+            setPage('modify');
+        } else {
+            alert('Le menu auquel vous tentez d\'accéder n\'existe pas');
+        }
+    }
 
     return (
         <div className="min-h-screen bg-black text-white p-8">
             <h1 className="text-4xl mb-8">Réservation de {infos?.firstname}</h1>
-            <section>
-                <div className="bg-white/5 p-5 max-w-xl">
-                    <h2 className="text-2xl">Informations</h2>
-                    <p>Prénom: {infos?.firstname}</p>
-                    {infos?.lastname?.trim() && <p>Nom: {infos.lastname}</p>}
-                    {infos?.email?.trim() && <p>Email: {infos.email}</p>}
-                    {infos?.phone?.trim() && <p>Téléphone: {infos.phone}</p>}
-                    <p>Nombre de personnes: {infos?.nbr_pers}</p>
-                    <p>Date: {infos?.date ? toCapitalize(new Date(infos.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: "2-digit", minute: "2-digit" })) : "Erreur de date"}</p>
-                    <p>{"Acompte : " + infos?.deposit + '€'}</p>
-                    <p>Restant à payer : {infos?.amount}€</p>
-                    <p>Total à payer : {infos?.total}€</p>
-                    {infos?.comment && <p>Commentaire: {infos.comment}</p>}
-                </div>
-            </section>
+            <nav>
+                <ul className="flex">
+                    <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'infos' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('infos')}><FileText className="mr-2" />Infos</li>
+                    <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'conso' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('conso')}><Coffee className="mr-2" />Conso</li>
+                    <li className={`h-12 px-5 flex place-content-center place-items-center cursor-pointer hover:bg-zinc-900 active:bg-zinc-800 ${page === 'modify' ? 'bg-zinc-800' : ''}`} onClick={() => handleClick('modify')}><Edit className="mr-2" />Modifier</li>
+                </ul>
+                <hr className="border-gray-600 mb-5" />
+            </nav>
+            {page === 'infos' ? (
+                <BookingDetailsInfos infos={infos} consos={consos} update={update} setUpdate={setUpdate} />
+            ) : page === 'conso' ? (
+                <Consommations update={update} setUpdate={setUpdate} bookingCancelled={infos?.is_cancelled}/>
+            ) : (
+                <BookingDetailsModifications infos={infos} update={update} setUpdate={setUpdate} />
+            )}
         </div>
     );
 };
