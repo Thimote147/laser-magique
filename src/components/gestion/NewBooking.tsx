@@ -1,11 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Activity } from "../../types";
-import Pricing from "./Pricing";
-import BookingInfos from "./BookingInfos";
-import Counter from "./Counter";
 import { supabase } from "../../supabase/client";
+import { format } from "date-fns";
 
 interface NewBookingProps {
     setBookingAdded: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,164 +11,261 @@ interface NewBookingProps {
 
 const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isGameChosen, setIsGameChosen] = useState(false);
-    const [gameChosen, setGameChosen] = useState<Activity>();
-    const [isDataNeeded, setIsDataNeeded] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
-    const [nbr_parties, setNbr_parties] = useState(0);
-    const [total, setTotal] = useState(0);
-    const [count, setCount] = useState(0);
+    const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+    const [formData, setFormData] = useState({
+        firstname: '',
+        lastname: '',
+        phone: '',
+        email: '',
+        date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
+        nbr_pers: 2,
+        nbr_parties: 1,
+        deposit: 0,
+        amount: 0,
+        comment: ''
+    });
+    const [error, setError] = useState('');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    useEffect(() => {
-        if (nbr_parties > 0) {
-            setIsDataNeeded(true);
-        }
-    }, [nbr_parties]);
 
     useEffect(() => {
         const fetchActivities = async () => {
             const { data, error } = await supabase.from('activities').select('*');
-            
             if (error) {
-                console.log('error', error);
+                console.error('Error fetching activities:', error);
             } else {
-                const activities = data.reduce((acc: { [key: string]: Activity[] }, activity: Activity) => {
-                    if (!acc[activity.type]) {
-                        acc[activity.type] = [];
-                    }
-                    acc[activity.type].push(activity);
-                    return acc;
-                }, {});
-                    
-                setActivities(activities);
+                setActivities(data);
             }
         };
-
         fetchActivities();
     }, []);
+
+    const handleSubmit = async () => {
+        if (!selectedActivity) {
+            setError('Veuillez sélectionner une activité');
+            return;
+        }
+
+        try {
+            const total = calculateTotal();
+            const { error: bookingError } = await supabase.rpc('insert_booking', {
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                phone: formData.phone,
+                email: formData.email,
+                date: formData.date,
+                nbr_pers: formData.nbr_pers,
+                nbr_parties: formData.nbr_parties,
+                deposit: formData.deposit,
+                activity_id: selectedActivity.activity_id,
+                total: total
+            });
+
+            if (bookingError) throw bookingError;
+
+            setBookingAdded(true);
+            setIsModalOpen(false);
+            resetForm();
+        } catch (err) {
+            setError('Erreur lors de la création de la réservation');
+            console.error('Error creating booking:', err);
+        }
+    };
+
+    const calculateTotal = () => {
+        if (!selectedActivity) return 0;
+        const basePrice = selectedActivity.first_price || selectedActivity.third_price;
+        return basePrice * formData.nbr_pers * formData.nbr_parties;
+    };
+
+    const resetForm = () => {
+        setSelectedActivity(null);
+        setFormData({
+            firstname: '',
+            lastname: '',
+            phone: '',
+            email: '',
+            date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
+            nbr_pers: 2,
+            nbr_parties: 1,
+            deposit: 0,
+            amount: 0,
+            comment: ''
+        });
+        setError('');
+    };
 
     return (
         <div className="fixed right-3 bottom-3">
             <motion.button
                 className="flex bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 rounded-full font-semibold hover:opacity-90 transition-opacity"
-                style={{
-                    borderRadius: 50,
-                }}
                 onClick={() => setIsModalOpen(true)}
                 layoutId="modal"
             >
                 <motion.div layoutId="plus">
                     <Plus size={24} />
                 </motion.div>
-                {isMobile ? null : (
-                    <motion.span className="font-medium" layoutId="title">
+                {!isMobile && (
+                    <motion.span className="ml-2 font-medium" layoutId="title">
                         Ajouter
                     </motion.span>
                 )}
             </motion.button>
+
             <AnimatePresence>
                 {isModalOpen && (
                     <motion.div
-                        className="absolute flex right-0 bottom-0"
+                        className="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsModalOpen(false)}
                     >
                         <motion.div
-                            className="bg-zinc-900 w-[400px] border-2 border-zinc-600 flex flex-col items-center justify-center gap-2 overflow-hidden"
-                            style={{
-                                borderRadius: 24,
-                            }}
-                            layoutId="modal"
+                            className="bg-zinc-900 w-full max-w-xl rounded-2xl p-6"
+                            onClick={e => e.stopPropagation()}
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
                         >
-                            <div className="relative w-full flex items-center justify-between px-6 pt-4 pb-2">
-                                <motion.div className="absolute top-0 left-0" layoutId="plus"
-                                    style={{
-                                        opacity: 0,
-                                    }}
-                                >
-                                    <Plus size={24} />
-                                </motion.div>
-                                <motion.span className="font-medium text-xl" layoutId="title">
-                                    Ajouter une réservation
-                                </motion.span>
-                                <motion.button
-                                    className="flex items-center justify-center bg-zinc-600 p-1 size-7 rounded-full"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsModalOpen(false);
-                                        setIsGameChosen(false);
-                                        setIsDataNeeded(false);
-                                        setNbr_parties(0);
-                                    }}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl font-bold">Nouvelle réservation</h2>
+                                <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
                                 >
                                     <X size={24} />
-                                </motion.button>
+                                </button>
                             </div>
-                            {(isModalOpen && !isGameChosen && !isDataNeeded) ? (
-                                <motion.div
-                                    className="w-full px-6 py-6 flex flex-col gap-4"
-                                    style={{
-                                        borderTopLeftRadius: 24,
-                                        borderTopRightRadius: 24,
-                                    }}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                                >
-                                    {Object.entries(activities).map(([key, activity]) => (
-                                        <div key={key} className="w-full">
-                                            <h3 className="font-bold text-lg mb-4">{key} :</h3>
-                                            <div className="flex gap-2">
-                                                {activity.map(({ activity_id, name, type, first_price, second_price, third_price, is_social_deal, min_player, max_player }: Activity, index: number) => (
-                                                    <motion.button
-                                                        key={index}
-                                                        className="w-full flex flex-col items-center justify-center py-3 duration-300 transition-colors hover:bg-white/10 rounded-2xl"
-                                                        onClick={() => {
-                                                            setIsGameChosen(true);
-                                                            setGameChosen({ activity_id, name, type, first_price, second_price, third_price, is_social_deal, min_player, max_player } as Activity);
-                                                            setCount(min_player);
-                                                        }}
-                                                    >
-                                                        {/* <Icon /> */}
-                                                        <span className="font-medium">
-                                                            {name}
-                                                        </span>
-                                                    </motion.button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </motion.div>
-                            ) : (isGameChosen && !isDataNeeded) ? (
-                                <AnimatePresence>
-                                    <motion.div
-                                        className="w-full p-2 flex flex-col gap-4"
-                                        style={{
-                                            borderTopLeftRadius: 24,
-                                            borderTopRightRadius: 24,
-                                        }}
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                                    >
-                                        {gameChosen && (
-                                            <>
-                                                <Counter count={count} setCount={setCount} min_player={gameChosen.min_player} max_player={gameChosen.max_player} />
-                                                <Pricing count={count} gameChosen={gameChosen} setNbr_parties={setNbr_parties} setTotal={setTotal} />
-                                            </>
 
-                                        )}
-                                    </motion.div>
-                                </AnimatePresence>
-                            ) : (
-                                <>
-                                    {gameChosen &&
-                                        <BookingInfos nbr_pers={count} activity_id={gameChosen.activity_id} nbr_parties={nbr_parties} setIsGameChosen={setIsGameChosen} setIsDataNeeded={setIsDataNeeded} setNbr_parties={setNbr_parties} total={total} setBookingAdded={setBookingAdded} />
-                                    }
-                                </>
+                            {error && (
+                                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-2 rounded-lg mb-4">
+                                    {error}
+                                </div>
                             )}
+
+                            <div className="space-y-4">
+                                {/* Activity Selection */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    {activities.map((activity) => (
+                                        <button
+                                            key={activity.activity_id}
+                                            onClick={() => setSelectedActivity(activity)}
+                                            className={`p-4 rounded-lg transition-colors ${
+                                                selectedActivity?.activity_id === activity.activity_id
+                                                    ? 'bg-purple-500 text-white'
+                                                    : 'bg-white/5 hover:bg-white/10'
+                                            }`}
+                                        >
+                                            <div className="font-medium">{activity.name}</div>
+                                            <div className="text-sm opacity-75">
+                                                {activity.first_price || activity.third_price}€/pers.
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Form Fields */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input
+                                        type="text"
+                                        placeholder="Prénom *"
+                                        value={formData.firstname}
+                                        onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
+                                        className="bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        required
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Nom"
+                                        value={formData.lastname}
+                                        onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
+                                        className="bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input
+                                        type="tel"
+                                        placeholder="Téléphone"
+                                        value={formData.phone}
+                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                        className="bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        className="bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </div>
+
+                                <input
+                                    type="datetime-local"
+                                    value={formData.date}
+                                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                                    className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    required
+                                />
+
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-1">Personnes</label>
+                                        <input
+                                            type="number"
+                                            value={formData.nbr_pers}
+                                            onChange={(e) => setFormData({ ...formData, nbr_pers: parseInt(e.target.value) })}
+                                            min={selectedActivity?.min_player || 2}
+                                            max={selectedActivity?.max_player || 20}
+                                            className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-1">Parties</label>
+                                        <input
+                                            type="number"
+                                            value={formData.nbr_parties}
+                                            onChange={(e) => setFormData({ ...formData, nbr_parties: parseInt(e.target.value) })}
+                                            min={1}
+                                            className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-1">Acompte</label>
+                                        <input
+                                            type="number"
+                                            value={formData.deposit}
+                                            onChange={(e) => setFormData({ ...formData, deposit: parseInt(e.target.value) })}
+                                            min={0}
+                                            className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                <textarea
+                                    placeholder="Commentaire"
+                                    value={formData.comment}
+                                    onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                                    className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[100px]"
+                                />
+
+                                {selectedActivity && (
+                                    <div className="bg-white/5 rounded-lg p-4">
+                                        <div className="text-sm text-gray-400">Total estimé</div>
+                                        <div className="text-2xl font-bold">{calculateTotal()}€</div>
+                                    </div>
+                                )}
+
+                                <button
+                                    onClick={handleSubmit}
+                                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                                >
+                                    Créer la réservation
+                                </button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}
