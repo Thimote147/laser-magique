@@ -60,13 +60,19 @@ const BookingDetails = () => {
 
     const handleUpdateBooking = async () => {
         try {
+            // Create a new date object from the input value
+            const inputDate = new Date(editedBooking.date!);
+            
+            // Format the date as YYYY-MM-DD HH:mm:ss
+            const formattedDate = format(inputDate, "yyyy-MM-dd HH:mm:ss");
+
             const { error } = await supabase.rpc('update_booking', {
                 actual_booking_id: booking?.booking_id,
                 new_firstname: editedBooking.firstname,
                 new_lastname: editedBooking.lastname,
                 new_phone: editedBooking.phone,
                 new_email: editedBooking.email,
-                new_date: editedBooking.date,
+                new_date: formattedDate,
                 new_nbr_pers: editedBooking.nbr_pers,
                 new_nbr_parties: editedBooking.nbr_parties,
                 new_deposit: editedBooking.deposit,
@@ -458,7 +464,10 @@ const BookingDetails = () => {
                                 <input
                                     type="datetime-local"
                                     value={format(new Date(editedBooking.date!), "yyyy-MM-dd'T'HH:mm")}
-                                    onChange={(e) => setEditedBooking({ ...editedBooking, date: new Date(e.target.value) })}
+                                    onChange={(e) => {
+                                        const newDate = new Date(e.target.value);
+                                        setEditedBooking({ ...editedBooking, date: newDate });
+                                    }}
                                     className="w-full bg-white/5 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
                                 />
                             </div>
