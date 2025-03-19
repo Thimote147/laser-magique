@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Crosshair, User, Calendar } from 'lucide-react';
+import { Menu, X, Crosshair, User, Calendar, Package } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -66,12 +66,20 @@ const Navbar = () => {
                     <User className="w-5 h-5" />
                   </Link>
                   {user.role !== 'user' && (
-                    <Link
-                      to="/gestion"
-                      className="flex items-center space-x-2 text-white hover:text-purple-400 transition-colors"
-                    >
-                      <Calendar className="w-5 h-5" />
-                    </Link>
+                    <>
+                      <Link
+                        to="/gestion"
+                        className="flex items-center space-x-2 text-white hover:text-purple-400 transition-colors"
+                      >
+                        <Calendar className="w-5 h-5" />
+                      </Link>
+                      <Link
+                        to="/stock"
+                        className="flex items-center space-x-2 text-white hover:text-purple-400 transition-colors"
+                      >
+                        <Package className="w-5 h-5" />
+                      </Link>
+                    </>
                   )}
                 </>
               )}
@@ -136,14 +144,24 @@ const Navbar = () => {
                         <span>Profil</span>
                       </Link>
                       {user.role !== 'user' && (
-                        <Link
-                          to="/gestion"
-                          className="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/5"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <Calendar className="w-5 h-5" />
-                          <span>Gestion</span>
-                        </Link>
+                        <>
+                          <Link
+                            to="/gestion"
+                            className="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/5"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <Calendar className="w-5 h-5" />
+                            <span>Gestion</span>
+                          </Link>
+                          <Link
+                            to="/stock"
+                            className="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/5"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <Package className="w-5 h-5" />
+                            <span>Stock</span>
+                          </Link>
+                        </>
                       )}
                     </>
                   )}

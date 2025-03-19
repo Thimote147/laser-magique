@@ -9,6 +9,8 @@ import LaserGamePage from '../pages/laser-game/LaserGamePage';
 import BookingPage from '../pages/booking/BookingPage';
 import GestionPage from '../pages/GestionPage';
 import BookingDetails from '../pages/booking/BookingDetails';
+import ConsumptionsPage from '../pages/booking/ConsumptionsPage';
+import StockPage from '../pages/stock/StockPage';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -22,6 +24,8 @@ export const router = createBrowserRouter(
             {/* Protected Routes */}
             <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
             <Route path="/booking/:id" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>} />
+            <Route path="/booking/:id/consumptions" element={<ProtectedRoute><ConsumptionsPage /></ProtectedRoute>} />
+            <Route path="/stock" element={<ProtectedRoute><StockPage /></ProtectedRoute>} />
             <Route path="/gestion" element={<ProtectedRoute><GestionPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Route>
