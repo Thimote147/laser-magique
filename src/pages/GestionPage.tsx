@@ -161,7 +161,7 @@ const GestionPage = () => {
               eventClick={handleEventClick}
               datesSet={handleDatesSet}
               slotMinTime="09:30:00"
-              slotMaxTime="19:30:00"
+              slotMaxTime="21:00:00"
               allDaySlot={false}
               height={isMobile ? "auto" : "auto"}
               aspectRatio={isMobile ? 0.8 : 1.35}
@@ -182,7 +182,7 @@ const GestionPage = () => {
               businessHours={{
                 daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
                 startTime: '09:30',
-                endTime: '19:30',
+                endTime: '21:00',
               }}
               selectMirror={true}
               dayMaxEvents={true}
