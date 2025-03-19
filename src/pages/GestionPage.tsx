@@ -5,7 +5,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import BookingStats from '../components/gestion/BookingStats';
 import NewBooking from '../components/gestion/NewBooking';
 import { Booking } from '../types';
@@ -118,7 +117,7 @@ const GestionPage = () => {
   const stats = calculateStats(bookings);
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
+    <div className="min-h-screen bg-black text-white p-4 sm:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -129,54 +128,69 @@ const GestionPage = () => {
         {!isMobile && <BookingStats {...stats} />}
 
         <div className="bg-white/5 rounded-2xl p-6 shadow-lg backdrop-blur-sm">
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            initialView={view}
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            }}
-            views={{
-              timeGridWeek: {
-                titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
-              },
-              timeGridDay: {
-                titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
-              }
-            }}
-            locale={fr}
-            events={calendarEvents}
-            eventClick={handleEventClick}
-            datesSet={handleDatesSet}
-            slotMinTime="10:00:00"
-            slotMaxTime="22:00:00"
-            allDaySlot={false}
-            height="auto"
-            nowIndicator={true}
-            eventContent={(arg) => (
-              <div className="p-1 text-sm h-full">
-                <div className="font-semibold">{arg.event.title}</div>
-                {arg.event.extendedProps.is_cancelled && (
-                  <div className="font-bold text-red-200">ANNULÉ</div>
-                )}
-              </div>
-            )}
-            slotLabelFormat={{
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false
-            }}
-            businessHours={{
-              daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-              startTime: '10:00',
-              endTime: '22:00',
-            }}
-            selectMirror={true}
-            dayMaxEvents={true}
-            weekends={true}
-            slotEventOverlap={false}
-          />
+          <div className="w-full">
+            <FullCalendar
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              initialView={view}
+              firstDay={1}
+              headerToolbar={{
+                left: 'prev,today,next',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              }}
+              buttonText={{
+                today: "Aujourd'hui",
+                month: 'Mois',
+                week: 'Semaine',
+                day: 'Jour'
+              }}
+              views={{
+                timeGridWeek: {
+                  titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+                  dayHeaderFormat: { weekday: 'short', day: 'numeric' }
+                },
+                timeGridDay: {
+                  titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
+                },
+                dayGridMonth: {
+                  titleFormat: { year: 'numeric', month: 'long' },
+                  dayHeaderFormat: { weekday: 'short' }
+                }
+              }}
+              events={calendarEvents}
+              eventClick={handleEventClick}
+              datesSet={handleDatesSet}
+              slotMinTime="09:30:00"
+              slotMaxTime="21:00:00"
+              allDaySlot={false}
+              height={isMobile ? "auto" : "auto"}
+              aspectRatio={isMobile ? 0.8 : 1.35}
+              nowIndicator={true}
+              eventContent={(arg) => (
+                <div className="p-1 text-sm h-full">
+                  <div className="font-semibold">{arg.event.title}</div>
+                  {arg.event.extendedProps.is_cancelled && (
+                    <div className="font-bold text-red-200">ANNULÉ</div>
+                  )}
+                </div>
+              )}
+              slotLabelFormat={{
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+              }}
+              businessHours={{
+                daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+                startTime: '09:30',
+                endTime: '21:00',
+              }}
+              selectMirror={true}
+              dayMaxEvents={true}
+              weekends={true}
+              slotEventOverlap={false}
+              locale="fr"
+            />
+          </div>
         </div>
       </motion.div>
 
