@@ -27,6 +27,8 @@ interface Booking {
     total: number;
     comment: string;
     is_cancelled: boolean;
+    cash_payment: number;
+    card_payment: number;
 }
 
 interface Conso {

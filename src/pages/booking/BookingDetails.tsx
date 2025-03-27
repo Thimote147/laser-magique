@@ -19,7 +19,8 @@ import {
     XCircle,
     CheckCircle,
     Edit3,
-    ChevronDown
+    ChevronDown,
+    Euro
 } from "lucide-react";
 
 const BookingDetails = () => {
@@ -76,7 +77,9 @@ const BookingDetails = () => {
                 new_nbr_pers: editedBooking.nbr_pers,
                 new_nbr_parties: editedBooking.nbr_parties,
                 new_deposit: editedBooking.deposit,
-                new_comment: editedBooking.comment
+                new_comment: editedBooking.comment,
+                new_cash_payment: editedBooking.cash_payment,
+                new_card_payment: editedBooking.card_payment
             });
 
             if (error) throw error;
@@ -141,6 +144,9 @@ const BookingDetails = () => {
             </div>
         );
     }
+
+    const totalPaid = (booking.cash_payment || 0) + (booking.card_payment || 0);
+    const remainingAmount = booking.total - totalPaid;
 
     return (
         <div className="min-h-screen bg-black text-white p-4 sm:p-8">
@@ -323,6 +329,13 @@ const BookingDetails = () => {
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
+                                    <Euro className="w-4 h-4 text-gray-400" />
+                                    <span className="text-sm sm:text-base">Total</span>
+                                </div>
+                                <span className="font-medium text-sm sm:text-base">{booking.total}€</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
                                     <CreditCard className="w-4 h-4 text-gray-400" />
                                     <span className="text-sm sm:text-base">Acompte</span>
                                 </div>
@@ -330,17 +343,26 @@ const BookingDetails = () => {
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
-                                    <CreditCard className="w-4 h-4 text-gray-400" />
-                                    <span className="text-sm sm:text-base">Reste à payer</span>
+                                    <Euro className="w-4 h-4 text-gray-400" />
+                                    <span className="text-sm sm:text-base">Payé en espèces</span>
                                 </div>
-                                <span className="font-medium text-sm sm:text-base">{booking.amount}€</span>
+                                <span className="font-medium text-sm sm:text-base">{booking.cash_payment}€</span>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
                                     <CreditCard className="w-4 h-4 text-gray-400" />
-                                    <span className="text-sm sm:text-base">Total</span>
+                                    <span className="text-sm sm:text-base">Payé par carte</span>
                                 </div>
-                                <span className="font-medium text-sm sm:text-base">{booking.total}€</span>
+                                <span className="font-medium text-sm sm:text-base">{booking.card_payment}€</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-2 border-t border-gray-600">
+                                <div className="flex items-center space-x-2">
+                                    <Euro className="w-4 h-4 text-gray-400" />
+                                    <span className="text-sm sm:text-base">Reste à payer</span>
+                                </div>
+                                <span className="font-medium text-sm sm:text-base">
+                                    {remainingAmount.toFixed(2)}€
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -500,6 +522,31 @@ const BookingDetails = () => {
                                         type="number"
                                         value={editedBooking.deposit}
                                         onChange={(e) => setEditedBooking({ ...editedBooking, deposit: parseInt(e.target.value) })}
+                                        min={0}
+                                        className="w-full bg-white/5 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm text-gray-400 mb-1">Payé en espèces</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={editedBooking.cash_payment}
+                                        onChange={(e) => setEditedBooking({ ...editedBooking, cash_payment: parseFloat(e.target.value) || 0 })}
+                                        min={0}
+                                        className="w-full bg-white/5 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-400 mb-1">Payé par carte</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={editedBooking.card_payment}
+                                        onChange={(e) => setEditedBooking({ ...editedBooking, card_payment: parseFloat(e.target.value) || 0 })}
                                         min={0}
                                         className="w-full bg-white/5 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
                                     />

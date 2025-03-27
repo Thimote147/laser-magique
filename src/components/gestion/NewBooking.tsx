@@ -75,7 +75,7 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
     const calculateTotal = () => {
         if (!selectedActivity) return 0;
         const basePrice = selectedActivity.first_price || selectedActivity.third_price;
-        return basePrice * formData.nbr_pers * formData.nbr_parties;
+        return basePrice * formData.nbr_pers * (selectedActivity.first_price ? formData.nbr_parties : 1) - formData.deposit;
     };
 
     const resetForm = () => {
@@ -150,7 +150,16 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
                                     {activities.map((activity) => (
                                         <button
                                             key={activity.activity_id}
-                                            onClick={() => setSelectedActivity(activity)}
+                                            onClick={() => {
+                                                setSelectedActivity(activity);
+                                                if (formData.nbr_pers < activity.min_player) {
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        nbr_pers: activity.min_player,
+                                                        nbr_parties: activity.type === "Anniversaire" ? 3 : prev.nbr_parties
+                                                    }));
+                                                }
+                                            }}
                                             className={`p-4 rounded-lg transition-colors ${
                                                 selectedActivity?.activity_id === activity.activity_id
                                                     ? 'bg-purple-500 text-white'
