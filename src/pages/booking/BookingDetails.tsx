@@ -59,6 +59,32 @@ const BookingDetails = () => {
         fetchConsumptions();
     }, [id, update]);
 
+    useEffect(() => {
+        if (booking && editedBooking) {
+            let activityCost = 0;
+            
+            if (typeof booking.activity !== "string" && booking.activity?.first_price) {
+                activityCost = booking.activity.first_price * 
+                             (editedBooking.nbr_pers || booking.nbr_pers) * 
+                             (editedBooking.nbr_parties || booking.nbr_parties);
+            } else if (typeof booking.activity !== "string" && booking.activity?.third_price) {
+                activityCost = booking.activity.third_price * 
+                             (editedBooking.nbr_pers || booking.nbr_pers);
+            }
+            
+            const consumptionTotal = consumptions.reduce(
+                (sum, item) => sum + (item.price * item.quantity), 
+                0
+            );
+            
+            setEditedBooking(prev => ({
+                ...prev,
+                amount: parseFloat((activityCost + consumptionTotal - (editedBooking.deposit || booking.deposit)).toFixed(2)),
+                total: parseFloat((activityCost + consumptionTotal).toFixed(2))
+            }));
+        }
+    }, [editedBooking.nbr_pers, editedBooking.nbr_parties, editedBooking.deposit]);
+
     const handleUpdateBooking = async () => {
         try {
             // Create a new date object from the input value
@@ -79,7 +105,9 @@ const BookingDetails = () => {
                 new_deposit: editedBooking.deposit,
                 new_comment: editedBooking.comment,
                 new_cash_payment: editedBooking.cash_payment,
-                new_card_payment: editedBooking.card_payment
+                new_card_payment: editedBooking.card_payment,
+                new_amount: editedBooking.amount,
+                new_total: editedBooking.total,
             });
 
             if (error) throw error;
@@ -145,8 +173,8 @@ const BookingDetails = () => {
         );
     }
 
-    const totalPaid = (booking.cash_payment || 0) + (booking.card_payment || 0);
-    const remainingAmount = booking.total - totalPaid;
+    // const totalPaid = (booking.cash_payment || 0) + (booking.card_payment || 0);
+    // const remainingAmount = booking.total - totalPaid - (booking.deposit || 0);
 
     return (
         <div className="min-h-screen bg-black text-white p-4 sm:p-8">
@@ -361,7 +389,7 @@ const BookingDetails = () => {
                                     <span className="text-sm sm:text-base">Reste à payer</span>
                                 </div>
                                 <span className="font-medium text-sm sm:text-base">
-                                    {remainingAmount.toFixed(2)}€
+                                    {booking.amount}€
                                 </span>
                             </div>
                         </div>

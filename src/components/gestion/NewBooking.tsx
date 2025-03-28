@@ -23,7 +23,7 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
         nbr_parties: 1,
         deposit: 0,
         amount: 0,
-        comment: ''
+        comment: '',
     });
     const [error, setError] = useState('');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -57,6 +57,7 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
                 nbr_pers: formData.nbr_pers,
                 nbr_parties: formData.nbr_parties,
                 deposit: formData.deposit,
+                comment: formData.comment,
                 activity_id: selectedActivity.activity_id,
                 total: total
             });
@@ -75,7 +76,7 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
     const calculateTotal = () => {
         if (!selectedActivity) return 0;
         const basePrice = selectedActivity.first_price || selectedActivity.third_price;
-        return basePrice * formData.nbr_pers * (selectedActivity.first_price ? formData.nbr_parties : 1) - formData.deposit;
+        return basePrice * formData.nbr_pers * (selectedActivity.first_price ? formData.nbr_parties : 1);
     };
 
     const resetForm = () => {
@@ -152,10 +153,10 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
                                             key={activity.activity_id}
                                             onClick={() => {
                                                 setSelectedActivity(activity);
-                                                if (formData.nbr_pers < activity.min_player) {
+                                                if (formData.nbr_pers < activity!.min_player!) {
                                                     setFormData(prev => ({
                                                         ...prev,
-                                                        nbr_pers: activity.min_player,
+                                                        nbr_pers: activity!.min_player!,
                                                         nbr_parties: activity.type === "Anniversaire" ? 3 : prev.nbr_parties
                                                     }));
                                                 }

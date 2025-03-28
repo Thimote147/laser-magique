@@ -47,6 +47,7 @@ const GestionPage = () => {
     if (error) {
       console.error('Error fetching bookings', error);
     } else {
+      console.log('Bookings fetched:', data);
       setBookings(data);
     }
   };
@@ -68,6 +69,7 @@ const GestionPage = () => {
   }, [bookingAdded]);
 
   const getEventColor = (activity: string, is_cancelled: boolean) => {
+    console.log(activity)
     if (is_cancelled) return '#EF4444';
     switch (activity) {
       case 'Cyber Trike': return '#3B82F6';
@@ -103,8 +105,8 @@ const GestionPage = () => {
     title: `${booking.firstname} - ${booking.nbr_pers} pers.`,
     start: new Date(booking.date),
     end: new Date(new Date(booking.date).getTime() + 60 * 60 * 1000),
-    backgroundColor: getEventColor(booking.activity, booking.is_cancelled),
-    borderColor: getEventColor(booking.activity, booking.is_cancelled),
+    backgroundColor: getEventColor(String(booking.activity), booking.is_cancelled),
+    borderColor: getEventColor(String(booking.activity), booking.is_cancelled),
     extendedProps: {
       activity: booking.activity,
       nbr_parties: booking.nbr_parties,
@@ -225,7 +227,7 @@ const GestionPage = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <p>Activité: {selectedBooking.activity}</p>
+                <p>Activité: {String(selectedBooking.activity)}</p>
                 <p>Nombre de personnes: {selectedBooking.nbr_pers}</p>
                 <p>Nombre de parties: {selectedBooking.nbr_parties}</p>
                 <p>Acompte versé: {selectedBooking.deposit}€</p>

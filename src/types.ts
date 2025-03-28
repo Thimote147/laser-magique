@@ -7,8 +7,8 @@ interface Activity {
     second_price?: number;
     third_price: number;
     is_social_deal: boolean;
-    min_player: number;
-    max_player: number;
+    min_player?: number;
+    max_player?: number;
 }
 
 interface Booking {
@@ -18,7 +18,7 @@ interface Booking {
     phone: string;
     email: string;
     date: Date;
-    activity: string;
+    activity: Activity | string;
     nbr_parties: number;
     nbr_pers: number;
     type: string;
