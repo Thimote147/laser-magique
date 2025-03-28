@@ -46,6 +46,8 @@ const NewBooking = ({ setBookingAdded }: NewBookingProps) => {
             return;
         }
 
+        console.log('Form data:', formData);
+
         try {
             const total = calculateTotal();
             const { error: bookingError } = await supabase.rpc('insert_booking', {

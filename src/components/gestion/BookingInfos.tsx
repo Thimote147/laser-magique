@@ -29,8 +29,6 @@ const BookingInfos = ({ nbr_pers, activity_id, nbr_parties, setIsGameChosen, set
             total
         };
 
-        console.log(data.date);
-
         const { error } = await supabase.rpc('insert_booking', {
             firstname: data.firstname,
             lastname: data.lastname,

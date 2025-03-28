@@ -14,7 +14,7 @@ const addHour = async (user: User, hour: string, newValue: boolean) => {
             if (error) throw error
             return data
         } catch (error) {
-            console.log('error', error)
+            console.error('error', error)
         }
     } else {
         try {
@@ -26,7 +26,7 @@ const addHour = async (user: User, hour: string, newValue: boolean) => {
             if (error) throw error
             return data
         } catch (error) {
-            console.log('error', error)
+            console.error('error', error)
         }
     }
 }
@@ -40,7 +40,7 @@ const deleteHour = async (hourId: number) => {
         if (error) throw error
         return data
     } catch (error) {
-        console.log('error', error)
+        console.error('error', error)
     }
 }
 

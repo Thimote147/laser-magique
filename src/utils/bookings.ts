@@ -11,8 +11,6 @@ export const getAvailabilities = async (date: string): Promise<Record<string, { 
         .gte('date', startOfDay)
         .lte('date', endOfDay);
 
-        console.log(data);
-
     let availabilitiesArray = Array.from({ length: 22 }, (_, i) => {
         const hour = Math.floor(i / 2) + 10;
         const minutes = i % 2 === 0 ? '00' : '30';
@@ -24,8 +22,6 @@ export const getAvailabilities = async (date: string): Promise<Record<string, { 
         });
         return { [`${hour}:${minutes}`]: { available } };
     });
-
-    console.log(availabilitiesArray);
 
     let availabilities = availabilitiesArray.reduce((acc, curr) => {
         return { ...acc, ...curr };

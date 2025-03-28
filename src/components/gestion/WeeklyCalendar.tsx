@@ -44,7 +44,6 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
   };
 
   const getActivityColor = (activity: string, is_cancelled: boolean) => {
-    console.log(is_cancelled);
     switch (is_cancelled) {
       case true:
         return 'bg-red-500';
@@ -116,14 +115,14 @@ const WeeklyCalendar = ({ bookings, currentDate, onBookingMove }: WeeklyCalendar
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 className={`${getActivityColor(
-                                  booking.activity.name, booking.is_cancelled
+                                  typeof booking.activity === 'object' && 'name' in booking.activity ? booking.activity.name : booking.activity, booking.is_cancelled
                                 )} p-2 rounded mb-2 text-sm text-white`}
                               >
                                 <p className="font-semibold">{booking.firstname + " " + (booking.lastname !== null ? booking.lastname : '')}</p>
                                 <p className="text-xs">
                                   {booking.type + " de " + booking.nbr_pers + " personne" + (booking.nbr_pers > 1 ? 's' : '')}
                                 </p>
-                                <p className="text-xs">{booking.nbr_parties + " parties de " + booking.activity.name}</p>
+                                <p className="text-xs">{booking.nbr_parties + " parties de " + (typeof booking.activity === 'object' && 'name' in booking.activity ? booking.activity.name : booking.activity)}</p>
                                 <p className="text-xs">{booking.deposit ? "Acompte de " + booking.deposit + "€" : "Pas d'acompte"}</p>
                                 {booking.comment && <p className="text-xs">{booking.comment}</p>}
                                 {booking.is_cancelled && <p className="text-xs font-bold">Annulée</p>}

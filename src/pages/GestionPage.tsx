@@ -47,7 +47,6 @@ const GestionPage = () => {
     if (error) {
       console.error('Error fetching bookings', error);
     } else {
-      console.log('Bookings fetched:', data);
       setBookings(data);
     }
   };
@@ -69,7 +68,6 @@ const GestionPage = () => {
   }, [bookingAdded]);
 
   const getEventColor = (activity: string, is_cancelled: boolean) => {
-    console.log(activity)
     if (is_cancelled) return '#EF4444';
     switch (activity) {
       case 'Cyber Trike': return '#3B82F6';
