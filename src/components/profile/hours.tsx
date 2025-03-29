@@ -1,4 +1,3 @@
-
 import { supabase } from "../../supabase/client";
 import { User } from "../../types/user";
 import { toCurrency, toHours, toMinutes } from "../../utils/functions";
@@ -15,18 +14,48 @@ const addHour = async (user: User, hour: string, newValue: boolean) => {
             return data
         } catch (error) {
             console.error('error', error)
+            throw error
         }
     } else {
+        if (!user.hours || user.hours.length === 0) {
+            console.error("Aucune heure trouvée pour cet utilisateur")
+            return null
+        }
+        
         try {
+            const currentDate = hour.split("T")[0]
+            
+            const hourEntry = user.hours.find(h => 
+                h.date === currentDate && !h.ending
+            )
+            
+            if (!hourEntry) {
+                console.error("Aucune entrée d'heure sans fin trouvée pour cette date")
+                return null
+            }
+                        
+            const endTime = hour.split("T")[1].replace("h", ":")
+            const beginTime = hourEntry.beginning
+            const minutesWorked = toMinutes(endTime) - toMinutes(beginTime)
+            const hoursWorked = toHours(minutesWorked).replace("h", ":")
+            const amount = toCurrency(toHours(minutesWorked), user.hourly_rate ?? 0)
+            
             const { data, error } = await supabase
                 .from('hours')
-                .update({ ending: hour.split("T")[1].replace("h", ":"), nbr_hours: toHours(toMinutes(hour.split("T")[1]) - toMinutes(user.hours[0].beginning)).replace("h", ":"), amount: toCurrency(toHours(toMinutes(hour.split("T")[1]) - toMinutes(user.hours[0].beginning)), user.hourly_rate ?? 0) })
-                .eq('hour_id', user.hours[0].hour_id)
-                .eq('date', hour.split("T")[0])
+                .update({ 
+                    ending: endTime, 
+                    nbr_hours: hoursWorked, 
+                    amount: amount 
+                })
+                .eq('hour_id', hourEntry.hour_id)
+                .eq('date', currentDate)
+            
             if (error) throw error
+            console.log("Mise à jour réussie:", data)
             return data
         } catch (error) {
-            console.error('error', error)
+            console.error('Erreur lors de la mise à jour:', error)
+            throw error
         }
     }
 }

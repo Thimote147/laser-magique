@@ -15,7 +15,7 @@ export interface AuthContextType {
     lastName: string
   ) => Promise<void>;
   signOut: () => Promise<void>;
-  refreshUser: () => Promise<void>; // Ajoutez cette ligne
+  refreshUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(

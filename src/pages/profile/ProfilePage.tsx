@@ -1,42 +1,68 @@
 import { useEffect, useState } from "react";
 import { User } from "../../types/user";
-import { AnimatePresence, motion } from "framer-motion";
-import { Clock, Euro, Plus, X, Trash, Edit, LogOut, User as UserIcon, Mail, Phone, CreditCard, Lock } from "lucide-react";
-import { useSwipeable } from 'react-swipeable';
-import { toCapitalize, toCurrency, toHours, toMinutes } from "../../utils/functions";
+import { motion } from "framer-motion";
+import {
+  Clock,
+  Euro,
+  Plus,
+  Trash,
+  Edit,
+  LogOut,
+  User as UserIcon,
+  Mail,
+  Phone,
+  CreditCard,
+  Lock,
+} from "lucide-react";
+import {
+  toCapitalize,
+  toCurrency,
+  toHours,
+  toMinutes,
+} from "../../utils/functions";
 import { useAuth } from "../../hooks/useAuth";
 import { addHour, deleteHour } from "../../components/profile/hours";
-import { Dialog, DialogContent, DialogTitle, Tab, Tabs } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Tab, Tabs } from "@mui/material";
 import { supabase } from "../../supabase/client";
+import UserManagement from "../../components/admin/UserManagement";
 
 const formatDate = (date: Date): string => {
-  return date.toLocaleString('fr-FR', {
-    timeZone: 'Europe/Paris',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  }).replace(' ', 'T').replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1');
+  return date
+    .toLocaleString("fr-FR", {
+      timeZone: "Europe/Paris",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    .replace(" ", "T")
+    .replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1");
 };
 
 const ProfilePage = () => {
-  const { user, refreshUser, loading, signOut } = useAuth();
+  const { user, refreshUser, signOut } = useAuth();
   const [monthAmount, setMonthAmount] = useState(0);
   const [hoursCount, setHoursCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const [selectedHour, setSelectedHour] = useState<any>(null);
-  const [currentTime, setCurrentTime] = useState<string>(formatDate(new Date()));
+  const [currentTime, setCurrentTime] = useState<string>(
+    formatDate(new Date())
+  );
   const [workingHour, setWorkingHour] = useState<string>(currentTime);
-  const [newHour, setNewHour] = useState<boolean>(!user?.hours.length || (user?.hours[0]?.ending !== undefined && user?.hours[0]?.ending !== null));
+  const [newHour, setNewHour] = useState<boolean>(
+    !user?.hours.length ||
+      (user?.hours[0]?.ending !== undefined && user?.hours[0]?.ending !== null)
+  );
   const [activeTab, setActiveTab] = useState(0);
   const [editedUser, setEditedUser] = useState<Partial<User>>({});
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
     if (user) {
@@ -44,7 +70,7 @@ const ProfilePage = () => {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
-        phone: user.phone
+        phone: user.phone,
       });
     }
   }, [user]);
@@ -57,8 +83,23 @@ const ProfilePage = () => {
     let amount = 0;
     let count = 0;
     for (const hour of user.hours) {
-      amount += hour.amount ?? parseFloat(toCurrency(toHours(toMinutes(hour.ending ?? currentTime.split('T')[1]) - toMinutes(hour.beginning)), user.hourly_rate ?? 0));
-      count += hour.nbr_hours ? toMinutes(hour.nbr_hours) : toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning);
+      if (toMinutes(hour.beginning) > toMinutes(currentTime.split("T")[1])) {
+      continue;
+      }
+      amount +=
+      hour.amount ??
+      parseFloat(
+        toCurrency(
+        toHours(
+          toMinutes(hour.ending ?? currentTime.split("T")[1]) -
+          toMinutes(hour.beginning)
+        ),
+        user.hourly_rate ?? 0
+        )
+      );
+      count += hour.nbr_hours
+      ? toMinutes(hour.nbr_hours)
+      : toMinutes(currentTime.split("T")[1]) - toMinutes(hour.beginning);
     }
 
     setMonthAmount(amount);
@@ -66,23 +107,10 @@ const ProfilePage = () => {
   }, [currentTime, newHour, refreshUser, user]);
 
   useEffect(() => {
-    const updateCurrentTime = () => {
-      const now = new Date();
-      now.setSeconds(0, 0);
-      const newTime = formatDate(now);
-      setCurrentTime(newTime);
-    };
-
     const now = new Date();
-    const delay = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-
-    const timeout = setTimeout(() => {
-      updateCurrentTime();
-      const interval = setInterval(updateCurrentTime, 60000);
-      return () => clearInterval(interval);
-    }, delay);
-
-    return () => clearTimeout(timeout);
+    now.setSeconds(0, 0);
+    const newTime = formatDate(now);
+    setCurrentTime(newTime);
   }, []);
 
   useEffect(() => {
@@ -112,12 +140,12 @@ const ProfilePage = () => {
     if (!user) return;
 
     const { error } = await supabase
-      .from('users')
+      .from("users")
       .update(editedUser)
-      .eq('user_id', user.user_id);
+      .eq("user_id", user.user_id);
 
     if (error) {
-      console.error('Error updating profile:', error);
+      console.error("Error updating profile:", error);
       return;
     }
 
@@ -126,15 +154,15 @@ const ProfilePage = () => {
   };
 
   const handleChangePassword = async () => {
-    setPasswordError('');
+    setPasswordError("");
 
     if (newPassword !== confirmPassword) {
-      setPasswordError('Les mots de passe ne correspondent pas');
+      setPasswordError("Les mots de passe ne correspondent pas");
       return;
     }
 
-    const { error } = await supabase.auth.updateUser({ 
-      password: newPassword 
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
     });
 
     if (error) {
@@ -143,29 +171,31 @@ const ProfilePage = () => {
     }
 
     setIsChangePasswordOpen(false);
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
   };
 
   const renderProfileInfo = () => (
     <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold text-white">Informations personnelles</h2>
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+        <h2 className="text-xl font-bold text-white mb-2 sm:mb-0 min-w-[320px] self-start">
+          Informations personnelles
+        </h2>
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
           <button
             onClick={() => setIsChangePasswordOpen(true)}
-            className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
+            className="flex items-center justify-center px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-colors flex-1 min-w-[250px]"
           >
-            <Lock className="w-4 h-4" />
-            <span>Changer le mot de passe</span>
+            <Lock className="w-4 h-4 min-w-4" />
+            <span className="ml-2">Changer le mot de passe</span>
           </button>
           <button
             onClick={() => setIsEditProfileOpen(true)}
-            className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
+            className="flex items-center justify-center px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-colors flex-1 min-w-[120px]"
           >
-            <Edit className="w-4 h-4" />
-            <span>Modifier</span>
+            <Edit className="w-4 h-4 min-w-4" />
+            <span className="ml-2">Modifier</span>
           </button>
         </div>
       </div>
@@ -176,7 +206,9 @@ const ProfilePage = () => {
             <UserIcon className="w-4 h-4" />
             <span>Nom complet</span>
           </div>
-          <p className="text-white text-lg">{user?.firstname} {user?.lastname}</p>
+          <p className="text-white text-lg">
+            {user?.firstname} {user?.lastname}
+          </p>
         </div>
 
         <div className="space-y-2">
@@ -195,7 +227,7 @@ const ProfilePage = () => {
           <p className="text-white text-lg">{user?.phone}</p>
         </div>
 
-        {user?.role !== 'user' && (
+        {user?.role !== "user" && (
           <div className="space-y-2">
             <div className="flex items-center space-x-2 text-gray-400">
               <CreditCard className="w-4 h-4" />
@@ -219,7 +251,9 @@ const ProfilePage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400">Revenue du mois</p>
-              <p className="text-3xl font-bold text-white">{monthAmount.toFixed(2)}€</p>
+              <p className="text-3xl font-bold text-white">
+                {monthAmount.toFixed(2)}€
+              </p>
             </div>
             <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
               <Euro className="w-6 h-6 text-white" />
@@ -236,7 +270,9 @@ const ProfilePage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400">Heures travaillées</p>
-              <p className="text-3xl font-bold text-white">{toHours(hoursCount)}</p>
+              <p className="text-3xl font-bold text-white">
+                {toHours(hoursCount)}
+              </p>
             </div>
             <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center">
               <Clock className="w-6 h-6 text-white" />
@@ -267,25 +303,53 @@ const ProfilePage = () => {
             <div
               key={hour.hour_id}
               className={`${
-                hour.ending ? "bg-white/5" : "bg-gradient-to-r from-purple-500 to-pink-500"
+                hour.ending
+                  ? "bg-white/5"
+                  : "bg-gradient-to-r from-purple-500 to-pink-500"
               } rounded-lg p-4 transition-all hover:transform hover:scale-[1.01]`}
             >
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-white font-medium">
-                    {toCapitalize(new Date(hour.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }))}
+                    {toCapitalize(
+                      new Date(hour.date).toLocaleDateString("fr-FR", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                      })
+                    )}
                   </p>
                   <p className="text-gray-400">
-                    {hour.beginning} - {hour.ending || 'En cours'}
+                    {hour.beginning} - {hour.ending || "En cours"}
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
                     <p className="text-white font-medium">
-                      {hour.nbr_hours?.replace(":", "h") || toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning))}
+                      {hour.nbr_hours?.replace(":", "h") || (
+                        (toMinutes(currentTime.split("T")[1]) - toMinutes(hour.beginning)) > 0 
+                          ? toHours(toMinutes(currentTime.split("T")[1]) - toMinutes(hour.beginning)) 
+                          : toHours(0)
+                      )}
                     </p>
                     <p className="text-gray-400">
-                      {hour.amount?.toFixed(2) || toCurrency(toHours(toMinutes(currentTime.split('T')[1]) - toMinutes(hour.beginning)), user?.hourly_rate ?? 0)}€
+                      {hour.amount?.toFixed(2) ||
+                        (Number(toCurrency(
+                          toHours(
+                            toMinutes(currentTime.split("T")[1]) -
+                              toMinutes(hour.beginning)
+                          ),
+                          user?.hourly_rate ?? 0
+                        )) > 0 ?
+                          toCurrency(
+                            toHours(
+                              toMinutes(currentTime.split("T")[1]) -
+                                toMinutes(hour.beginning)
+                            ),
+                            user?.hourly_rate ?? 0
+                          )
+                          : 0)}{" "}
+                      €
                     </p>
                   </div>
                   <div className="flex space-x-2">
@@ -324,16 +388,18 @@ const ProfilePage = () => {
                 <UserIcon className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">{user?.firstname} {user?.lastname}</h1>
+                <h1 className="text-2xl font-bold text-white">
+                  {user?.firstname} {user?.lastname}
+                </h1>
                 <p className="text-white/80">{user?.email}</p>
               </div>
             </div>
             <button
               onClick={() => signOut()}
-              className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
+              className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-4 h-10 py-2 rounded-lg transition-colors"
             >
               <LogOut className="w-4 h-4" />
-              <span>Déconnexion</span>
+              {!isMobile && <span>Déconnexion</span>}
             </button>
           </div>
         </div>
@@ -345,22 +411,25 @@ const ProfilePage = () => {
           onChange={(_, newValue) => setActiveTab(newValue)}
           className="mb-6"
           sx={{
-            '& .MuiTab-root': {
-              color: 'rgba(255, 255, 255, 0.7)',
-              '&.Mui-selected': {
-                color: 'white',
+            "& .MuiTab-root": {
+              color: "rgba(255, 255, 255, 0.7)",
+              "&.Mui-selected": {
+                color: "white",
               },
             },
-            '& .MuiTabs-indicator': {
-              backgroundColor: 'white',
+            "& .MuiTabs-indicator": {
+              backgroundColor: "white",
             },
           }}
         >
+          {user?.role !== "user" && <Tab label="Heures" />}
           <Tab label="Profil" />
-          {user?.role !== 'user' && <Tab label="Heures" />}
+          {user?.role === "admin" && <Tab label="Admin" />}
         </Tabs>
 
-        {activeTab === 0 ? renderProfileInfo() : renderHoursSection()}
+        {activeTab === 0 && user?.role !== "user" && renderHoursSection()}
+        {activeTab === (user?.role !== "user" ? 1 : 0) && renderProfileInfo()}
+        {activeTab === 2 && user?.role === "admin" && <UserManagement />}
       </div>
 
       {/* Add/Edit Hour Modal */}
@@ -369,11 +438,11 @@ const ProfilePage = () => {
         onClose={() => setIsModalOpen(false)}
         PaperProps={{
           style: {
-            backgroundColor: '#1f2937',
-            color: 'white',
-            borderRadius: '1rem',
-            padding: '1rem'
-          }
+            backgroundColor: "#1f2937",
+            color: "white",
+            borderRadius: "1rem",
+            padding: "1rem",
+          },
         }}
       >
         <DialogTitle>
@@ -382,7 +451,9 @@ const ProfilePage = () => {
         <DialogContent>
           <div className="space-y-4">
             <div>
-              <p className="text-gray-400 mb-2">{newHour ? "Heure de début" : "Heure de fin"}</p>
+              <p className="text-gray-400 mb-2">
+                {newHour ? "Heure de début" : "Heure de fin"}
+              </p>
               <input
                 type="datetime-local"
                 className="w-full bg-white/5 border border-white/20 rounded-lg p-3 text-white"
@@ -406,16 +477,14 @@ const ProfilePage = () => {
         onClose={() => setIsEditProfileOpen(false)}
         PaperProps={{
           style: {
-            backgroundColor: '#1f2937',
-            color: 'white',
-            borderRadius: '1rem',
-            padding: '1rem'
-          }
+            backgroundColor: "#1f2937",
+            color: "white",
+            borderRadius: "1rem",
+            padding: "1rem",
+          },
         }}
       >
-        <DialogTitle>
-          Modifier le profil
-        </DialogTitle>
+        <DialogTitle>Modifier le profil</DialogTitle>
         <DialogContent>
           <div className="space-y-4 pt-2">
             <div>
@@ -424,7 +493,9 @@ const ProfilePage = () => {
                 type="text"
                 className="w-full bg-white/5 border border-white/20 rounded-lg p-3 text-white"
                 value={editedUser.firstname}
-                onChange={(e) => setEditedUser({ ...editedUser, firstname: e.target.value })}
+                onChange={(e) =>
+                  setEditedUser({ ...editedUser, firstname: e.target.value })
+                }
               />
             </div>
             <div>
@@ -433,7 +504,9 @@ const ProfilePage = () => {
                 type="text"
                 className="w-full bg-white/5 border border-white/20 rounded-lg p-3 text-white"
                 value={editedUser.lastname}
-                onChange={(e) => setEditedUser({ ...editedUser, lastname: e.target.value })}
+                onChange={(e) =>
+                  setEditedUser({ ...editedUser, lastname: e.target.value })
+                }
               />
             </div>
             <div>
@@ -442,7 +515,9 @@ const ProfilePage = () => {
                 type="email"
                 className="w-full bg-white/5 border border-white/20 rounded-lg p-3 text-white"
                 value={editedUser.email}
-                onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
+                onChange={(e) =>
+                  setEditedUser({ ...editedUser, email: e.target.value })
+                }
               />
             </div>
             <div>
@@ -451,7 +526,9 @@ const ProfilePage = () => {
                 type="tel"
                 className="w-full bg-white/5 border border-white/20 rounded-lg p-3 text-white"
                 value={editedUser.phone}
-                onChange={(e) => setEditedUser({ ...editedUser, phone: e.target.value })}
+                onChange={(e) =>
+                  setEditedUser({ ...editedUser, phone: e.target.value })
+                }
               />
             </div>
             <div className="flex justify-end space-x-3 pt-4">
@@ -478,16 +555,14 @@ const ProfilePage = () => {
         onClose={() => setIsChangePasswordOpen(false)}
         PaperProps={{
           style: {
-            backgroundColor: '#1f2937',
-            color: 'white',
-            borderRadius: '1rem',
-            padding: '1rem'
-          }
+            backgroundColor: "#1f2937",
+            color: "white",
+            borderRadius: "1rem",
+            padding: "1rem",
+          },
         }}
       >
-        <DialogTitle>
-          Changer le mot de passe
-        </DialogTitle>
+        <DialogTitle>Changer le mot de passe</DialogTitle>
         <DialogContent>
           <div className="space-y-4 pt-2">
             <div>
@@ -508,16 +583,14 @@ const ProfilePage = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            {passwordError && (
-              <p className="text-red-500">{passwordError}</p>
-            )}
+            {passwordError && <p className="text-red-500">{passwordError}</p>}
             <div className="flex justify-end space-x-3 pt-4">
               <button
                 onClick={() => {
                   setIsChangePasswordOpen(false);
-                  setPasswordError('');
-                  setNewPassword('');
-                  setConfirmPassword('');
+                  setPasswordError("");
+                  setNewPassword("");
+                  setConfirmPassword("");
                 }}
                 className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
               >
